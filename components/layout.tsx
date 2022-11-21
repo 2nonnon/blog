@@ -1,17 +1,17 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import styles from './layout.module.css';
-import utilStyles from '../styles/utils.module.css';
-import Link from 'next/link';
+import Head from 'next/head'
+import Image from 'next/image'
+import Link from 'next/link'
+import utilStyles from '../styles/utils.module.css'
+import styles from './layout.module.css'
 
-const name = 'Your Name';
-export const siteTitle = 'Next.js Sample Website';
+const name = 'Your Name'
+export const siteTitle = 'Next.js Sample Website'
 
 export default function Layout({ children, home }: {
-    children: React.ReactNode
-    home?: boolean
-  }) {
-    return (
+  children: React.ReactNode
+  home?: boolean
+}) {
+  return (
         <div className={styles.container}>
             <Head>
                 <link rel="icon" href="/favicon.ico" />
@@ -29,7 +29,8 @@ export default function Layout({ children, home }: {
                 <meta name="twitter:card" content="summary_large_image" />
             </Head>
             <header className={styles.header}>
-                {home ? (
+                {home
+                  ? (
                     <>
                         <Image
                             priority
@@ -41,7 +42,8 @@ export default function Layout({ children, home }: {
                         />
                         <h1 className={utilStyles.heading2Xl}>{name}</h1>
                     </>
-                ) : (
+                    )
+                  : (
                     <>
                         <Link href="/">
                             <Image
@@ -59,7 +61,7 @@ export default function Layout({ children, home }: {
                             </Link>
                         </h2>
                     </>
-                )}
+                    )}
             </header>
             <main>{children}</main>
             {!home && (
@@ -68,5 +70,5 @@ export default function Layout({ children, home }: {
                 </div>
             )}
         </div>
-    );
+  )
 }
