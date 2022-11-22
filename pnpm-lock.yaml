@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@antfu/eslint-config': ^0.31.0
+  '@iconify-icon/react': ^1.0.1
   '@types/node': ^18.11.9
   '@types/react': ^18.0.25
   autoprefixer: ^10.4.13
@@ -28,6 +29,7 @@ dependencies:
 
 devDependencies:
   '@antfu/eslint-config': registry.npmmirror.com/@antfu/eslint-config/0.31.0_hsf322ms6xhhd4b5ne6lb74y4a
+  '@iconify-icon/react': registry.npmmirror.com/@iconify-icon/react/1.0.1_react@18.2.0
   '@types/node': registry.npmmirror.com/@types/node/18.11.9
   '@types/react': registry.npmmirror.com/@types/react/18.0.25
   autoprefixer: registry.npmmirror.com/autoprefixer/10.4.13_postcss@8.4.19
@@ -209,6 +211,24 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz}
     name: '@humanwhocodes/object-schema'
     version: 1.2.1
+    dev: true
+
+  registry.npmmirror.com/@iconify-icon/react/1.0.1_react@18.2.0:
+    resolution: {integrity: sha512-wQkn2+qHwOGYCNf0ctZKDtX8C9lTxKb6imJiTYYY/0HCnRi0MKfMRjjse0rKJZXrwlGMpYx88/Mm6fign6F8nA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@iconify-icon/react/-/react-1.0.1.tgz}
+    id: registry.npmmirror.com/@iconify-icon/react/1.0.1
+    name: '@iconify-icon/react'
+    version: 1.0.1
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      iconify-icon: registry.npmmirror.com/iconify-icon/1.0.1
+      react: registry.npmmirror.com/react/18.2.0
+    dev: true
+
+  registry.npmmirror.com/@iconify/types/2.0.0:
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@iconify/types/-/types-2.0.0.tgz}
+    name: '@iconify/types'
+    version: 2.0.0
     dev: true
 
   registry.npmmirror.com/@next/env/13.0.4:
@@ -2125,6 +2145,14 @@ packages:
       entities: registry.npmmirror.com/entities/4.4.0
     dev: true
 
+  registry.npmmirror.com/iconify-icon/1.0.1:
+    resolution: {integrity: sha512-8qXahj8q0fJ1uMkVJ1DujJw35CWBFxUY9UFCzytfItNjcoj+Dz7yUakuXTzaByIc8seQCnw9CuLVzHdw7yEkBQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/iconify-icon/-/iconify-icon-1.0.1.tgz}
+    name: iconify-icon
+    version: 1.0.1
+    dependencies:
+      '@iconify/types': registry.npmmirror.com/@iconify/types/2.0.0
+    dev: true
+
   registry.npmmirror.com/ignore/5.2.0:
     resolution: {integrity: sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ignore/-/ignore-5.2.0.tgz}
     name: ignore
@@ -2548,7 +2576,6 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: registry.npmmirror.com/js-tokens/4.0.0
-    dev: false
 
   registry.npmmirror.com/lru-cache/6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/lru-cache/-/lru-cache-6.0.0.tgz}
@@ -3391,7 +3418,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: registry.npmmirror.com/loose-envify/1.4.0
-    dev: false
 
   registry.npmmirror.com/read-cache/1.0.0:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/read-cache/-/read-cache-1.0.0.tgz}
