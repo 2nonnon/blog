@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Icon } from '@iconify-icon/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import utilStyles from '../styles/utils.module.css'
 import styles from './layout.module.css'
 
@@ -47,14 +47,33 @@ enum Theme {
   DARK = 'dark',
 }
 
+enum StorageKey {
+  THEME = 'THEME',
+}
+
 export default function Layout({ children, home }: {
   children: React.ReactNode
   home?: boolean
 }) {
-  const [theme, setTheme] = useState<Theme>(Theme.LIGTH)
+  const [theme, setTheme] = useState(Theme.LIGTH)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      let initTheme: Theme
+      if (localStorage.getItem(StorageKey.THEME))
+        initTheme = localStorage.getItem(StorageKey.THEME) as Theme
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches)
+        initTheme = Theme.DARK
+      else
+        initTheme = Theme.LIGTH
+      document.documentElement.setAttribute('theme', initTheme)
+      if (initTheme !== theme)
+        setTheme(initTheme)
+    }
+  }, [])
 
   return (
-    <div className="m-h-screen">
+    <div className="min-h-screen bg-[var(--surface)] text-[var(--texture)]">
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
@@ -77,13 +96,16 @@ export default function Layout({ children, home }: {
           </Link>
 
           <nav className='flex items-center gap-5'>
-            {navList.map(item => (<NavItem {...item}></NavItem>))}
+            {navList.map(item => (<NavItem key={item.name} {...item}></NavItem>))}
             <a className='flex' title='Github'>
               <Icon width={30} height={30} icon="mingcute:github-line" />
             </a>
             <a className='flex' title={theme} onClick={(e) => {
               e.preventDefault()
-              theme === Theme.LIGTH ? setTheme(Theme.DARK) : setTheme(Theme.LIGTH)
+              const next = theme === Theme.LIGTH ? Theme.DARK : Theme.LIGTH
+              document.documentElement.setAttribute('theme', next)
+              localStorage.setItem(StorageKey.THEME, next)
+              setTheme(next)
             }}>
               { theme === Theme.LIGTH
                 ? <Icon width={30} height={30} icon="ph:sun" />
@@ -107,32 +129,16 @@ export default function Layout({ children, home }: {
                 <h1 className={utilStyles.heading2Xl}>{name}</h1>
               </>
             )
-          : (
-              <>
-                <Link href="/">
-                  <Image
-                    priority
-                    src="/images/profile.jpg"
-                    className={utilStyles.borderCircle}
-                    height={108}
-                    width={108}
-                    alt={name}
-                  />
-                </Link>
-                <h2 className={utilStyles.headingLg}>
-                  <Link href="/" className={utilStyles.colorInherit}>
-                    {name}
-                  </Link>
-                </h2>
-              </>
-            )}
+          : ''}
       </header>
-      <main className='px-6 max-w-screen-xl mx-auto'>{children}</main>
-      {!home && (
-        <div className={styles.backToHome}>
-          <Link href="/">← Back to home</Link>
-        </div>
-      )}
+      <main className='px-6 max-w-screen-xl mx-auto overflow-hidden'>
+        {children}
+        {!home && (
+          <p>
+            <Link href="/">← Back to home</Link>
+          </p>
+        )}
+      </main>
     </div>
   )
 }

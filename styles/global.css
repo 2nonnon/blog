@@ -4,24 +4,22 @@
 
 @layer utilities {
 
+    :root[theme='light'] {
+        --surface: #fcfdfe;
+        --texture: #555;
+        --texture-light: #000;
+    }
+
+    :root[theme='dark'] {
+        --surface: #050505;
+        --texture: #bbb;
+        --texture-light: #fff;
+    }
+
     html,
     body {
         font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
             Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    }
-
-    a {
-        color: #0070f3;
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-
-    img {
-        max-width: 100%;
-        display: block;
     }
 
     body::-webkit-scrollbar {
@@ -43,5 +41,41 @@
 
     body::-webkit-scrollbar-thumb:hover {
         background: #c0a0b9;
+    }
+
+    img {
+        max-width: 100%;
+        display: block;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: var(--texture-light);
+    }
+
+    main a {
+        border-bottom: 1px solid;
+        transition: all .2s;
+    }
+
+    main a:hover {
+        color: var(--texture-light);
+    }
+
+    p {
+        margin: 24px 0;
+    }
+
+    strong {
+        color: var(--texture-light);
+    }
+
+    ul {
+        list-style-type: ' - ';
+        margin-left: 1em;
     }
 }
