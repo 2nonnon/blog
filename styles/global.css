@@ -78,4 +78,8 @@
         list-style-type: ' - ';
         margin-left: 1em;
     }
+
+    .mask-image {
+        mask-image: radial-gradient(circle, transparent, black);
+    }
 }
