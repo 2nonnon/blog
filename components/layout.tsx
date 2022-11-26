@@ -5,7 +5,8 @@ import { Icon } from '@iconify-icon/react'
 import { useEffect, useState } from 'react'
 import utilStyles from '../styles/utils.module.css'
 import styles from './layout.module.css'
-import Plum from './Plum'
+// import Plum from './Plum'
+import Snow from './Snow'
 
 const name = 'Your Name'
 export const siteTitle = 'Next.js Sample Website'
@@ -74,7 +75,7 @@ export default function Layout({ children, home }: {
   }, [])
 
   return (
-    <div className="min-h-screen bg-[var(--surface)] text-[var(--texture)] relative">
+    <div className="min-h-screen text-[var(--texture)] -z-20">
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
@@ -90,8 +91,7 @@ export default function Layout({ children, home }: {
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <Plum></Plum>
-      <header className='sticky top-0 backdrop-blur-sm'>
+      <header className='sticky top-0 backdrop-blur-sm z-50'>
         <div className='flex justify-between items-center h-20 px-6 max-w-screen-xl mx-auto'>
           <Link href="/">
             LOGO
@@ -141,6 +141,8 @@ export default function Layout({ children, home }: {
           </p>
         )}
       </main>
+      {/* <Plum></Plum> */}
+      <Snow></Snow>
     </div>
   )
 }
