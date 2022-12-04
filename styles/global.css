@@ -61,13 +61,21 @@
         color: var(--texture-light);
     }
 
-    main a {
-        border-bottom: 1px solid;
+    a {
         transition: all .2s;
     }
 
     a:hover {
         color: var(--texture-light);
+    }
+
+    main a {
+        border-bottom: 1px solid;
+        border-color: transparent;
+    }
+
+    main a:hover {
+        border-color: unset;
     }
 
     p {
@@ -78,7 +86,7 @@
         color: var(--texture-light);
     }
 
-    ul {
+    article ul {
         list-style-type: ' - ';
         margin-left: 1em;
     }

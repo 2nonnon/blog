@@ -1,25 +1,24 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import Link from 'next/link'
 import { Icon } from '@iconify-icon/react'
+import type { HTMLAttributeAnchorTarget } from 'react'
 import { useEffect, useState } from 'react'
-import utilStyles from '../styles/utils.module.css'
-import styles from './layout.module.css'
+import { useRouter } from 'next/router'
 // import Plum from './Plum'
 import Snow from './Snow'
 
-const name = 'Your Name'
 export const siteTitle = 'Next.js Sample Website'
 
 interface NavItemParams {
   name: string
   path: string
   icon: string
+  target?: HTMLAttributeAnchorTarget
 }
 
-const NavItem = ({ name, path, icon }: NavItemParams) => {
+const NavItem = ({ name, path, icon, target = '_self' }: NavItemParams) => {
   return (
-    <Link href={path} title={name} className="flex">
+    <Link href={path} title={name} className="flex" target={target}>
       <span className='hidden md:inline-block'>{name}</span>
       <Icon className='md:hidden' width={30} height={30} icon={icon} />
     </Link>
@@ -29,18 +28,24 @@ const NavItem = ({ name, path, icon }: NavItemParams) => {
 const navList: NavItemParams[] = [
   {
     name: 'Blog',
-    path: '/',
+    path: '/posts',
     icon: 'ri:article-line',
   },
   {
     name: 'Projects',
-    path: '/',
+    path: '/projects',
     icon: 'ri:lightbulb-line',
   },
   {
     name: 'Demos',
-    path: '/',
+    path: '/demos',
     icon: 'ri:screenshot-line',
+  },
+  {
+    name: 'Github',
+    path: 'https://github.com/2nonnon',
+    icon: 'mingcute:github-line',
+    target: '_blank',
   },
 ]
 
@@ -53,11 +58,12 @@ enum StorageKey {
   THEME = 'THEME',
 }
 
-export default function Layout({ children, home }: {
+export default function Layout({ children }: {
   children: React.ReactNode
   home?: boolean
 }) {
   const [theme, setTheme] = useState(Theme.LIGTH)
+  const router = useRouter()
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -74,8 +80,39 @@ export default function Layout({ children, home }: {
     }
   }, [])
 
+  const [pageLoading, setPageLoading] = useState(false)
+
+  useEffect(() => {
+    let timer: null | NodeJS.Timeout = null
+    const handleRouteChangeStart = () => {
+      timer = setTimeout(() => setPageLoading(true), 100)
+    }
+
+    const handleRouteChangeComplete = () => {
+      clearTimeout(timer)
+      setPageLoading(false)
+    }
+
+    const handleRouteChangeError = (_err: Error) => {
+      // if (err.message.includes('Failed to load script'))
+      // router.back()
+
+      handleRouteChangeComplete()
+    }
+
+    router.events.on('routeChangeStart', handleRouteChangeStart)
+    router.events.on('routeChangeComplete', handleRouteChangeComplete)
+    router.events.on('routeChangeError', handleRouteChangeError)
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChangeStart)
+      router.events.off('routeChangeComplete', handleRouteChangeComplete)
+      router.events.off('routeChangeError', handleRouteChangeError)
+    }
+  }, [])
+
   return (
-    <div className="min-h-screen text-[var(--texture)] -z-20">
+    <div className="min-h-screen min-w-fit text-[var(--texture)] -z-20 flex flex-col">
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
@@ -92,16 +129,13 @@ export default function Layout({ children, home }: {
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <header className='sticky top-0 backdrop-blur-sm z-50'>
-        <div className='flex justify-between items-center h-20 px-6 max-w-screen-xl mx-auto'>
+        <div className='flex justify-between items-center h-20 px-6 box-border max-w-screen-xl mx-auto'>
           <Link href="/">
             LOGO
           </Link>
 
           <nav className='flex items-center gap-5'>
             {navList.map(item => (<NavItem key={item.name} {...item}></NavItem>))}
-            <a className='flex' title='Github'>
-              <Icon width={30} height={30} icon="mingcute:github-line" />
-            </a>
             <a className='flex' title={theme} onClick={(e) => {
               e.preventDefault()
               const next = theme === Theme.LIGTH ? Theme.DARK : Theme.LIGTH
@@ -116,33 +150,14 @@ export default function Layout({ children, home }: {
           </nav>
         </div>
       </header>
-      <header className={styles.header}>
-        {home
-          ? (
-              <>
-                <Image
-                  priority
-                  src="/images/profile.jpg"
-                  className={utilStyles.borderCircle}
-                  height={144}
-                  width={144}
-                  alt={name}
-                />
-                <h1 className={utilStyles.heading2Xl}>{name}</h1>
-              </>
-            )
-          : ''}
-      </header>
-      <main className='px-6 max-w-screen-xl mx-auto overflow-hidden'>
+      <main className='px-6 max-w-screen-xl box-border w-full mx-auto overflow-hidden flex-1'>
         {children}
-        {!home && (
-          <p>
-            <Link href="/">← Back to home</Link>
-          </p>
-        )}
       </main>
       {/* <Plum></Plum> */}
       <Snow></Snow>
+      <section className={`z-[99] fixed top-0 left-0 right-0 bottom-0 backdrop-blur-md flex items-center justify-center ${pageLoading ? '' : 'hidden'}`}>
+        <span className='text-4xl font-extrabold'>Loading ...</span>
+      </section>
     </div>
   )
 }
