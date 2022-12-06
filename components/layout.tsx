@@ -5,7 +5,7 @@ import type { HTMLAttributeAnchorTarget } from 'react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 // import Plum from './Plum'
-import Snow from './Snow'
+import Snow from './backgrounds/Snow'
 
 export const siteTitle = 'Next.js Sample Website'
 
@@ -155,9 +155,11 @@ export default function Layout({ children }: {
       </main>
       {/* <Plum></Plum> */}
       <Snow></Snow>
-      <section className={`z-[99] fixed top-0 left-0 right-0 bottom-0 backdrop-blur-md flex items-center justify-center ${pageLoading ? '' : 'hidden'}`}>
-        <span className='text-4xl font-extrabold'>Loading ...</span>
-      </section>
+      {
+        pageLoading && <section className={'z-[99] fixed top-0 left-0 right-0 bottom-0 backdrop-blur-md flex items-center justify-center'}>
+          <span className='text-4xl font-extrabold'>Loading ...</span>
+        </section>
+      }
     </div>
   )
 }
