@@ -5,6 +5,7 @@ import type { HTMLAttributeAnchorTarget } from 'react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 // import Plum from './Plum'
+import { Theme, useTheme } from '../hooks/useTheme'
 import Snow from './backgrounds/Snow'
 
 export const siteTitle = 'Next.js Sample Website'
@@ -49,36 +50,18 @@ const navList: NavItemParams[] = [
   },
 ]
 
-enum Theme {
-  LIGTH = 'light',
-  DARK = 'dark',
-}
-
-enum StorageKey {
-  THEME = 'THEME',
-}
-
 export default function Layout({ children }: {
   children: React.ReactNode
   home?: boolean
 }) {
-  const [theme, setTheme] = useState(Theme.LIGTH)
   const router = useRouter()
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      let initTheme: Theme
-      if (localStorage.getItem(StorageKey.THEME))
-        initTheme = localStorage.getItem(StorageKey.THEME) as Theme
-      else if (window.matchMedia('(prefers-color-scheme: dark)').matches)
-        initTheme = Theme.DARK
-      else
-        initTheme = Theme.LIGTH
-      document.documentElement.setAttribute('theme', initTheme)
-      if (initTheme !== theme)
-        setTheme(initTheme)
-    }
-  }, [])
+  const [theme, setTheme] = useTheme(Theme.LIGTH)
+
+  const toggleTheme = () => {
+    const next = theme === Theme.LIGTH ? Theme.DARK : Theme.LIGTH
+    setTheme(next)
+  }
 
   const [pageLoading, setPageLoading] = useState(false)
 
@@ -138,10 +121,7 @@ export default function Layout({ children }: {
             {navList.map(item => (<NavItem key={item.name} {...item}></NavItem>))}
             <a className='flex' title={theme} onClick={(e) => {
               e.preventDefault()
-              const next = theme === Theme.LIGTH ? Theme.DARK : Theme.LIGTH
-              document.documentElement.setAttribute('theme', next)
-              localStorage.setItem(StorageKey.THEME, next)
-              setTheme(next)
+              toggleTheme()
             }}>
               { theme === Theme.LIGTH
                 ? <Icon width={30} height={30} icon="ph:sun" />
@@ -154,7 +134,7 @@ export default function Layout({ children }: {
         {children}
       </main>
       {/* <Plum></Plum> */}
-      <Snow></Snow>
+      <Snow theme={theme}></Snow>
       {
         pageLoading && <section className={'z-[99] fixed top-0 left-0 right-0 bottom-0 backdrop-blur-md flex items-center justify-center'}>
           <span className='text-4xl font-extrabold'>Loading ...</span>

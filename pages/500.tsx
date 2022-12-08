@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { siteTitle } from '../components/layout'
 
-export default function Custom404() {
+export default function Custom500() {
   return (
     <>
       <Head>

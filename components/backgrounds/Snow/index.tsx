@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Theme } from '../../../hooks/useTheme'
 
 interface Point {
   x: number
@@ -172,20 +173,26 @@ const grow = (ctx: CanvasRenderingContext2D, width: number, height: number, snow
   startFrame()
 }
 
-const SnowBG = () => {
+interface SnowBGProps {
+  theme: Theme
+}
+
+const SnowBG = ({ theme }: SnowBGProps) => {
   const canvas = useRef<HTMLCanvasElement>()
 
   useEffect(() => {
-    const ctx = canvas.current.getContext('2d')
+    const canvasEl = canvas.current
+    const color = theme === Theme.LIGTH ? '#0009' : '#fff9'
+    const ctx = canvasEl.getContext('2d')
     const width = document.documentElement.clientWidth
     const height = document.documentElement.clientHeight
-    canvas.current.style.width = `${width}px`
-    canvas.current.style.height = `${height}px`
-    canvas.current.width = width
-    canvas.current.height = height
+    canvasEl.style.width = `${width}px`
+    canvasEl.style.height = `${height}px`
+    canvasEl.width = width
+    canvasEl.height = height
 
-    grow(ctx, width, height, { length: 100, depth: 5, color: '#fff9', lineWidth: 2, theta: 0 })
-  }, [canvas])
+    grow(ctx, width, height, { length: 100, depth: 5, color, lineWidth: 2, theta: 0 })
+  }, [canvas, theme])
 
   return (
     <div className='fixed top-0 right-0 bottom-0 left-0 pointer-events-none -z-10'>
