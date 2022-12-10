@@ -17,8 +17,6 @@ export function useTheme(init: Theme) {
       setTheme(localStorage.getItem(StorageKey.THEME) as Theme)
     else if (window.matchMedia('(prefers-color-scheme: dark)').matches)
       setTheme(Theme.DARK)
-    else
-      setTheme(Theme.LIGTH)
   }, [])
 
   useEffect(() => {

@@ -56,7 +56,7 @@ export default function Layout({ children }: {
 }) {
   const router = useRouter()
 
-  const [theme, setTheme] = useTheme(Theme.LIGTH)
+  const [theme, setTheme] = useTheme(Theme.DARK)
 
   const toggleTheme = () => {
     const next = theme === Theme.LIGTH ? Theme.DARK : Theme.LIGTH

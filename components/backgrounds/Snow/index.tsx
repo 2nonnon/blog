@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useClientSize } from '../../../hooks/useClientSize'
 import { Theme } from '../../../hooks/useTheme'
 
 interface Point {
@@ -179,20 +180,19 @@ interface SnowBGProps {
 
 const SnowBG = ({ theme }: SnowBGProps) => {
   const canvas = useRef<HTMLCanvasElement>()
+  const { width, height } = useClientSize()
 
   useEffect(() => {
     const canvasEl = canvas.current
     const color = theme === Theme.LIGTH ? '#0009' : '#fff9'
     const ctx = canvasEl.getContext('2d')
-    const width = document.documentElement.clientWidth
-    const height = document.documentElement.clientHeight
     canvasEl.style.width = `${width}px`
     canvasEl.style.height = `${height}px`
     canvasEl.width = width
     canvasEl.height = height
 
     grow(ctx, width, height, { length: 100, depth: 5, color, lineWidth: 2, theta: 0 })
-  }, [canvas, theme])
+  }, [canvas, theme, width, height])
 
   return (
     <div className='fixed top-0 right-0 bottom-0 left-0 pointer-events-none -z-10'>
