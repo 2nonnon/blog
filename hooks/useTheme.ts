@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 
 export enum Theme {
   LIGTH = 'light',
@@ -12,12 +12,14 @@ export enum StorageKey {
 export function useTheme(init: Theme) {
   const [theme, setTheme] = useState(init)
 
-  useEffect(() => {
-    if (localStorage.getItem(StorageKey.THEME))
-      setTheme(localStorage.getItem(StorageKey.THEME) as Theme)
-    else if (window.matchMedia('(prefers-color-scheme: dark)').matches)
-      setTheme(Theme.DARK)
-  }, [])
+  if (typeof window !== 'undefined') {
+    useLayoutEffect(() => {
+      if (localStorage.getItem(StorageKey.THEME))
+        setTheme(localStorage.getItem(StorageKey.THEME) as Theme)
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches)
+        setTheme(Theme.DARK)
+    }, [])
+  }
 
   useEffect(() => {
     document.documentElement.setAttribute('theme', theme)

@@ -6,6 +6,13 @@ import html from 'remark-html'
 
 const postsDirectory = path.join(process.cwd(), 'posts')
 
+interface PostMetaData {
+  date: string
+  title: string
+}
+
+type PostBaseData = { id: string } & PostMetaData
+
 export function getSortedPostsData() {
   // Get file names under /posts
   const fileNames = fs.readdirSync(postsDirectory)
@@ -47,6 +54,8 @@ export function getAllPostIds() {
   })
 }
 
+let posts: PostBaseData[] = []
+
 export async function getPostData(id: string) {
   const fullPath = path.join(postsDirectory, `${id}.md`)
   const fileContents = fs.readFileSync(fullPath, 'utf8')
@@ -60,10 +69,20 @@ export async function getPostData(id: string) {
     .process(matterResult.content)
   const contentHtml = processedContent.toString()
 
+  posts.length || (posts = getSortedPostsData())
+
+  const index = posts.findIndex(post => post.id === id)
+
   // Combine the data with the id and contentHtml
   return {
     id,
+    last: posts[index - 1] || null,
+    next: posts[index + 1] || null,
     contentHtml,
-    ...(matterResult.data as { date: string; title: string }),
+    ...(matterResult.data as PostMetaData),
   }
 }
+
+type PromiseReturnType<T> = T extends Promise<infer R> ? R : T
+
+export type PostData = PromiseReturnType<ReturnType<typeof getPostData>>

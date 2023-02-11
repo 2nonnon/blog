@@ -128,7 +128,7 @@ const grow = (ctx: CanvasRenderingContext2D, width: number, height: number, snow
     const total = width * height / 20000
     for (let i = 0; i < total; i++)
       flakeStates.push(generateState())
-    console.log(total)
+    // console.log(total)
   }
 
   const drawFlake = ({ x, y, size, theta }: FlakeState) => {

@@ -8,12 +8,14 @@
         --surface: #fcfdfe;
         --texture: #555;
         --texture-light: #000;
+        --selection-bgcolor: rgba(85, 85, 85, 0.5)
     }
 
     :root[theme='dark'] {
         --surface: #050505;
         --texture: #bbb;
         --texture-light: #fff;
+        --selection-bgcolor: rgba(187, 187, 187, 0.5)
     }
 
     html,
@@ -47,6 +49,11 @@
         background: #c0a0b9;
     }
 
+    ::selection {
+        background: var(--selection-bgcolor);
+        color: var(--texture-light);
+    }
+
     img {
         max-width: 100%;
         display: block;
@@ -67,16 +74,17 @@
 
     a:hover {
         color: var(--texture-light);
+        text-decoration: underline;
     }
 
-    main a {
+    /* main a {
         border-bottom: 1px solid;
         border-color: transparent;
     }
 
     main a:hover {
         border-color: unset;
-    }
+    } */
 
     p {
         margin: 24px 0;
