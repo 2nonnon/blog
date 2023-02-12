@@ -1,13 +1,24 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { siteTitle } from '../components/layout'
+import type { LocaleType } from './_app'
 
-export default function Home() {
+const copies = {
+  en: {
+    title: '2nonnon\'s blog site',
+    introduce: 'This guy is mysterious and writes nothing.',
+  },
+  zh: {
+    title: '2nonnon 的博客',
+    introduce: '这个人很神秘，他什么都没有写。',
+  },
+}
+
+export default function Home({ locale }: { locale: LocaleType }) {
   const name = '2nonnon'
   return (
     <>
       <Head>
-        <title>{siteTitle}</title>
+        <title>{copies[locale].title}</title>
       </Head>
       <section className='max-w-screen-md mx-auto'>
         <section className='flex flex-col items-center gap-4'>
@@ -22,7 +33,7 @@ export default function Home() {
           <h1 className='text-4xl font-extrabold'>{name}</h1>
         </section>
         <section>
-          <p className='text-center'>This guy is mysterious and writes nothing.</p>
+          <p className='text-center'>{copies[locale].introduce}</p>
         </section>
       </section>
     </>

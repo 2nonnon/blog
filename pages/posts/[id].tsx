@@ -4,11 +4,15 @@ import Link from 'next/link'
 import type { PostData } from '../../lib/posts'
 import { getAllPostIds, getPostData } from '../../lib/posts'
 import Date from '../../components/date'
+import type { LocaleType } from '../_app'
 
 export default function Post({
   postData,
+  locale,
 }: {
-  postData: PostData }) {
+  postData: PostData
+  locale: LocaleType
+}) {
   return (
     <>
       <Head>
@@ -18,7 +22,7 @@ export default function Post({
         <article>
           <h1 className='text-4xl font-extrabold my-8'>{postData.title}</h1>
           <div className='opacity-80'>
-            <Date dateString={postData.date} />
+            <Date dateString={postData.date} locale={locale} />
           </div>
           <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
         </article>
@@ -34,10 +38,22 @@ export default function Post({
   )
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = getAllPostIds()
+export const getStaticPaths: GetStaticPaths = async ({ locales, defaultLocale }) => {
+  const defaultPaths = getAllPostIds()
+  const allPaths = locales.reduce((res, cur) => {
+    if (cur !== defaultLocale) {
+      res.push(...defaultPaths.map(path => ({
+        params: {
+          id: path.params.id,
+        },
+        locale: cur,
+      })))
+    }
+    return res
+  }, [...defaultPaths])
+
   return {
-    paths,
+    paths: allPaths,
     fallback: false,
   }
 }

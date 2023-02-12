@@ -11,7 +11,7 @@ interface PostMetaData {
   title: string
 }
 
-type PostBaseData = { id: string } & PostMetaData
+export type PostBaseData = { id: string } & PostMetaData
 
 export function getSortedPostsData() {
   // Get file names under /posts
