@@ -184,7 +184,7 @@ const SnowBG = ({ theme }: SnowBGProps) => {
 
   useEffect(() => {
     const canvasEl = canvas.current
-    const color = theme === Theme.LIGTH ? '#0009' : '#fff9'
+    const color = theme === Theme.LIGTH ? '#171a1c99' : '#dfe8ec99'
     const ctx = canvasEl.getContext('2d')
     canvasEl.style.width = `${width}px`
     canvasEl.style.height = `${height}px`

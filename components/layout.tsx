@@ -35,10 +35,12 @@ const copies = {
   en: {
     loading: 'Loading',
     blog: 'Blog',
+    logo: 'Home',
   },
   zh: {
     loading: '加载中',
     blog: '文章',
+    logo: '首页',
   },
 }
 
@@ -83,7 +85,7 @@ export default function Layout({ children }: {
   const [pageLoading] = usePageLoading()
 
   return (
-    <div className={`min-h-screen min-w-fit text-[var(--texture)] -z-20 flex flex-col ${inter.variable} font-sans`}>
+    <div className={`min-h-screen min-w-fit text-[var(--text2)] -z-20 flex flex-col ${inter.variable} font-sans`}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         {/* <meta
@@ -102,7 +104,7 @@ export default function Layout({ children }: {
       <header className='sticky top-0 backdrop-blur-sm z-50'>
         <div className='flex justify-between items-center h-20 px-6 box-border max-w-screen-xl mx-auto'>
           <Link href="/">
-            LOGO
+            {copies[currentLocale].logo}
           </Link>
 
           <nav className='flex items-center gap-5'>
@@ -128,7 +130,7 @@ export default function Layout({ children }: {
       <Snow theme={theme}></Snow>
       {
         pageLoading && <section className={'z-[99] fixed top-0 left-0 right-0 bottom-0 backdrop-blur-md flex items-center justify-center'}>
-          <div className='text-4xl font-extrabold text-[var(--texture-light)]'><span>{copies[currentLocale].loading } </span>{
+          <div className='text-4xl font-extrabold text-[var(--text1)]'><span>{copies[currentLocale].loading } </span>{
             Array.from({ length: 3 }).map((_, i) => (<span className='inline-block animate-bounce' key={i} style={{ '--i': `${-i * 0.2}s` } as CSSProperties}>.</span>))
           }</div>
         </section>

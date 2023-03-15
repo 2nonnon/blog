@@ -1,8 +1,12 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import { remark } from 'remark'
-import html from 'remark-html'
+import { unified } from 'unified'
+import remarkGfm from 'remark-gfm'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
+import rehypeHighlight from 'rehype-highlight'
 
 const postsDirectory = path.join(process.cwd(), 'posts')
 
@@ -56,6 +60,8 @@ export function getAllPostIds() {
 
 let posts: PostBaseData[] = []
 
+const reg = /(<h\d)(>[^(?:<\/h\d>)]*){#([-a-zA-Z]*)}(<\/h\d>)/g
+
 export async function getPostData(id: string) {
   const fullPath = path.join(postsDirectory, `${id}.md`)
   const fileContents = fs.readFileSync(fullPath, 'utf8')
@@ -64,10 +70,17 @@ export async function getPostData(id: string) {
   const matterResult = matter(fileContents)
 
   // Use remark to convert markdown into HTML string
-  const processedContent = await remark()
-    .use(html)
+  const processedContent = await unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkRehype)
+    .use(rehypeHighlight)
+    .use(rehypeStringify)
     .process(matterResult.content)
-  const contentHtml = processedContent.toString()
+
+  const contentString = processedContent.toString()
+
+  const contentHtml = reg.test(contentString) ? contentString.replaceAll(reg, '$1 id="$3" $2$4') : contentString
 
   posts.length || (posts = getSortedPostsData())
 
