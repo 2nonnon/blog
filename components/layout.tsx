@@ -1,10 +1,12 @@
 import Head from 'next/head'
+import type { LinkProps } from 'next/link'
 import Link from 'next/link'
 import { Icon } from '@iconify-icon/react'
-import type { CSSProperties, HTMLAttributeAnchorTarget } from 'react'
+import type { CSSProperties } from 'react'
 import { Inter } from '@next/font/google'
 import { useRouter } from 'next/router'
 import React from 'react'
+
 import { Theme, useTheme } from '../hooks/useTheme'
 import { usePageLoading } from '../hooks/usePageLoading'
 import type { LocaleType } from '../pages/_app'
@@ -15,16 +17,14 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-interface NavItemProps {
+type NavItemProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & LinkProps & {
   name: string
-  path: string
   icon: string
-  target?: HTMLAttributeAnchorTarget
 }
 
-const NavItem = ({ name, path, icon, target = '_self' }: NavItemProps) => {
+const NavItem = ({ name, title, href, icon, locale, target = '_self', onClick }: NavItemProps) => {
   return (
-    <Link href={path} title={name} className="flex" target={target}>
+    <Link href={href} title={title} className="flex" locale={locale} target={target} onClick={onClick}>
       <span className='hidden md:inline-block'>{name}</span>
       <Icon className='md:hidden' width={30} height={30} icon={icon} />
     </Link>
@@ -38,6 +38,7 @@ const copies = {
     logo: 'Home',
     dark: 'Dark',
     light: 'Light',
+    lang: 'English',
   },
   zh: {
     loading: '加载中',
@@ -45,6 +46,7 @@ const copies = {
     logo: '首页',
     dark: '夜间',
     light: '日间',
+    lang: '简体中文',
   },
 }
 
@@ -52,6 +54,12 @@ export default function Layout({ children }: {
   children: React.ReactNode
 }) {
   const [theme, setTheme] = useTheme(Theme.DARK)
+
+  const toggleTheme = () => {
+    const next = theme === Theme.LIGTH ? Theme.DARK : Theme.LIGTH
+    setTheme(next)
+  }
+
   const router = useRouter()
 
   const currentLocale = router.locale as LocaleType
@@ -61,32 +69,36 @@ export default function Layout({ children }: {
 
   const navList: NavItemProps[] = [
     {
+      title: curCopies.lang,
+      name: curCopies.lang,
+      href: router.asPath,
+      locale: nextLocale,
+      icon: currentLocale === 'en' ? 'icon-park-outline:eagle' : 'icon-park-outline:rabbit',
+    },
+    {
+      title: curCopies.blog,
       name: curCopies.blog,
-      path: '/posts',
+      href: '/posts',
       icon: 'ri:article-line',
     },
-    // {
-    //   name: 'Projects',
-    //   path: '/projects',
-    //   icon: 'ri:lightbulb-line',
-    // },
-    // {
-    //   name: 'Demos',
-    //   path: '/demos',
-    //   icon: 'ri:screenshot-line',
-    // },
     {
+      title: 'Github',
       name: 'Github',
-      path: 'https://github.com/2nonnon',
+      href: 'https://github.com/2nonnon',
       icon: 'mingcute:github-line',
       target: '_blank',
     },
+    {
+      title: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
+      name: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
+      href: '',
+      icon: theme === Theme.LIGTH ? 'ph:sun' : 'ph:moon',
+      onClick: (e) => {
+        e.preventDefault()
+        toggleTheme()
+      },
+    },
   ]
-
-  const toggleTheme = () => {
-    const next = theme === Theme.LIGTH ? Theme.DARK : Theme.LIGTH
-    setTheme(next)
-  }
 
   const [pageLoading] = usePageLoading()
 
@@ -114,36 +126,7 @@ export default function Layout({ children }: {
           </Link>
 
           <nav className='flex items-center gap-5'>
-            <Link className='flex' href={router.asPath} locale={nextLocale} title={`to ${nextLocale.toUpperCase()}`}>
-              {
-                currentLocale === 'en'
-                  ? (<>
-                      <span className='hidden md:inline-block'>English</span>
-                      <Icon className='md:hidden' width={30} height={30} icon="icon-park-outline:eagle" />
-                    </>)
-                  : (<>
-                      <span className='hidden md:inline-block'>简体中文</span>
-                      <Icon className='md:hidden' width={30} height={30} icon="icon-park-outline:rabbit" />
-                    </>)
-              }
-            </Link>
             {navList.map(item => (<NavItem key={item.name} {...item}></NavItem>))}
-            <a className='flex cursor-pointer' title={theme} onClick={(e) => {
-              e.preventDefault()
-              toggleTheme()
-            }}>
-              {
-                theme === Theme.LIGTH
-                  ? (<>
-                      <span className='hidden md:inline-block'>{curCopies.light}</span>
-                      <Icon className='md:hidden' width={30} height={30} icon="ph:sun" />
-                    </>)
-                  : (<>
-                      <span className='hidden md:inline-block'>{curCopies.dark}</span>
-                      <Icon className='md:hidden' width={30} height={30} icon="ph:moon" />
-                    </>)
-              }
-            </a>
           </nav>
         </div>
       </header>
