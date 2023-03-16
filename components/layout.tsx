@@ -2,9 +2,9 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { Icon } from '@iconify-icon/react'
 import type { CSSProperties, HTMLAttributeAnchorTarget } from 'react'
-// import Plum from './Plum'
 import { Inter } from '@next/font/google'
 import { useRouter } from 'next/router'
+import React from 'react'
 import { Theme, useTheme } from '../hooks/useTheme'
 import { usePageLoading } from '../hooks/usePageLoading'
 import type { LocaleType } from '../pages/_app'
@@ -15,14 +15,14 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-interface NavItemParams {
+interface NavItemProps {
   name: string
   path: string
   icon: string
   target?: HTMLAttributeAnchorTarget
 }
 
-const NavItem = ({ name, path, icon, target = '_self' }: NavItemParams) => {
+const NavItem = ({ name, path, icon, target = '_self' }: NavItemProps) => {
   return (
     <Link href={path} title={name} className="flex" target={target}>
       <span className='hidden md:inline-block'>{name}</span>
@@ -36,11 +36,15 @@ const copies = {
     loading: 'Loading',
     blog: 'Blog',
     logo: 'Home',
+    dark: 'Dark',
+    light: 'Light',
   },
   zh: {
     loading: '加载中',
     blog: '文章',
     logo: '首页',
+    dark: '夜间',
+    light: '日间',
   },
 }
 
@@ -53,9 +57,11 @@ export default function Layout({ children }: {
   const currentLocale = router.locale as LocaleType
   const nextLocale = currentLocale === 'en' ? 'zh' : 'en'
 
-  const navList: NavItemParams[] = [
+  const curCopies = copies[currentLocale]
+
+  const navList: NavItemProps[] = [
     {
-      name: copies[currentLocale].blog,
+      name: curCopies.blog,
       path: '/posts',
       icon: 'ri:article-line',
     },
@@ -85,7 +91,7 @@ export default function Layout({ children }: {
   const [pageLoading] = usePageLoading()
 
   return (
-    <div className={`min-h-screen min-w-fit text-[var(--text2)] -z-20 flex flex-col ${inter.variable} font-sans`}>
+    <div className={`min-h-screen text-[var(--text2)] -z-20 flex flex-col ${inter.variable} font-sans`}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         {/* <meta
@@ -104,21 +110,39 @@ export default function Layout({ children }: {
       <header className='sticky top-0 backdrop-blur-sm z-50'>
         <div className='flex justify-between items-center h-20 px-6 box-border max-w-screen-xl mx-auto'>
           <Link href="/">
-            {copies[currentLocale].logo}
+            {curCopies.logo}
           </Link>
 
           <nav className='flex items-center gap-5'>
-            <Link className='w-[30px]' href={router.asPath} locale={nextLocale} title={`to ${nextLocale.toUpperCase()}`}>
-              {currentLocale.toUpperCase()}
+            <Link className='flex' href={router.asPath} locale={nextLocale} title={`to ${nextLocale.toUpperCase()}`}>
+              {
+                currentLocale === 'en'
+                  ? (<>
+                      <span className='hidden md:inline-block'>English</span>
+                      <Icon className='md:hidden' width={30} height={30} icon="icon-park-outline:eagle" />
+                    </>)
+                  : (<>
+                      <span className='hidden md:inline-block'>简体中文</span>
+                      <Icon className='md:hidden' width={30} height={30} icon="icon-park-outline:rabbit" />
+                    </>)
+              }
             </Link>
             {navList.map(item => (<NavItem key={item.name} {...item}></NavItem>))}
             <a className='flex cursor-pointer' title={theme} onClick={(e) => {
               e.preventDefault()
               toggleTheme()
             }}>
-              { theme === Theme.LIGTH
-                ? <Icon width={30} height={30} icon="ph:sun" />
-                : <Icon width={30} height={30} icon="ph:moon" />}
+              {
+                theme === Theme.LIGTH
+                  ? (<>
+                      <span className='hidden md:inline-block'>{curCopies.light}</span>
+                      <Icon className='md:hidden' width={30} height={30} icon="ph:sun" />
+                    </>)
+                  : (<>
+                      <span className='hidden md:inline-block'>{curCopies.dark}</span>
+                      <Icon className='md:hidden' width={30} height={30} icon="ph:moon" />
+                    </>)
+              }
             </a>
           </nav>
         </div>
@@ -126,11 +150,10 @@ export default function Layout({ children }: {
       <main className='px-6 max-w-screen-xl box-border w-full mx-auto overflow-hidden flex-1'>
         {children}
       </main>
-      {/* <Plum></Plum> */}
       <Snow theme={theme}></Snow>
       {
         pageLoading && <section className={'z-[99] fixed top-0 left-0 right-0 bottom-0 backdrop-blur-md flex items-center justify-center'}>
-          <div className='text-4xl font-extrabold text-[var(--text1)]'><span>{copies[currentLocale].loading } </span>{
+          <div className='text-4xl font-extrabold text-[var(--text1)]'><span>{curCopies.loading } </span>{
             Array.from({ length: 3 }).map((_, i) => (<span className='inline-block animate-bounce' key={i} style={{ '--i': `${-i * 0.2}s` } as CSSProperties}>.</span>))
           }</div>
         </section>

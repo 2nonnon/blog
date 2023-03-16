@@ -24,7 +24,7 @@ export default function Home({ locale }: { locale: LocaleType }) {
         <section className='flex flex-col items-center gap-4'>
           <Image
             priority
-            className='rounded-full border-2'
+            className='rounded-full border-2 w-[7rem] h-[7rem]'
             src="/images/profile.jpg"
             height={144}
             width={144}

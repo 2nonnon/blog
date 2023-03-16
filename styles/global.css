@@ -18,6 +18,27 @@
         --selection-bgcolor: rgba(187, 187, 187, 0.5)
     } */
 
+    /* 1200x + y = 20 */
+    /* 375x + y = 14 */
+    /* 0.00727 */
+    /* 11.27 */
+
+    :root {
+        font-size: calc(12px + 0.6vw);
+    }
+
+    @media screen and (max-width: 375px) {
+        :root {
+            font-size: 14px;
+        }
+    }
+
+    @media screen and (min-width: 1280px) {
+        :root {
+            font-size: 20px;
+        }
+    }
+
     :root {
         /* brand foundation */
         --brand-hue: 200;
@@ -146,7 +167,7 @@
     h6 {
         color: var(--text1);
         font-weight: bold;
-        margin: 24px 0;
+        margin: 1.25rem 0;
     }
 
     h2 {
@@ -169,7 +190,7 @@
     h3:target,
     h4:target {
         padding-top: 100px;
-        margin-top: -76px;
+        margin-top: calc(1.25rem - 100px);
     }
 
     a {
