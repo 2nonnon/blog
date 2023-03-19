@@ -60,7 +60,8 @@ export function getAllPostIds() {
 
 let posts: PostBaseData[] = []
 
-const reg = /(<h\d)(>[^(?:<\/h\d>)]*){#([-a-zA-Z]*)}(<\/h\d>)/g
+const hReg = /(<h\d)(>[\d\D]*?){#([-a-zA-Z]*)}(<\/h\d>)/g
+const imgReg = /(?<=(?:<img))/g
 
 export async function getPostData(id: string) {
   const fullPath = path.join(postsDirectory, `${id}.md`)
@@ -78,9 +79,11 @@ export async function getPostData(id: string) {
     .use(rehypeStringify)
     .process(matterResult.content)
 
-  const contentString = processedContent.toString()
+  let contentHtml = processedContent.toString()
 
-  const contentHtml = reg.test(contentString) ? contentString.replaceAll(reg, '$1 id="$3" $2$4') : contentString
+  contentHtml = imgReg.test(contentHtml) ? contentHtml.replaceAll(imgReg, ' lazy') : contentHtml
+
+  contentHtml = hReg.test(contentHtml) ? contentHtml.replaceAll(hReg, '$1 id="$3" $2$4') : contentHtml
 
   posts.length || (posts = getSortedPostsData())
 
