@@ -91,7 +91,7 @@ export default function Layout({ children }: {
     {
       title: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
       name: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
-      href: '',
+      href: '/',
       icon: theme === Theme.LIGTH ? 'ph:sun' : 'ph:moon',
       onClick: (e) => {
         e.preventDefault()
@@ -121,7 +121,7 @@ export default function Layout({ children }: {
       </Head>
       <header className='sticky top-0 backdrop-blur-sm z-50'>
         <div className='flex justify-between items-center h-20 px-6 box-border max-w-screen-xl mx-auto'>
-          <Link href="/">
+          <Link href="/" className='text-2xl'>
             {curCopies.logo}
           </Link>
 

@@ -12,7 +12,11 @@ const postsDirectory = path.join(process.cwd(), 'posts')
 
 interface PostMetaData {
   date: string
+  update: string
   title: string
+  author: string
+  translator?: string
+  tags?: string
 }
 
 export type PostBaseData = { id: string } & PostMetaData
@@ -58,8 +62,6 @@ export function getAllPostIds() {
   })
 }
 
-let posts: PostBaseData[] = []
-
 const hReg = /(<h\d)(>[\d\D]*?){#([-a-zA-Z]*)}(<\/h\d>)/g
 const imgReg = /(?<=(?:<img))/g
 
@@ -85,7 +87,7 @@ export async function getPostData(id: string) {
 
   contentHtml = hReg.test(contentHtml) ? contentHtml.replaceAll(hReg, '$1 id="$3" $2$4') : contentHtml
 
-  posts.length || (posts = getSortedPostsData())
+  const posts = getSortedPostsData()
 
   const index = posts.findIndex(post => post.id === id)
 

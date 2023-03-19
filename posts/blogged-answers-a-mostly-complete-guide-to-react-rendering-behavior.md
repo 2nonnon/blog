@@ -136,7 +136,7 @@ React 18 添加了“并发渲染”功能，如 [`useTransition`](https://gith
   - `this.setState()`
   - `this.forceUpdate()`
 - 其他：
-  - 再次调用 ReactDOM 顶层 `render(<App>)` 方法（相当于在根组件调用`forceUpdate()`）
+  - 再次调用 ReactDOM 顶层 `render(<App>)` 方法（相当于在根组件调用 `forceUpdate()`）
   - 从新的 `useSyncExternalStore` 钩子触发的更新
 
 请注意，函数组件没有 `forceUpdate` 方法，但您可以使用一个始终递增的 `useReducer` 钩子来实现同样的功能：
@@ -244,11 +244,11 @@ export type Fiber = {
 
 类似地，React 钩子之所以有效，是因为 [React 将组件的所有钩子存储为附加到该组件的 fiber 对象的链表](https://www.swyx.io/getting-closure-on-hooks/)。当 React 渲染函数组件时，它会从 fiber 获取钩子描述项的链表，每次调用另一个钩子时，[它都会返回存储在钩子描述对象中的相应值（例如 `useReReduce` 的 `state`和 `useReducer` 值)](https://github.com/facebook/react/blob/v18.0.0/packages/react-reconciler/src/ReactFiberHooks.new.js#L908)。
 
-当父组件首次渲染给定的子组件时，React 会创建一个 fiber 对象来跟踪组件的“实例”。对于类组件，[它真正调用 `const instance = new YourComponentType（props），`](https://github.com/facebook/react/blob/v18.0.0/packages/react-reconciler/src/ReactFiberClassComponent.new.js#L656)并将实际的组件实例保存到 fiber 对象上。对于函数组件，[React 只是将 `YourComponentType（props）` 作为函数调用。](https://github.com/facebook/react/blob/v18.0.0/packages/react-reconciler/src/ReactFiberHooks.new.js#L428)
+当父组件首次渲染给定的子组件时，React 会创建一个 fiber 对象来跟踪组件的“实例”。对于类组件，[它真正调用 `const instance = new YourComponentType（props）`](https://github.com/facebook/react/blob/v18.0.0/packages/react-reconciler/src/ReactFiberClassComponent.new.js#L656)，并将实际的组件实例保存到 fiber 对象上。对于函数组件，[React 只是将 `YourComponentType（props）` 作为函数调用。](https://github.com/facebook/react/blob/v18.0.0/packages/react-reconciler/src/ReactFiberHooks.new.js#L428)
 
 ### 组件类型和调和 {#component-types-and-reconciliation}
 
-如[“调和”文档页面](https://reactjs.org/docs/reconciliation.html#elements-of-different-types)中所述，React 试图通过在重新渲染期间尽可能多地重用现有的组件树和 DOM 结构来提高效率。如果你要求 React 在树中的同一位置渲染相同类型的组件或 HTML 节点，React 将重用它，并在适当的情况下应用更新，而不是从头开始重新创建它。这意味着只要你持续要求 React 在同一个地方重复渲染相同类型的组件，React 就会保持该组件实例处于活跃状态。对于类组件，它实际上确实使用组件的相同实例。函数组件没有像类那样真正的“实例”，但从某种意义上我们可以认为`<MyFunctionComponent />`就代表了“实例”，即“某种类型的组件在这里显示并保持活跃状态”。
+如[“调和”文档页面](https://reactjs.org/docs/reconciliation.html#elements-of-different-types)中所述，React 试图通过在重新渲染期间尽可能多地重用现有的组件树和 DOM 结构来提高效率。如果你要求 React 在树中的同一位置渲染相同类型的组件或 HTML 节点，React 将重用它，并在适当的情况下应用更新，而不是从头开始重新创建它。这意味着只要你持续要求 React 在同一个地方重复渲染相同类型的组件，React 就会保持该组件实例处于活跃状态。对于类组件，它实际上确实使用组件的相同实例。函数组件没有像类那样真正的“实例”，但从某种意义上我们可以认为 `<MyFunctionComponent />` 就代表了“实例”，即“某种类型的组件在这里显示并保持活跃状态”。
 
 那么，React 如何知道输出何时又如何发生了更改呢？
 
