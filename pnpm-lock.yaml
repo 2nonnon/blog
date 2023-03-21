@@ -13,6 +13,7 @@ specifiers:
   gray-matter: ^4.0.3
   next: latest
   postcss: ^8.4.19
+  qrcode-generator: ^1.4.4
   react: 18.2.0
   react-dom: 18.2.0
   rehype-highlight: ^6.0.0
@@ -30,6 +31,7 @@ dependencies:
   date-fns: registry.npmmirror.com/date-fns/2.29.3
   gray-matter: registry.npmmirror.com/gray-matter/4.0.3
   next: registry.npmmirror.com/next/13.2.4_biqbaboplfbrettd7655fr4n2y
+  qrcode-generator: registry.npmmirror.com/qrcode-generator/1.4.4
   react: registry.npmmirror.com/react/18.2.0
   react-dom: registry.npmmirror.com/react-dom/18.2.0_react@18.2.0
   rehype-highlight: registry.npmmirror.com/rehype-highlight/6.0.0
@@ -3624,6 +3626,12 @@ packages:
     version: 2.1.1
     engines: {node: '>=6'}
     dev: true
+
+  registry.npmmirror.com/qrcode-generator/1.4.4:
+    resolution: {integrity: sha512-HM7yY8O2ilqhmULxGMpcHSF1EhJJ9yBj8gvDEuZ6M+KGJ0YY2hKpnXvRD+hZPLrDVck3ExIGhmPtSdcjC+guuw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/qrcode-generator/-/qrcode-generator-1.4.4.tgz}
+    name: qrcode-generator
+    version: 1.4.4
+    dev: false
 
   registry.npmmirror.com/queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/queue-microtask/-/queue-microtask-1.2.3.tgz}

@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
-import type { PostData } from '../../lib/posts'
-import { getAllPostIds, getPostData } from '../../lib/posts'
-import Date from '../../components/date'
 import type { LocaleType } from '../_app'
+import type { PostData } from '@/lib/posts'
+import { getAllPostIds, getPostData } from '@/lib/posts'
+import Date from '@/components/date'
 
 interface tagProps {
   tag: string

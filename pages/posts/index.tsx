@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import type { GetStaticProps } from 'next'
-import type { PostBaseData } from '../../lib/posts'
-import { getSortedPostsData } from '../../lib/posts'
-import Date from '../../components/date'
 import type { LocaleType } from '../_app'
+import type { PostBaseData } from '@/lib/posts'
+import { getSortedPostsData } from '@/lib/posts'
+import Date from '@/components/date'
 
 const copies = {
   en: {

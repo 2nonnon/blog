@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { useClientSize } from '../../../hooks/useClientSize'
-import { Theme } from '../../../hooks/useTheme'
+import { useClientSize } from '@/hooks/useClientSize'
+import { Theme } from '@/hooks/useTheme'
 
 interface Point {
   x: number

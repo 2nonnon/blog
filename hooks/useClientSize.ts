@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import throttle from '../utils/throttle'
+import throttle from '@/utils/throttle'
 
 export function useClientSize() {
   const [size, setSize] = useState({ width: 0, height: 0 })

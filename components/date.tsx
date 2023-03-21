@@ -1,6 +1,6 @@
 import { format, parseISO } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
-import type { LocaleType } from '../pages/_app'
+import type { LocaleType } from '@/pages/_app'
 
 export default function Date({ dateString, locale }: { dateString: string; locale: LocaleType }) {
   const date = parseISO(dateString)
