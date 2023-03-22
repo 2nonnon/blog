@@ -2,8 +2,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 import type { GetStaticProps } from 'next'
 import type { LocaleType } from '../_app'
-import type { PostBaseData } from '@/lib/posts'
-import { getSortedPostsData } from '@/lib/posts'
 
 const copies = {
   en: {
@@ -19,7 +17,6 @@ const copies = {
 export default function Posts({
   locale,
 }: {
-  allPostsData: PostBaseData[]
   locale: LocaleType
 }) {
   return (
@@ -45,10 +42,9 @@ export default function Posts({
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = getSortedPostsData()
   return {
     props: {
-      allPostsData,
+      a: 1,
     },
   }
 }
