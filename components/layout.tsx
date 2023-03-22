@@ -39,6 +39,7 @@ const copies = {
     dark: 'Dark',
     light: 'Light',
     lang: 'English',
+    toy: 'Toy',
   },
   zh: {
     loading: '加载中',
@@ -47,6 +48,7 @@ const copies = {
     dark: '夜间',
     light: '日间',
     lang: '简体中文',
+    toy: '玩具',
   },
 }
 
@@ -69,6 +71,16 @@ export default function Layout({ children }: {
 
   const navList: NavItemProps[] = [
     {
+      title: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
+      name: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
+      href: '/',
+      icon: theme === Theme.LIGTH ? 'ph:sun' : 'ph:moon',
+      onClick: (e) => {
+        e.preventDefault()
+        toggleTheme()
+      },
+    },
+    {
       title: curCopies.lang,
       name: curCopies.lang,
       href: router.asPath,
@@ -82,21 +94,17 @@ export default function Layout({ children }: {
       icon: 'ri:article-line',
     },
     {
+      title: curCopies.toy,
+      name: curCopies.toy,
+      href: '/toys',
+      icon: 'tabler:horse-toy',
+    },
+    {
       title: 'Github',
       name: 'Github',
       href: 'https://github.com/2nonnon',
       icon: 'mingcute:github-line',
       target: '_blank',
-    },
-    {
-      title: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
-      name: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
-      href: '/',
-      icon: theme === Theme.LIGTH ? 'ph:sun' : 'ph:moon',
-      onClick: (e) => {
-        e.preventDefault()
-        toggleTheme()
-      },
     },
   ]
 

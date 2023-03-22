@@ -1,7 +1,7 @@
 import qrcode from 'qrcode-generator'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useRef, useState } from 'react'
-import Modal from '../../components/Modal'
+import Modal from '@/components/Modal'
 
 const ErrorCorrectionLevel = {
   L: 'L(7%)',
