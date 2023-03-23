@@ -10,7 +10,9 @@ const Modal: FunctionComponent<{ children: any }> = ({ children }) => {
 
   useEffect(() => {
     modalRoot!.appendChild(elRef.current!)
-    return () => { modalRoot!.removeChild(elRef.current!) }
+    return () => {
+      modalRoot!.removeChild(elRef.current!)
+    }
   }, [])
 
   return createPortal(<div className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>{children}</div>, elRef.current)
