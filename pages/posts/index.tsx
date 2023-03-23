@@ -42,9 +42,6 @@ export default function Posts({
             </li>
           ))}
         </ul>
-        <section className='my-8'>
-          <Link href="/">cd ..</Link>
-        </section>
       </section>
     </>
   )

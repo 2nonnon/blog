@@ -21,7 +21,7 @@ export default function Home({ locale }: { locale: LocaleType }) {
         <title>{copies[locale].title}</title>
       </Head>
       <section className='max-w-screen-md mx-auto'>
-        <section className='flex flex-col items-center gap-4'>
+        <section className='flex flex-col items-center gap-4 mt-10'>
           <Image
             priority
             className='rounded-full border-2 w-[7rem] h-[7rem]'

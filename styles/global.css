@@ -58,9 +58,9 @@
 
         /* dark */
         --brand-dark: hsl(var(--brand-hue) calc(var(--brand-saturation) / 2) calc(var(--brand-lightness) / 1.5));
-        --text1-dark: hsl(var(--brand-hue) 15% 90%);
-        --text2-dark: hsl(var(--brand-hue) 5% 75%);
-        --surface1-dark: hsl(var(--brand-hue) 5% 5%);
+        --text1-dark: hsl(var(--brand-hue) 15% 85%);
+        --text2-dark: hsl(var(--brand-hue) 5% 65%);
+        --surface1-dark: hsl(var(--brand-hue) 10% 10%);
         --surface2-dark: hsl(var(--brand-hue) 10% 15%);
         --surface3-dark: hsl(var(--brand-hue) 5% 20%);
         --surface4-dark: hsl(var(--brand-hue) 5% 25%);
@@ -185,7 +185,7 @@
     h4:target {
         /* padding-top: 100px;
         margin-top: calc(1.25rem - 100px); */
-        scroll-margin-top: calc(5rem);
+        scroll-margin-top: calc(4rem);
     }
 
     a {
@@ -220,12 +220,14 @@
     }
 
     blockquote {
+        border: var(--border);
         border-left: .25rem solid var(--brand);
         background-color: var(--surface3);
         overflow: hidden;
         padding: 0 1rem;
         color: var(--text1);
         margin: 1.25rem 0;
+        box-shadow: var(--box-shadow);
     }
 
     blockquote>p {
@@ -242,5 +244,10 @@
 
     .mask-image {
         mask-image: radial-gradient(circle, transparent, black);
+    }
+
+    .rad-shadow {
+        border: var(--border);
+        box-shadow: var(--box-shadow);
     }
 }

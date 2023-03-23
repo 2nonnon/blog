@@ -127,9 +127,9 @@ export default function Layout({ children }: {
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" /> */}
       </Head>
-      <header className='sticky top-0 backdrop-blur-sm z-50'>
-        <div className='flex justify-between items-center h-20 px-6 box-border max-w-screen-xl mx-auto'>
-          <Link href="/" className='text-2xl'>
+      <header className='sticky top-0 z-50 bg-[var(--surface1)] shadow-lg'>
+        <div className='flex justify-between items-center h-16 px-6 box-border max-w-screen-xl mx-auto'>
+          <Link href="/" className='text-xl'>
             {curCopies.logo}
           </Link>
 
