@@ -3,7 +3,7 @@ export interface ILevel { size: Coordinate; num: number }
 export const Level: { [k: string]: ILevel } = {
   easy: { size: [9, 9], num: 10 },
   medieum: { size: [16, 16], num: 30 },
-  hard: { size: [32, 16], num: 60 },
+  hard: { size: [16, 32], num: 60 },
 }
 
 export enum GameState {

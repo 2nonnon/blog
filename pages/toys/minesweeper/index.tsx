@@ -75,7 +75,7 @@ const MineSweeper = () => {
   return (
     <>
       <MineSweeperContext.Provider value={mineSweeperInfo}>
-        <div className='grid place-content-center min-h-screen select-none p-10'>
+        <div className='grid place-content-center min-h-full select-none p-10'>
           <div>
             <span>{mineSweeperInfo.gameState}</span>
             <span onClick={() => {
