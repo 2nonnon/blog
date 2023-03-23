@@ -1,9 +1,9 @@
 import { createContext, useContext } from 'react'
-import { checkWin, generateMine, handleClickBlock, handleClickMine, handleToggleFlag, initMineSweeper } from './helper'
-import type { Coordinate, IBlock } from './type'
-import { BlockType, GameState, Level } from './type'
+import { checkWin, generateMine, handleClickBlock, handleClickMine, handleToggleFlag, initMineSweeper } from '@/components/minesweeper/helper'
+import type { Coordinate, IBlock } from '@/components/minesweeper/type'
+import { BlockType, GameState, Level } from '@/components/minesweeper/type'
 
-import useMineSweeper from './useMineSweeper'
+import useMineSweeper from '@/components/minesweeper/useMineSweeper'
 
 const MineSweeperContext = createContext<ReturnType<typeof useMineSweeper> | null>(null)
 
