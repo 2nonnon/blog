@@ -24,7 +24,7 @@ type NavItemProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & LinkProps & 
 
 const NavItem = ({ name, title, href, icon, locale, target = '_self', onClick }: NavItemProps) => {
   return (
-    <Link href={href} title={title} className="flex" locale={locale} target={target} onClick={onClick}>
+    <Link href={href} title={title} className="flex surface1 hover:no-underline p-1 rounded md:px-3" locale={locale} target={target} onClick={onClick}>
       <span className='hidden md:inline-block'>{name}</span>
       <Icon className='md:hidden' width={30} height={30} icon={icon} />
     </Link>
@@ -68,6 +68,13 @@ export default function Layout({ children }: {
   const nextLocale = currentLocale === 'en' ? 'zh' : 'en'
 
   const curCopies = copies[currentLocale]
+
+  const home = {
+    title: curCopies.logo,
+    name: curCopies.logo,
+    href: '/',
+    icon: 'material-symbols:home-outline-rounded',
+  }
 
   const navList: NavItemProps[] = [
     {
@@ -127,13 +134,11 @@ export default function Layout({ children }: {
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" /> */}
       </Head>
-      <header className='sticky top-0 z-50 bg-[var(--surface1)] shadow-lg'>
+      <header>
         <div className='flex justify-between items-center h-16 px-6 box-border max-w-screen-xl mx-auto'>
-          <Link href="/" className='text-xl'>
-            {curCopies.logo}
-          </Link>
+          <NavItem {...home}></NavItem>
 
-          <nav className='flex items-center gap-5'>
+          <nav className='flex items-center gap-4'>
             {navList.map(item => (<NavItem key={item.name} {...item}></NavItem>))}
           </nav>
         </div>

@@ -33,12 +33,14 @@ export default function Posts({
         <h1 className='text-4xl font-extrabold my-8'>{copies[locale].pageTitle}</h1>
         <ul className='flex flex-col gap-4'>
           {allPostsData.map(({ id, date, title }) => (
-            <li key={id}>
-              <Link className='text-lg font-medium border-b-0' href={`/posts/${id}`}>{title}</Link>
-              <br />
-              <small className='opacity-80'>
-                <Date dateString={date} locale={locale} />
-              </small>
+            <li key={id} className="surface1 rounded-xl">
+              <Link className='text-lg font-medium border-b-0 p-4 block' href={`/posts/${id}`}>
+                <span>{title}</span>
+                <br />
+                <small className='opacity-80'>
+                  <Date dateString={date} locale={locale} />
+                </small>
+              </Link>
             </li>
           ))}
         </ul>

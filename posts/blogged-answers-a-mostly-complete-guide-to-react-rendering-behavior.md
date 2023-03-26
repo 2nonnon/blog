@@ -403,4 +403,4 @@ React 在**开发模式中会渲染两次 `<StrictMode>` 标签内的组件**�
 
 在正常情况下，*切勿* 在实际渲染逻辑中入队状态更新。换句话说，可以创建一个在发生点击时调用 `setSomeState()` 的点击回调，但 *不应* 作为实际渲染行为的一部分调用 `setSomeState()`。
 
-但是，有一个例外。**函数组件 *可以在* 渲染时直接调用 `setSomeState（），`只要它是有终止条件，** 不会在每次渲染时都执行。这充当[类组件中 `getDerivedStateFromProps` 的函数组件等效项](https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops)。如果函数组件在渲染时将状态更新入队，[React 将立即应用状态更新并在继续之前同步重新渲染该组件](https://github.com/facebook/react/blob/v18.0.0/packages/react-reconciler/src/ReactFiberHooks.new.js#L430-L469)。如果组件无限地保持入队状态更新并强制 React 重新渲染它，React 将在设定的重试次数后中断循环并抛出错误（目前为 50 次尝试）。此技术可用于根据 prop 更改立即强制更新状态值，而无需通过在 `useEffect` 中调用 `setSomeState()` 来请求重新渲染。
+但是，有一个例外。**函数组件 *可以在* 渲染时直接调用 `setSomeState（）`，只要它是有终止条件，** 不会在每次渲染时都执行。这充当[类组件中 `getDerivedStateFromProps` 的函数组件等效项](https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops)。如果函数组件在渲染时将状态更新入队，[React 将立即应用状态更新并在继续之前同步重新渲染该组件](https://github.com/facebook/react/blob/v18.0.0/packages/react-reconciler/src/ReactFiberHooks.new.js#L430-L469)。如果组件无限地保持入队状态更新并强制 React 重新渲染它，React 将在设定的重试次数后中断循环并抛出错误（目前为 50 次尝试）。此技术可用于根据 prop 更改立即强制更新状态值，而无需通过在 `useEffect` 中调用 `setSomeState()` 来请求重新渲染。

@@ -26,25 +26,34 @@ export default function Posts({
 }) {
   const curCopies = copies[locale]
 
+  const toys = [
+    {
+      name: curCopies.qrcode,
+      icon: 'heroicons-outline:qrcode',
+      link: '/toys/qrcode',
+    },
+    {
+      name: curCopies.mine,
+      icon: 'game-icons:land-mine',
+      link: '/toys/minesweeper',
+    },
+  ]
+
   return (
     <>
       <Head>
         <title>{curCopies.title}</title>
       </Head>
-      <section className='max-w-screen-md mx-auto min-h-full flex flex-col items-stretch'>
-        <ul className='flex flex-row gap-6 flex-1 justify-center items-center my-10'>
-          <li>
-            <Link className='text-lg font-medium border-b-0 flex flex-col items-center gap-2 rad-shadow rounded-lg py-4 px-6 bg-[var(--surface2)] hover:bg-[var(--surface3)]' href='/toys/qrcode'>
-              <Icon className='text-[7rem]' icon="heroicons-outline:qrcode" />
-              <span>{curCopies.qrcode}</span>
-            </Link>
-          </li>
-          <li>
-            <Link className='text-lg font-medium border-b-0 flex flex-col items-center gap-2 rad-shadow rounded-lg py-4 px-6 bg-[var(--surface2)] hover:bg-[var(--surface3)]' href='/toys/minesweeper'>
-              <Icon className='text-[7rem]' icon="game-icons:land-mine" />
-              <span>{curCopies.mine}</span>
-            </Link>
-          </li>
+      <section className='max-w-screen-md mx-auto'>
+        <ul className='flex flex-row gap-6 flex-1 justify-center items-stretch my-10'>
+          {toys.map(item => (
+            <li className='surface1 rounded-lg w-48'>
+              <Link className='text-lg font-medium flex flex-col items-center gap-2 rounded-lg py-4 px-6 h-full text-center' href={item.link}>
+                <Icon className='text-[7rem]' icon={item.icon} />
+                <span>{item.name}</span>
+              </Link>
+            </li>
+          ))}
         </ul>
       </section>
     </>

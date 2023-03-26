@@ -24,7 +24,7 @@
     /* 11.27 */
 
     :root {
-        font-size: calc(12px + 0.6vw);
+        font-size: calc(12px + 0.46vw);
     }
 
     @media screen and (max-width: 375px) {
@@ -53,8 +53,6 @@
         --surface2-light: hsl(var(--brand-hue) 20% 99%);
         --surface3-light: hsl(var(--brand-hue) 20% 92%);
         --surface4-light: hsl(var(--brand-hue) 20% 85%);
-        --surface-shadow-light: var(--brand-hue) 10% 20%;
-        --shadow-strength-light: .02;
 
         /* dark */
         --brand-dark: hsl(var(--brand-hue) calc(var(--brand-saturation) / 2) calc(var(--brand-lightness) / 1.5));
@@ -64,17 +62,6 @@
         --surface2-dark: hsl(var(--brand-hue) 10% 15%);
         --surface3-dark: hsl(var(--brand-hue) 5% 20%);
         --surface4-dark: hsl(var(--brand-hue) 5% 25%);
-        --surface-shadow-dark: var(--brand-hue) 50% 3%;
-        --shadow-strength-dark: .8;
-
-        --border: 1px solid hsl(var(--brand-hue) 10% 50% / 15%);
-        --box-shadow:
-            0 2.8px 2.2px hsl(var(--surface-shadow) / calc(var(--shadow-strength) + .03)),
-            0 6.7px 5.3px hsl(var(--surface-shadow) / calc(var(--shadow-strength) + .01)),
-            0 12.5px 10px hsl(var(--surface-shadow) / calc(var(--shadow-strength) + .02)),
-            0 22.3px 17.9px hsl(var(--surface-shadow) / calc(var(--shadow-strength) + .02)),
-            0 41.8px 33.4px hsl(var(--surface-shadow) / calc(var(--shadow-strength) + .03)),
-            0 100px 80px hsl(var(--surface-shadow) / var(--shadow-strength));
     }
 
     :root {
@@ -89,20 +76,12 @@
         --surface4: var(--surface4-light);
         --surface-shadow: var(--surface-shadow-light);
         --shadow-strength: var(--shadow-strength-light);
-    }
 
-    :root[theme='light'] {
-        color-scheme: light;
+        --surface1-shadow: .5rem .5rem 1rem hsl(var(--brand-hue) 25% 85%),
+            -.5rem -.5rem 1rem hsl(var(--brand-hue) 25% 95%);
 
-        --brand: var(--brand-light);
-        --text1: var(--text1-light);
-        --text2: var(--text2-light);
-        --surface1: var(--surface1-light);
-        --surface2: var(--surface2-light);
-        --surface3: var(--surface3-light);
-        --surface4: var(--surface4-light);
-        --surface-shadow: var(--surface-shadow-light);
-        --shadow-strength: var(--shadow-strength-light);
+        --surface1-shadow-inset: inset .5rem .5rem 1rem hsl(var(--brand-hue) 25% 85%),
+            inset -.5rem -.5rem 1rem hsl(var(--brand-hue) 25% 95%);
     }
 
     :root[theme='dark'] {
@@ -117,6 +96,22 @@
         --surface4: var(--surface4-dark);
         --surface-shadow: var(--surface-shadow-dark);
         --shadow-strength: var(--shadow-strength-dark);
+
+        --surface1-shadow: 10px 10px 20px hsl(var(--brand-hue) 10% 5%),
+            -10px -10px 20px hsl(var(--brand-hue) 10% 15%);
+
+        --surface1-shadow-inset: inset 10px 10px 20px hsl(var(--brand-hue) 10% 5%),
+            inset -10px -10px 20px hsl(var(--brand-hue) 10% 15%);
+    }
+
+    .surface1 {
+        border: var(--border);
+        background-color: var(--surface1);
+        box-shadow: var(--surface1-shadow);
+    }
+
+    .surface1:active {
+        box-shadow: var(--surface1-shadow-inset);
     }
 
     html {
@@ -188,11 +183,11 @@
         scroll-margin-top: calc(4rem);
     }
 
-    a {
+    article a {
         transition: all .2s;
     }
 
-    a:hover {
+    article a:hover {
         color: var(--text1);
         text-decoration: underline;
     }
@@ -216,18 +211,21 @@
         border-radius: .6rem;
 
         border: var(--border);
-        box-shadow: var(--box-shadow);
+        box-shadow: var(--surface1-shadow);
     }
 
     blockquote {
-        border: var(--border);
-        border-left: .25rem solid var(--brand);
         background-color: var(--surface3);
+        border: var(--border);
+        box-shadow: var(--surface1-shadow);
+
+        border-left: .25rem solid var(--brand);
+        border-radius: .6rem;
+
         overflow: hidden;
         padding: 0 1rem;
-        color: var(--text1);
         margin: 1.25rem 0;
-        box-shadow: var(--box-shadow);
+        color: var(--text1);
     }
 
     blockquote>p {
@@ -236,6 +234,7 @@
 
 
     code {
+        border: var(--border);
         background-color: var(--surface3);
         border-radius: .25rem;
         padding: .1rem .25rem;
@@ -244,10 +243,5 @@
 
     .mask-image {
         mask-image: radial-gradient(circle, transparent, black);
-    }
-
-    .rad-shadow {
-        border: var(--border);
-        box-shadow: var(--box-shadow);
     }
 }
