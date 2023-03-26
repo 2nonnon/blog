@@ -13,7 +13,7 @@ interface tagProps {
 const Tag: React.FC<tagProps> = ({ tag }) => {
   return (
     <>
-      <span className='inline-block px-3 border border-[var(--surface4)] hover:bg-[var(--surface4)] hover:text-[var(--text1)] rounded-full transition-all'>{`#${tag}`}</span>
+      <span className='inline-block px-3 border rounded-full surface-sm'>{`#${tag}`}</span>
     </>
   )
 }

@@ -1,7 +1,10 @@
 import qrcode from 'qrcode-generator'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useRef, useState } from 'react'
+import Head from 'next/head'
+import type { GetStaticProps } from 'next'
 import Modal from '@/components/Modal'
+import type { LocaleType } from '@/pages/_app'
 
 const ErrorCorrectionLevel = {
   L: 'L(7%)',
@@ -84,8 +87,8 @@ const Panel = ({ formData, setFormData, generateQRCode, setModal }: PanelParams)
 
   return (
     <form className='max-w-full min-w-fit w-[500px]'>
-      <fieldset className='flex flex-col gap-1 p-2 relative border rounded border-neutral-900'>
-        <legend className='mx-auto'>QR Code Generator</legend>
+      <fieldset className='flex flex-col gap-1 p-4 relative border rounded border-current'>
+        <legend className='mx-auto p-2'>QR Code Generator</legend>
         <FormItem name='TypeNumber'>
           <select id='TypeNumber' name="TypeNumber" value={formData.typeNumber} onChange={(event) => {
             updateFormData({ typeNumber: +event.target.value as TypeNumber })
@@ -131,7 +134,7 @@ const Panel = ({ formData, setFormData, generateQRCode, setModal }: PanelParams)
             updateFormData({ content: event.target.value })
           }}></textarea>
         </FormItem>
-        <button className='border-2 rounded-md p-1' onClick={(event) => {
+        <button className='surface-sm rounded-md p-2' onClick={(event) => {
           event.preventDefault()
           generateQRCode()
         }}>Update</button>
@@ -140,7 +143,20 @@ const Panel = ({ formData, setFormData, generateQRCode, setModal }: PanelParams)
   )
 }
 
-const QrcodeGenerator = () => {
+const copies = {
+  en: {
+    title: 'Qrcode Generator',
+  },
+  zh: {
+    title: '二维码生成',
+  },
+}
+
+const QrcodeGenerator = ({
+  locale,
+}: {
+  locale: LocaleType
+}) => {
   const target = useRef<HTMLCanvasElement>(null)
   const [formData, setFormData] = useState<Fields>({
     typeNumber: 0,
@@ -150,6 +166,8 @@ const QrcodeGenerator = () => {
     cellSize: 10,
     multibyte: 'UTF-8',
   })
+
+  const curCopies = copies[locale]
 
   const generateQRCode = () => {
     if (target.current) {
@@ -175,8 +193,12 @@ const QrcodeGenerator = () => {
 
   return (
     <>
+      <Head>
+        <title>{curCopies.title}</title>
+      </Head>
+      <h1 className='hidden'>{curCopies.title}</h1>
       {modal ? <Modal><Confirm setModal={setModal} /></Modal> : null}
-      <div className='flex flex-col gap-4 items-center text-sm p-4'>
+      <div className='flex flex-col gap-4 items-center text-sm'>
         <Panel formData={formData} setFormData={setFormData} generateQRCode={generateQRCode} setModal={setModal}></Panel>
         <canvas ref={target} className="h-[200px] w-[200px]" width={200} height={200}></canvas>
       </div>
@@ -185,3 +207,11 @@ const QrcodeGenerator = () => {
 }
 
 export default QrcodeGenerator
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {
+      a: 1,
+    },
+  }
+}

@@ -1,9 +1,12 @@
 import { createContext, useContext } from 'react'
+import Head from 'next/head'
+import type { GetStaticProps } from 'next'
 import { checkWin, generateMine, handleClickBlock, handleClickMine, handleToggleFlag, initMineSweeper } from '@/components/minesweeper/helper'
 import type { Coordinate, IBlock } from '@/components/minesweeper/type'
 import { BlockType, GameState, Level } from '@/components/minesweeper/type'
 
 import useMineSweeper from '@/components/minesweeper/useMineSweeper'
+import type { LocaleType } from '@/pages/_app'
 
 const MineSweeperContext = createContext<ReturnType<typeof useMineSweeper> | null>(null)
 
@@ -58,51 +61,91 @@ const Block = ({ block, coordinate }: BlockParam) => {
 
   return (
     <>
-      <div className='h-5 w-5'>
+      <div className={`h-10 w-10 rounded surface-sm ${block.hidden ? '' : 'surface-sm__active'}`}>
         {block.hidden
           ? block.flag
-            ? <div className='grid place-content-center bg-gray-300 w-full h-full' onContextMenu={handleRightClick}>🚩</div>
-            : <div className='cursor-pointer bg-gray-300 w-full h-full' onClick={handleClick} onContextMenu={handleRightClick}></div>
-          : <div className='grid place-content-center bg-white w-full h-full'>{block.type === BlockType.BLOCK ? block.content > 0 ? block.content : '' : '💣'}</div>}
+            ? <div className='grid place-content-center w-full h-full' onContextMenu={handleRightClick}>🚩</div>
+            : <div className='cursor-pointer w-full h-full' onClick={handleClick} onContextMenu={handleRightClick}></div>
+          : <div className={`grid place-content-center w-full h-full text-[hsl(${block.content * 40},50%,50%)]`}>{block.type === BlockType.BLOCK ? block.content > 0 ? block.content : '' : '💣'}</div>}
       </div>
     </>
   )
 }
 
-const MineSweeper = () => {
+const copies = {
+  en: {
+    title: 'MineSweeper',
+    refresh: 'Refresh',
+    beginner: 'Beginner',
+    intermediate: 'Intermediate',
+    expert: 'Expert',
+  },
+  zh: {
+    title: '扫雷',
+    refresh: '刷新',
+    beginner: '初级',
+    intermediate: '中级',
+    expert: '高级',
+  },
+}
+
+const MineSweeper = ({
+  locale,
+}: {
+  locale: LocaleType
+}) => {
   const mineSweeperInfo = useMineSweeper({ level: Level.easy, state: GameState.PRE })
+  const curCopies = copies[locale]
 
   return (
     <>
+      <Head>
+        <title>{curCopies.title}</title>
+      </Head>
       <MineSweeperContext.Provider value={mineSweeperInfo}>
-        <div className='grid place-content-center min-h-full select-none p-10'>
+        <h1 className='hidden'>{curCopies.title}</h1>
+        <section className='grid place-content-center select-none'>
           <div>
-            <span>{mineSweeperInfo.gameState}</span>
-            <span onClick={() => {
-              mineSweeperInfo.setGameState(GameState.PRE)
-              mineSweeperInfo.setGameLevel(Level.easy)
-            }}>初级</span>
-            <span onClick={() => {
-              mineSweeperInfo.setGameState(GameState.PRE)
-              mineSweeperInfo.setGameLevel(Level.medieum)
-            }}>中级</span>
-            <span onClick={() => {
-              mineSweeperInfo.setGameState(GameState.PRE)
-              mineSweeperInfo.setGameLevel(Level.hard)
-            }}>高级</span>
-            <span onClick={() => {
-              mineSweeperInfo.setGameState(GameState.PRE)
-            }}>刷新</span>
+            <div className='flex gap-4 mt-10 mb-4'>
+              <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.easy ? 'surface-sm__active' : ''}`} onClick={() => {
+                mineSweeperInfo.setGameState(GameState.PRE)
+                mineSweeperInfo.setGameLevel(Level.easy)
+              }}>{curCopies.beginner}</span>
+              <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.medieum ? 'surface-sm__active' : ''}`} onClick={() => {
+                mineSweeperInfo.setGameState(GameState.PRE)
+                mineSweeperInfo.setGameLevel(Level.medieum)
+              }}>{curCopies.intermediate}</span>
+              <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.hard ? 'surface-sm__active' : ''}`} onClick={() => {
+                mineSweeperInfo.setGameState(GameState.PRE)
+                mineSweeperInfo.setGameLevel(Level.hard)
+              }}>{curCopies.expert}</span>
+              <span className='surface-sm py-1 px-3 rounded' onClick={() => {
+                mineSweeperInfo.setGameState(GameState.PRE)
+              }}>{curCopies.refresh}</span>
+            </div>
+            <div>
+              <span className='surface-sm surface-sm__active py-1 px-3 rounded'>🚩 {mineSweeperInfo.gameLevel.num - mineSweeperInfo.flagCount}</span>
+            </div>
           </div>
-          <div className={`grid grid-cols-[repeat(${mineSweeperInfo.gameLevel.size[1]},1fr)] gap-1 w-fit p-1 bg-gray-100`}>
-            {mineSweeperInfo.mineSweeper.map((row, y) => row.map((block, x) => {
-              return (<Block key={y * row.length + x} block={block} coordinate={[y, x]}></Block>)
-            }))}
+          <div className='overflow-auto -mx-6'>
+            <div className={`grid grid-cols-[repeat(${mineSweeperInfo.gameLevel.size[1]},1fr)] gap-2 w-fit p-6`}>
+              {mineSweeperInfo.mineSweeper.map((row, y) => row.map((block, x) => {
+                return (<Block key={y * row.length + x} block={block} coordinate={[y, x]}></Block>)
+              }))}
+            </div>
           </div>
-        </div>
+        </section>
       </MineSweeperContext.Provider>
     </>
   )
 }
 
 export default MineSweeper
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {
+      a: 1,
+    },
+  }
+}

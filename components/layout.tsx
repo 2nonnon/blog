@@ -3,9 +3,10 @@ import type { LinkProps } from 'next/link'
 import Link from 'next/link'
 import { Icon } from '@iconify-icon/react'
 import type { CSSProperties } from 'react'
+import React, { memo, useCallback } from 'react'
+
 import { Inter } from '@next/font/google'
 import { useRouter } from 'next/router'
-import React from 'react'
 
 import Snow from './backgrounds/Snow'
 import { Theme, useTheme } from '@/hooks/useTheme'
@@ -22,14 +23,14 @@ type NavItemProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & LinkProps & 
   icon: string
 }
 
-const NavItem = ({ name, title, href, icon, locale, target = '_self', onClick }: NavItemProps) => {
+const NavItem = memo(({ name, title, href, icon, locale, target = '_self', onClick }: NavItemProps) => {
   return (
-    <Link href={href} title={title} className="flex surface1 hover:no-underline p-1 rounded md:px-3" locale={locale} target={target} onClick={onClick}>
+    <Link href={href} title={title} className="flex surface-sm hover:no-underline p-1 rounded md:px-3" locale={locale} target={target} onClick={onClick}>
       <span className='hidden md:inline-block'>{name}</span>
       <Icon className='md:hidden' width={30} height={30} icon={icon} />
     </Link>
   )
-}
+})
 
 const copies = {
   en: {
@@ -57,10 +58,11 @@ export default function Layout({ children }: {
 }) {
   const [theme, setTheme] = useTheme(Theme.DARK)
 
-  const toggleTheme = () => {
+  const handleToggleTheme = useCallback<NavItemProps['onClick']>((e) => {
+    e.preventDefault()
     const next = theme === Theme.LIGTH ? Theme.DARK : Theme.LIGTH
     setTheme(next)
-  }
+  }, [theme])
 
   const router = useRouter()
 
@@ -82,10 +84,7 @@ export default function Layout({ children }: {
       name: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
       href: '/',
       icon: theme === Theme.LIGTH ? 'ph:sun' : 'ph:moon',
-      onClick: (e) => {
-        e.preventDefault()
-        toggleTheme()
-      },
+      onClick: handleToggleTheme,
     },
     {
       title: curCopies.lang,
@@ -135,7 +134,7 @@ export default function Layout({ children }: {
         <meta name="twitter:card" content="summary_large_image" /> */}
       </Head>
       <header>
-        <div className='flex justify-between items-center h-16 px-6 box-border max-w-screen-xl mx-auto'>
+        <div className='flex justify-between items-center h-20 px-6 box-border max-w-screen-xl mx-auto'>
           <NavItem {...home}></NavItem>
 
           <nav className='flex items-center gap-4'>

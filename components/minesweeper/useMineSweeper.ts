@@ -28,6 +28,7 @@ const useMineSweeper = ({ level, state }: mineSweeperOption) => {
     const [row, col] = gameLevel.size
     const init = Array.from({ length: row }).map(_ => Array.from({ length: col }).map(_ => ({ ...block })))
     setMineSweeper(init)
+    setFlagCount(0)
   }, [gameLevel, gameState])
 
   return { gameState, setGameState, mineSweeper, setMineSweeper, flagCount, setFlagCount, gameLevel, setGameLevel }

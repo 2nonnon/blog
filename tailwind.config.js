@@ -6,7 +6,7 @@ module.exports = {
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
   ],
-  safelist: ['grid-cols-[repeat(9,1fr)]', 'grid-cols-[repeat(16,1fr)]', 'grid-cols-[repeat(32,1fr)]'],
+  safelist: ['grid-cols-[repeat(9,1fr)]', 'grid-cols-[repeat(16,1fr)]', 'grid-cols-[repeat(32,1fr)]', 'text-[hsl(40,50%,50%)]', 'text-[hsl(80,50%,50%)]', 'text-[hsl(120,50%,50%)]', 'text-[hsl(160,50%,50%)]', 'text-[hsl(200,50%,50%)]', 'text-[hsl(240,50%,50%)]', 'text-[hsl(280,50%,50%)]', 'text-[hsl(320,50%,50%)]'],
   theme: {
     extend: {
       animation: {
