@@ -47,7 +47,7 @@ export default function Posts({
       <section className='max-w-screen-md mx-auto'>
         <ul className='flex flex-row gap-6 flex-1 justify-center items-stretch my-10'>
           {toys.map(item => (
-            <li className='surface-md bg-[var(--surface1)] rounded-lg w-48'>
+            <li key={item.link} className='surface-md bg-[var(--surface1)] rounded-lg w-48'>
               <Link className='text-lg font-medium flex flex-col items-center gap-2 rounded-lg py-4 px-6 h-full text-center' href={item.link}>
                 <Icon className='text-[7rem]' icon={item.icon} />
                 <span>{item.name}</span>
