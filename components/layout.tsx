@@ -12,6 +12,7 @@ import Snow from './backgrounds/Snow'
 import { Theme, useTheme } from '@/hooks/useTheme'
 import { usePageLoading } from '@/hooks/usePageLoading'
 import type { LocaleType } from '@/pages/_app'
+import { useScrollTop } from '@/hooks/useScrollTop'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -57,6 +58,8 @@ export default function Layout({ children }: {
   children: React.ReactNode
 }) {
   const [theme, setTheme] = useTheme(Theme.DARK)
+
+  const scrollTop = useScrollTop()
 
   const handleToggleTheme = useCallback<NavItemProps['onClick']>((e) => {
     e.preventDefault()
@@ -147,7 +150,14 @@ export default function Layout({ children }: {
       </main>
       <Snow theme={theme}></Snow>
       {
-        pageLoading && <section className={'z-[99] fixed top-0 left-0 right-0 bottom-0 backdrop-blur-md flex items-center justify-center'}>
+        scrollTop > 2333
+        && <div onClick={() => { window.scrollTo({ top: 0 }) }} className={'z-[9] fixed right-2 bottom-12 flex items-center justify-center w-12 h-12 rounded-full surface-sm text-3xl cursor-pointer'}>
+          <Icon icon="material-symbols:keyboard-double-arrow-up-rounded" />
+        </div>
+      }
+      {
+        pageLoading
+        && <section className={'z-[99] fixed top-0 left-0 right-0 bottom-0 backdrop-blur-md flex items-center justify-center'}>
           <div className='text-4xl font-extrabold text-[var(--text1)]'><span>{curCopies.loading } </span>{
             Array.from({ length: 3 }).map((_, i) => (<span className='inline-block animate-bounce' key={i} style={{ '--i': `${-i * 0.2}s` } as CSSProperties}>.</span>))
           }</div>
