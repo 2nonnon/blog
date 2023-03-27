@@ -79,6 +79,8 @@ const copies = {
     beginner: 'Beginner',
     intermediate: 'Intermediate',
     expert: 'Expert',
+    win: 'You win!',
+    fail: 'You lost!',
   },
   zh: {
     title: '扫雷',
@@ -86,6 +88,8 @@ const copies = {
     beginner: '初级',
     intermediate: '中级',
     expert: '高级',
+    win: '你赢了!',
+    fail: '你输了!',
   },
 }
 
@@ -123,8 +127,9 @@ const MineSweeper = ({
                 mineSweeperInfo.setGameState(GameState.PRE)
               }}>{curCopies.refresh}</span>
             </div>
-            <div>
+            <div className='flex gap-4'>
               <span className='surface-sm surface-sm__active py-1 px-3 rounded'>🚩 {mineSweeperInfo.gameLevel.num - mineSweeperInfo.flagCount}</span>
+              {mineSweeperInfo.gameState === GameState.WIN || mineSweeperInfo.gameState === GameState.FAIL ? <span className='surface-sm surface-sm__active py-1 px-3 rounded'>{mineSweeperInfo.gameState === GameState.WIN ? curCopies.win : mineSweeperInfo.gameState === GameState.FAIL ? curCopies.fail : ''}</span> : null}
             </div>
           </div>
           <div className='overflow-auto -mx-6'>

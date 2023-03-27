@@ -56,7 +56,7 @@
         --brand-light: hsl(var(--brand-hue) var(--brand-saturation) var(--brand-lightness));
         --text1-light: hsl(var(--brand-hue) var(--brand-saturation) 10%);
         --text2-light: hsl(var(--brand-hue) 30% 20%);
-        --surface0-light: hsl(var(--brand-hue) 25% 85%);
+        --surface0-light: hsl(var(--brand-hue) 25% 80%);
         --surface1-light: hsl(var(--brand-hue) 25% 90%);
         --surface2-light: hsl(var(--brand-hue) 20% 99%);
         --surface3-light: hsl(var(--brand-hue) 20% 92%);
