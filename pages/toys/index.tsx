@@ -10,12 +10,14 @@ const copies = {
     pageTitle: 'Blog',
     qrcode: 'QRCode Generate',
     mine: 'MineSweeper',
+    color: 'Color',
   },
   zh: {
     title: '玩具列表',
     pageTitle: '文章',
     qrcode: '二维码生成',
     mine: '扫雷',
+    color: '色彩',
   },
 }
 
@@ -37,6 +39,11 @@ export default function Posts({
       icon: 'game-icons:land-mine',
       link: '/toys/minesweeper',
     },
+    {
+      name: curCopies.color,
+      icon: 'ic:outline-color-lens',
+      link: '/toys/color',
+    },
   ]
 
   return (
@@ -44,10 +51,10 @@ export default function Posts({
       <Head>
         <title>{curCopies.title}</title>
       </Head>
-      <section className='max-w-screen-md mx-auto'>
-        <ul className='flex flex-row gap-6 flex-1 justify-center items-stretch my-10'>
+      <section className='max-w-screen-lg mx-auto'>
+        <ul className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 place-items-stretch gap-8 my-10'>
           {toys.map(item => (
-            <li key={item.link} className='surface-md bg-[var(--surface1)] rounded-lg w-48'>
+            <li key={item.link} className='surface-md bg-[var(--surface1)] rounded-lg'>
               <Link className='text-lg font-medium flex flex-col items-center gap-2 rounded-lg py-4 px-6 h-full text-center' href={item.link}>
                 <Icon className='text-[7rem]' icon={item.icon} />
                 <span>{item.name}</span>
