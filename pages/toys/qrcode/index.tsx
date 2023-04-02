@@ -198,7 +198,7 @@ const QrcodeGenerator = ({
       </Head>
       <h1 className='hidden'>{curCopies.title}</h1>
       {modal ? <Modal><Confirm setModal={setModal} /></Modal> : null}
-      <div className='flex flex-col gap-4 items-center text-sm'>
+      <div className='flex flex-col gap-4 items-center text-sm w-full'>
         <Panel formData={formData} setFormData={setFormData} generateQRCode={generateQRCode} setModal={setModal}></Panel>
         <canvas ref={target} className="h-[200px] w-[200px]" width={200} height={200}></canvas>
       </div>

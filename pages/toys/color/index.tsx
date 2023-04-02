@@ -92,7 +92,8 @@ const Color = ({
       <Head>
         <title>{curCopies.title}</title>
       </Head>
-      <section className='max-w-screen-lg mx-auto py-6'>
+      <h1 className='hidden'>{curCopies.title}</h1>
+      <section className='max-w-screen-lg mx-auto py-6 w-full'>
         <div className='flex flex-wrap gap-4 mb-6'>
           <div className='flex flex-col gap-2'>
             <div className='flex gap-2'>

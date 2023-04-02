@@ -24,13 +24,16 @@ export default function Posts({
   allPostsData: PostBaseData[]
   locale: LocaleType
 }) {
+  const curCopies = copies[locale]
+
   return (
     <>
       <Head>
-        <title>{copies[locale].title}</title>
+        <title>{curCopies.title}</title>
       </Head>
-      <section className='max-w-screen-md mx-auto'>
-        <h1 className='text-4xl font-extrabold my-8'>{copies[locale].pageTitle}</h1>
+      <h1 className='hidden'>{curCopies.title}</h1>
+      <section className='max-w-screen-md mx-auto w-full'>
+        <h1 className='text-4xl font-extrabold my-8'>{curCopies.pageTitle}</h1>
         <ul className='flex flex-col gap-4'>
           {allPostsData.map(({ id, date, title }) => (
             <li key={id} className="surface-md rounded-xl">

@@ -58,7 +58,7 @@ export default function Posts({
       <Head>
         <title>{curCopies.title}</title>
       </Head>
-      <section className='max-w-screen-lg mx-auto'>
+      <section className='max-w-screen-lg mx-auto w-full'>
         <ul className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 place-items-stretch gap-8 my-10'>
           {toys.map(item => (
             <li key={item.link} className='surface-md bg-[var(--surface1)] rounded-lg'>

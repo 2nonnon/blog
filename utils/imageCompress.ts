@@ -1,5 +1,11 @@
-type ImageType = 'image/png' | 'image/jpeg' | 'image/webp'
-export const imageCompress = async (source: File, quality = 0.25) => {
+export type ImageType = 'image/png' | 'image/jpeg' | 'image/webp'
+
+interface CompressOptions {
+  quality?: number
+  width?: number
+}
+
+export const imageCompress = async (source: File, { quality = 0.25, width }: CompressOptions) => {
   if (source.type !== 'image/png' && source.type !== 'image/jpeg' && source.type !== 'image/webp')
     throw new Error('TypeError: file type should be \'image/png\' | \'image/jpeg\' | \'image/webp\'.')
 
@@ -15,17 +21,17 @@ export const imageCompress = async (source: File, quality = 0.25) => {
     img.onload = resolve
   })
   const canvas = document.createElement('canvas')
-  let width = img.naturalWidth
-  let height = img.naturalHeight
-  if (type === 'image/png') {
-    const multi = Math.sqrt(1 / quality)
-    width = Math.round(width / multi)
-    height = Math.round(height / multi)
+  let naturalWidth = img.naturalWidth
+  let naturalHeight = img.naturalHeight
+  if (width) {
+    const multi = naturalWidth / width
+    naturalWidth = Math.round(naturalWidth / multi)
+    naturalHeight = Math.round(naturalHeight / multi)
   }
-  canvas.width = width
-  canvas.height = height
+  canvas.width = naturalWidth
+  canvas.height = naturalHeight
   const context = canvas.getContext('2d')
-  context?.drawImage(img, 0, 0, width, height)
+  context?.drawImage(img, 0, 0, naturalWidth, naturalHeight)
   const result = await new Promise<File>((resolve) => {
     canvas.toBlob(
       (blob) => {

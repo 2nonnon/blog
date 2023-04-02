@@ -145,7 +145,7 @@ export default function Layout({ children }: {
           </nav>
         </div>
       </header>
-      <main className='px-6 max-w-screen-xl box-border w-full mx-auto overflow-hidden flex-1'>
+      <main className='px-6 max-w-screen-xl box-border w-full mx-auto overflow-hidden flex-1 flex flex-col'>
         {children}
       </main>
       <Snow theme={theme}></Snow>

@@ -48,7 +48,7 @@ export default function Post({
       <Head>
         <title>{postData.title}</title>
       </Head>
-      <section className='max-w-screen-lg mx-auto'>
+      <section className='max-w-screen-lg mx-auto w-full'>
         <article>
           <h1 className='text-4xl font-extrabold my-8'>{postData.title}</h1>
           <div className='flex gap-2'>

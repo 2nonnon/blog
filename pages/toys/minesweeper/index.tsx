@@ -108,9 +108,9 @@ const MineSweeper = ({
       </Head>
       <MineSweeperContext.Provider value={mineSweeperInfo}>
         <h1 className='hidden'>{curCopies.title}</h1>
-        <section className='grid place-content-center select-none'>
+        <section className='grid place-content-center select-none w-full'>
           <div>
-            <div className='flex gap-4 mt-10 mb-4'>
+            <div className='flex gap-4 mt-10 mb-4 flex-wrap'>
               <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.easy ? 'surface-sm__active' : ''}`} onClick={() => {
                 mineSweeperInfo.setGameState(GameState.PRE)
                 mineSweeperInfo.setGameLevel(Level.easy)
