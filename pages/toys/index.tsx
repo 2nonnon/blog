@@ -7,17 +7,19 @@ import type { LocaleType } from '../_app'
 const copies = {
   en: {
     title: 'Toy List',
-    pageTitle: 'Blog',
+    pageTitle: 'Toy',
     qrcode: 'QRCode Generate',
     mine: 'MineSweeper',
     color: 'Color',
+    image: 'Image',
   },
   zh: {
     title: '玩具列表',
-    pageTitle: '文章',
+    pageTitle: '玩具',
     qrcode: '二维码生成',
     mine: '扫雷',
     color: '色彩',
+    image: '图片处理',
   },
 }
 
@@ -43,6 +45,11 @@ export default function Posts({
       name: curCopies.color,
       icon: 'ic:outline-color-lens',
       link: '/toys/color',
+    },
+    {
+      name: curCopies.image,
+      icon: 'material-symbols:image-outline-rounded',
+      link: '/toys/image',
     },
   ]
 
