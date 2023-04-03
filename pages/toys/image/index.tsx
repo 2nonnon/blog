@@ -1,8 +1,11 @@
 import Head from 'next/head'
 import type { GetStaticProps } from 'next'
-import { useEffect, useState } from 'react'
+import type { ChangeEventHandler } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
 // import NDialog from '@/components/Dialog'
 import { Icon } from '@iconify-icon/react'
+import style from './_index.module.css'
 import type { LocaleType } from '@/pages/_app'
 import { imageCompress } from '@/utils/imageCompress'
 
@@ -24,6 +27,39 @@ const NUpload = ({ onUpload, children, accept }: NUploadProps) => {
         <Icon icon="uil:image-upload" className='text-xl' />
         {children}
       </label>
+    </section>
+  </>)
+}
+
+interface NCompareProps {
+  topSrc?: string
+  bottomSrc: string
+}
+
+const NCompare = ({ topSrc, bottomSrc }: NCompareProps) => {
+  const [range, setRange] = useState(0)
+  const imgRef = useRef<HTMLImageElement>(null)
+  const rangeRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (imgRef.current && rangeRef.current) {
+      const { height } = imgRef.current.getBoundingClientRect()
+
+      rangeRef.current.style.cssText = `--height: ${height}px;`
+    }
+  }, [imgRef, rangeRef])
+
+  const handleChangeRange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setRange(+e.target.value)
+  }
+
+  const clipPath = `inset(0 0 0 ${range / 10}%)`
+
+  return (<>
+    <section ref={rangeRef} className='w-full relative'>
+      <img className='w-full' src={bottomSrc} alt="" />
+      {topSrc && <img ref={imgRef} style={{ clipPath }} className='absolute inset-0' src={topSrc} alt="" />}
+      {topSrc && <input className={style.slider} type='range' min={0} max={1000} value={range} onChange={handleChangeRange}></input>}
     </section>
   </>)
 }
@@ -73,17 +109,14 @@ const ImagePage = ({
   const [targetInfo, setTargetInfo] = useState<ImageInfo>(null)
   const [quality, setQuality] = useState(1)
   const [width, setWidth] = useState<number>(0)
-  const [src, setSrc] = useState('')
 
   useEffect(() => {
     if (origin) {
       getImageInfo(origin).then((res) => {
         setOriginInfo(res)
-        setSrc(res.src)
       })
     }
     else {
-      setSrc('')
       setOrigin(null)
     }
     setTargetInfo(null)
@@ -97,8 +130,8 @@ const ImagePage = ({
       <section className='max-w-screen-lg mx-auto w-full'>
         <div className='flex flex-col-reverse py-8 gap-6 md:flex-row'>
           <div className='surface-sm__inert flex-1 rounded-md self-start overflow-hidden'>
-            {src
-              ? <img className='w-full' src={src} alt=''></img>
+            {originInfo
+              ? <NCompare bottomSrc={originInfo.src} topSrc={targetInfo?.src}></NCompare>
               : <div className='w-full h-60 flex'><Icon className='m-auto text-9xl' icon="material-symbols:image-outline-rounded" /></div>}
           </div>
           <div className='flex flex-col gap-8 md:w-60'>
@@ -125,7 +158,6 @@ const ImagePage = ({
                 const res = await imageCompress(origin, { quality, width })
                 const info = await getImageInfo(res)
                 setTargetInfo(info)
-                setSrc(info.src)
               }} aria-label="transform image">
                 转换
               </button>
