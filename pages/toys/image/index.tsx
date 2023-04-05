@@ -21,7 +21,7 @@ const NUpload = ({ onUpload, children, accept }: NUploadProps) => {
       <label className='flex items-center py-2 px-4 gap-2 cursor-pointer'>
         <input type="file" name='file' accept={accept} className='hidden' onChange={(e) => {
           const file = (e.nativeEvent.target as HTMLInputElement).files[0]
-          console.log(file)
+          // console.log(file)
           onUpload?.(file)
         }}/>
         <Icon icon="uil:image-upload" className='text-xl' />
@@ -47,7 +47,7 @@ const NCompare = ({ topSrc, bottomSrc }: NCompareProps) => {
 
       rangeRef.current.style.cssText = `--height: ${height}px;`
     }
-  }, [imgRef, rangeRef])
+  }, [imgRef.current, rangeRef.current])
 
   const handleChangeRange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setRange(+e.target.value)
