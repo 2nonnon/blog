@@ -111,19 +111,19 @@ const MineSweeper = ({
         <section className='grid place-content-center select-none w-full'>
           <div>
             <div className='flex gap-4 mt-10 mb-4 flex-wrap'>
-              <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.easy ? 'surface-sm__active' : ''}`} onClick={() => {
+              <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.easy ? 'surface-sm__active' : 'cursor-pointer'}`} onClick={() => {
                 mineSweeperInfo.setGameState(GameState.PRE)
                 mineSweeperInfo.setGameLevel(Level.easy)
               }}>{curCopies.beginner}</span>
-              <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.medieum ? 'surface-sm__active' : ''}`} onClick={() => {
+              <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.medieum ? 'surface-sm__active' : 'cursor-pointer'}`} onClick={() => {
                 mineSweeperInfo.setGameState(GameState.PRE)
                 mineSweeperInfo.setGameLevel(Level.medieum)
               }}>{curCopies.intermediate}</span>
-              <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.hard ? 'surface-sm__active' : ''}`} onClick={() => {
+              <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.hard ? 'surface-sm__active' : 'cursor-pointer'}`} onClick={() => {
                 mineSweeperInfo.setGameState(GameState.PRE)
                 mineSweeperInfo.setGameLevel(Level.hard)
               }}>{curCopies.expert}</span>
-              <span className='surface-sm py-1 px-3 rounded' onClick={() => {
+              <span className='surface-sm py-1 px-3 rounded cursor-pointer' onClick={() => {
                 mineSweeperInfo.setGameState(GameState.PRE)
               }}>{curCopies.refresh}</span>
             </div>

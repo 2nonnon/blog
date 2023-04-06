@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 
 // import NDialog from '@/components/Dialog'
 import { Icon } from '@iconify-icon/react'
-import style from './_index.module.css'
+import style from './.module.css'
 import type { LocaleType } from '@/pages/_app'
 import { imageCompress } from '@/utils/imageCompress'
 
