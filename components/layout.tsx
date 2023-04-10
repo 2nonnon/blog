@@ -28,7 +28,7 @@ const NavItem = memo(({ name, title, href, icon, locale, target = '_self', onCli
   return (
     <Link href={href} title={title} className="flex surface-sm hover:no-underline p-1 rounded md:px-3" locale={locale} target={target} onClick={onClick}>
       <span className='hidden md:inline-block'>{name}</span>
-      <Icon className='md:hidden' width={30} height={30} icon={icon} />
+      <Icon className='md:hidden' width={30} height={30} icon={icon} alt={name} name={name} />
     </Link>
   )
 })
@@ -42,6 +42,8 @@ const copies = {
     light: 'Light',
     lang: 'English',
     toy: 'Toy',
+    globalNav: 'Global Navigation',
+    toTop: 'To Top',
   },
   zh: {
     loading: '加载中',
@@ -51,6 +53,8 @@ const copies = {
     light: '日间',
     lang: '简体中文',
     toy: '玩具',
+    globalNav: '全局导航',
+    toTop: '回到顶部',
   },
 }
 
@@ -74,14 +78,13 @@ export default function Layout({ children }: {
 
   const curCopies = copies[currentLocale]
 
-  const home = {
-    title: curCopies.logo,
-    name: curCopies.logo,
-    href: '/',
-    icon: 'material-symbols:home-outline-rounded',
-  }
-
   const navList: NavItemProps[] = [
+    {
+      title: curCopies.logo,
+      name: curCopies.logo,
+      href: '/',
+      icon: 'material-symbols:home-outline-rounded',
+    },
     {
       title: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
       name: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
@@ -137,13 +140,11 @@ export default function Layout({ children }: {
         <meta name="twitter:card" content="summary_large_image" /> */}
       </Head>
       <header>
-        <div className='flex justify-between items-center h-20 px-6 box-border max-w-screen-xl mx-auto'>
-          <NavItem {...home}></NavItem>
-
-          <nav className='flex items-center gap-4'>
-            {navList.map(item => (<NavItem key={item.name} {...item}></NavItem>))}
-          </nav>
-        </div>
+        <nav className='flex items-center h-20 px-6 box-border max-w-screen-xl mx-auto' aria-label={curCopies.globalNav}>
+          <ul role="list" className='w-full flex items-center gap-4 justify-end'>
+            {navList.map(item => (<li key={item.name} className='first:mr-auto'><NavItem {...item}></NavItem></li>))}
+          </ul>
+        </nav>
       </header>
       <main className='px-6 max-w-screen-xl box-border w-full mx-auto overflow-hidden flex-1 flex flex-col'>
         {children}
@@ -151,9 +152,9 @@ export default function Layout({ children }: {
       <Snow theme={theme}></Snow>
       {
         scrollTop > 2333
-        && <div onClick={() => { window.scrollTo({ top: 0 }) }} className={'z-[9] fixed right-2 bottom-12 flex items-center justify-center w-12 h-12 rounded-full surface-sm text-3xl cursor-pointer'}>
-          <Icon icon="material-symbols:keyboard-double-arrow-up-rounded" />
-        </div>
+        && <a href='#' title={curCopies.toTop} className={'z-[9] fixed right-2 bottom-12 flex items-center justify-center w-12 h-12 rounded-full surface-sm text-3xl cursor-pointer'}>
+          <Icon icon="material-symbols:keyboard-double-arrow-up-rounded" name={curCopies.toTop} alt={curCopies.toTop} />
+        </a>
       }
       {
         pageLoading
