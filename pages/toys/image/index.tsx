@@ -143,7 +143,7 @@ const ImagePage = ({
       })
     }
     else {
-      setOrigin(null)
+      setOriginInfo(null)
     }
     setTargetInfo(null)
   }, [origin])
