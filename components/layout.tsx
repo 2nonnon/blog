@@ -5,7 +5,7 @@ import { Icon } from '@iconify-icon/react'
 import type { CSSProperties } from 'react'
 import React, { memo, useCallback } from 'react'
 
-import { Inter } from '@next/font/google'
+import { Inter } from 'next/font/google'
 import { useRouter } from 'next/router'
 
 import Snow from './backgrounds/Snow'

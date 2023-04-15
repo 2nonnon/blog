@@ -6,7 +6,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@next/font": "^13.1.6",
     "@types/offscreencanvas": "^2019.7.0",
     "date-fns": "^2.29.3",
     "gray-matter": "^4.0.3",
