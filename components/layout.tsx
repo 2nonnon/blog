@@ -11,8 +11,8 @@ import { useRouter } from 'next/router'
 import Snow from './backgrounds/Snow'
 import { Theme, useTheme } from '@/hooks/useTheme'
 import { usePageLoading } from '@/hooks/usePageLoading'
-import type { LocaleType } from '@/pages/_app'
 import { useScrollTop } from '@/hooks/useScrollTop'
+import type { Dictionary, LocaleType } from '@/dictionaries'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -33,33 +33,9 @@ const NavItem = memo(({ name, title, href, icon, locale, target = '_self', onCli
   )
 })
 
-const copies = {
-  en: {
-    loading: 'Loading',
-    blog: 'Blog',
-    logo: 'Home',
-    dark: 'Dark',
-    light: 'Light',
-    lang: 'English',
-    toy: 'Toy',
-    globalNav: 'Global Navigation',
-    toTop: 'To Top',
-  },
-  zh: {
-    loading: '加载中',
-    blog: '文章',
-    logo: '首页',
-    dark: '夜间',
-    light: '日间',
-    lang: '简体中文',
-    toy: '玩具',
-    globalNav: '全局导航',
-    toTop: '回到顶部',
-  },
-}
-
-export default function Layout({ children }: {
+export default function Layout({ children, dictionary }: {
   children: React.ReactNode
+  dictionary: Dictionary
 }) {
   const [theme, setTheme] = useTheme(Theme.DARK)
 
@@ -76,38 +52,38 @@ export default function Layout({ children }: {
   const currentLocale = router.locale as LocaleType
   const nextLocale = currentLocale === 'en' ? 'zh' : 'en'
 
-  const curCopies = copies[currentLocale]
+  const copies = dictionary.layout
 
   const navList: NavItemProps[] = [
     {
-      title: curCopies.logo,
-      name: curCopies.logo,
+      title: copies.logo,
+      name: copies.logo,
       href: '/',
       icon: 'material-symbols:home-outline-rounded',
     },
     {
-      title: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
-      name: theme === Theme.LIGTH ? curCopies.light : curCopies.dark,
+      title: theme === Theme.LIGTH ? copies.light : copies.dark,
+      name: theme === Theme.LIGTH ? copies.light : copies.dark,
       href: '/',
       icon: theme === Theme.LIGTH ? 'ph:sun' : 'ph:moon',
       onClick: handleToggleTheme,
     },
     {
-      title: curCopies.lang,
-      name: curCopies.lang,
+      title: copies.lang,
+      name: copies.lang,
       href: router.asPath,
       locale: nextLocale,
       icon: currentLocale === 'en' ? 'icon-park-outline:eagle' : 'icon-park-outline:rabbit',
     },
     {
-      title: curCopies.blog,
-      name: curCopies.blog,
+      title: copies.blog,
+      name: copies.blog,
       href: '/posts',
       icon: 'ri:article-line',
     },
     {
-      title: curCopies.toy,
-      name: curCopies.toy,
+      title: copies.toy,
+      name: copies.toy,
       href: '/toys',
       icon: 'tabler:horse-toy',
     },
@@ -140,7 +116,7 @@ export default function Layout({ children }: {
         <meta name="twitter:card" content="summary_large_image" /> */}
       </Head>
       <header>
-        <nav className='flex items-center h-20 px-6 box-border max-w-screen-xl mx-auto' aria-label={curCopies.globalNav}>
+        <nav className='flex items-center h-20 px-6 box-border max-w-screen-xl mx-auto' aria-label={copies.globalNav}>
           <ul role="list" className='w-full flex items-center gap-4 justify-end'>
             {navList.map(item => (<li key={item.name} className='first:mr-auto'><NavItem {...item}></NavItem></li>))}
           </ul>
@@ -152,14 +128,14 @@ export default function Layout({ children }: {
       <Snow theme={theme}></Snow>
       {
         scrollTop > 2333
-        && <a href='#' title={curCopies.toTop} className={'z-[9] fixed right-2 bottom-12 flex items-center justify-center w-12 h-12 rounded-full surface-sm text-3xl cursor-pointer'}>
-          <Icon icon="material-symbols:keyboard-double-arrow-up-rounded" name={curCopies.toTop} alt={curCopies.toTop} />
+        && <a href='#' title={copies.toTop} className={'z-[9] fixed right-2 bottom-12 flex items-center justify-center w-12 h-12 rounded-full surface-sm text-3xl cursor-pointer'}>
+          <Icon icon="material-symbols:keyboard-double-arrow-up-rounded" name={copies.toTop} alt={copies.toTop} />
         </a>
       }
       {
         pageLoading
         && <section className={'z-[99] fixed top-0 left-0 right-0 bottom-0 backdrop-blur-md flex items-center justify-center'}>
-          <div className='text-4xl font-extrabold text-[var(--text1)]'><span>{curCopies.loading } </span>{
+          <div className='text-4xl font-extrabold text-[var(--text1)]'><span>{copies.loading } </span>{
             Array.from({ length: 3 }).map((_, i) => (<span className='inline-block animate-bounce' key={i} style={{ '--i': `${-i * 0.2}s` } as CSSProperties}>.</span>))
           }</div>
         </section>

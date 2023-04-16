@@ -2,26 +2,15 @@ import Head from 'next/head'
 import type { GetStaticProps } from 'next'
 import type { ChangeEventHandler } from 'react'
 import { useState } from 'react'
-import type { LocaleType } from '@/pages/_app'
 import { HSLToRGB, HSVToRGB, HexToRGB, RGBToHSL, RGBToHSV, RGBToHex } from '@/utils/color'
+import type { Dictionary, LocaleType } from '@/dictionaries'
+import { getDictionary } from '@/dictionaries'
 
-const copies = {
-  en: {
-    title: 'Color',
-  },
-  zh: {
-    title: '色彩',
-  },
-}
-
-const Color = ({
-  locale,
-}: {
-  locale: LocaleType
-}) => {
+const Color = ({ dictionary }: { locale: LocaleType
+  dictionary: Dictionary }) => {
   const [rgb, setRGB] = useState({ R: 0, G: 0, B: 0 })
 
-  const curCopies = copies[locale]
+  const copies = dictionary.color
 
   const hsl = RGBToHSL(rgb.R, rgb.G, rgb.B)
   const hsv = RGBToHSV(rgb.R, rgb.G, rgb.B)
@@ -90,9 +79,9 @@ const Color = ({
   return (
     <>
       <Head>
-        <title>{curCopies.title}</title>
+        <title>{copies.title}</title>
       </Head>
-      <h1 className='hidden'>{curCopies.title}</h1>
+      <h1 className='hidden'>{copies.title}</h1>
       <section className='max-w-screen-lg mx-auto py-6 w-full'>
         <div className='flex flex-wrap gap-4 mb-6'>
           <div className='flex flex-col gap-2'>
@@ -160,10 +149,13 @@ const Color = ({
 
 export default Color
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const dictionary = await getDictionary(locale as LocaleType)
+
   return {
     props: {
-      a: 1,
+      locale,
+      dictionary,
     },
   }
 }

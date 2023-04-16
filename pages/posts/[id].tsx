@@ -1,10 +1,11 @@
 import Head from 'next/head'
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
-import type { LocaleType } from '../_app'
 import type { PostData } from '@/lib/posts'
 import { getAllPostIds, getPostData } from '@/lib/posts'
 import Date from '@/components/date'
+import type { Dictionary, LocaleType } from '@/dictionaries'
+import { getDictionary } from '@/dictionaries'
 
 interface tagProps {
   tag: string
@@ -18,29 +19,16 @@ const Tag: React.FC<tagProps> = ({ tag }) => {
   )
 }
 
-const copies = {
-  en: {
-    date: 'Created: ',
-    update: 'Updated: ',
-    author: 'Author: ',
-    translator: 'Translator: ',
-  },
-  zh: {
-    date: '创建时间：',
-    update: '更新时间：',
-    author: '作者：',
-    translator: '译者：',
-  },
-}
-
 export default function Post({
   postData,
   locale,
+  dictionary,
 }: {
   postData: PostData
   locale: LocaleType
+  dictionary: Dictionary
 }) {
-  const curCopies = copies[locale]
+  const copies = dictionary.post
   const tags = postData.tags ? postData.tags.split(' ') : []
 
   return (
@@ -55,10 +43,10 @@ export default function Post({
             {tags.map(tag => <Tag key={tag} tag={tag}></Tag>)}
           </div>
           <div className='opacity-80 flex gap-x-4 gap-y-1 flex-wrap my-3'>
-            <span><span>{curCopies.date}</span><Date dateString={postData.date} locale={locale} /></span>
-            <span><span>{curCopies.update}</span><Date dateString={postData.update} locale={locale} /></span>
-            <span><span>{curCopies.author}</span><span>{postData.author}</span></span>
-            {postData.translator ? <span><span>{curCopies.translator}</span><span>{postData.translator}</span></span> : null}
+            <span><span>{copies.date}</span><Date dateString={postData.date} locale={locale} /></span>
+            <span><span>{copies.update}</span><Date dateString={postData.update} locale={locale} /></span>
+            <span><span>{copies.author}</span><span>{postData.author}</span></span>
+            {postData.translator ? <span><span>{copies.translator}</span><span>{postData.translator}</span></span> : null}
           </div>
           <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
         </article>
@@ -94,11 +82,14 @@ export const getStaticPaths: GetStaticPaths = async ({ locales, defaultLocale })
   }
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   const postData = await getPostData(params?.id as string)
+  const dictionary = await getDictionary(locale as LocaleType)
+
   return {
     props: {
       postData,
+      dictionary,
     },
   }
 }

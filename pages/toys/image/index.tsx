@@ -6,8 +6,9 @@ import { useEffect, useRef, useState } from 'react'
 // import NDialog from '@/components/Dialog'
 import { Icon } from '@iconify-icon/react'
 import style from './.module.css'
-import type { LocaleType } from '@/pages/_app'
 import { imageCompress } from '@/utils/imageCompress'
+import type { Dictionary, LocaleType } from '@/dictionaries'
+import { getDictionary } from '@/dictionaries'
 
 interface NUploadProps {
   onUpload?: (file: File) => void
@@ -64,41 +65,6 @@ const NCompare = ({ topSrc, bottomSrc }: NCompareProps) => {
   </>)
 }
 
-const copies = {
-  en: {
-    title: 'Image',
-    upload: 'Click to upload Image',
-    imgName: 'Image Name: ',
-    originSize: 'Origin Size: ',
-    originWidth: 'Origin Width: ',
-    originHeight: 'Origin Height: ',
-    transSize: 'Trans Size: ',
-    transWidth: 'Trans Width: ',
-    transHeight: 'Trans Height: ',
-    quality: 'Quality:',
-    width: 'Width:',
-    trans: 'Transform',
-    download: 'Download',
-    clear: 'Clear',
-  },
-  zh: {
-    title: '图片',
-    upload: '点击上传图片',
-    imgName: '图片名称: ',
-    originSize: '原始大小: ',
-    originWidth: '原始宽度: ',
-    originHeight: '原始高度: ',
-    transSize: '转换后大小: ',
-    transWidth: '转换后宽度: ',
-    transHeight: '转换后高度: ',
-    quality: '质量:',
-    width: '宽度:',
-    trans: '转换',
-    download: '下载',
-    clear: '清除',
-  },
-}
-
 const getImageInfo = async (file: File) => {
   const src = URL.createObjectURL(file)
   const img = new Image()
@@ -123,12 +89,9 @@ interface ImageInfo {
   src: string
 }
 
-const ImagePage = ({
-  locale,
-}: {
-  locale: LocaleType
-}) => {
-  const curCopies = copies[locale]
+const ImagePage = ({ dictionary }: { locale: LocaleType
+  dictionary: Dictionary }) => {
+  const copies = dictionary.image
   // const [show, setShow] = useState(false)
   const [origin, setOrigin] = useState<File>(null)
   const [originInfo, setOriginInfo] = useState<ImageInfo>(null)
@@ -151,7 +114,7 @@ const ImagePage = ({
   return (
     <>
       <Head>
-        <title>{curCopies.title}</title>
+        <title>{copies.title}</title>
       </Head>
       <section className='max-w-screen-lg mx-auto w-full'>
         <div className='flex flex-col-reverse py-8 gap-6 md:flex-row'>
@@ -161,23 +124,23 @@ const ImagePage = ({
               : <div className='w-full h-60 flex'><Icon className='m-auto text-9xl' icon="material-symbols:image-outline-rounded" /></div>}
           </div>
           <div className='flex flex-col gap-8 md:w-60'>
-            <NUpload accept='image/png,image/jpeg,image/webp' onUpload={file => setOrigin(file)}><span>{curCopies.upload}</span></NUpload>
+            <NUpload accept='image/png,image/jpeg,image/webp' onUpload={file => setOrigin(file)}><span>{copies.upload}</span></NUpload>
             {origin && <div className='surface-sm p-4 flex flex-col gap-2 pointer-events-none rounded-md'>
-              <div><span>{curCopies.imgName}</span><span className='break-all'>{originInfo?.name}</span></div>
-              <div><span>{curCopies.originSize}</span><span>{originInfo?.size}</span></div>
-              <div><span>{curCopies.originWidth}</span><span>{originInfo?.width}</span></div>
-              <div><span>{curCopies.originHeight}</span><span>{originInfo?.height}</span></div>
-              <div><span>{curCopies.transSize}</span><span>{targetInfo?.size}</span></div>
-              <div><span>{curCopies.transWidth}</span><span>{targetInfo?.width}</span></div>
-              <div><span>{curCopies.transHeight}</span><span>{targetInfo?.height}</span></div>
+              <div><span>{copies.imgName}</span><span className='break-all'>{originInfo?.name}</span></div>
+              <div><span>{copies.originSize}</span><span>{originInfo?.size}</span></div>
+              <div><span>{copies.originWidth}</span><span>{originInfo?.width}</span></div>
+              <div><span>{copies.originHeight}</span><span>{originInfo?.height}</span></div>
+              <div><span>{copies.transSize}</span><span>{targetInfo?.size}</span></div>
+              <div><span>{copies.transWidth}</span><span>{targetInfo?.width}</span></div>
+              <div><span>{copies.transHeight}</span><span>{targetInfo?.height}</span></div>
             </div>}
             {origin && <div className='flex flex-col gap-3 p-4 surface-sm__inert'>
               <label className='flex gap-1'>
-                <span className='whitespace-nowrap'>{curCopies.quality}</span>
+                <span className='whitespace-nowrap'>{copies.quality}</span>
                 <input type="number" className='min-w-0' value={quality} onChange={e => setQuality(+e.target.value)} />
               </label>
               <label className='flex gap-1'>
-                <span className='whitespace-nowrap'>{curCopies.width}</span>
+                <span className='whitespace-nowrap'>{copies.width}</span>
                 <input type="number" className='min-w-0' value={width} onChange={e => setWidth(+e.target.value)}/>
               </label>
               <button className='surface-sm p-1 rounded-md' onClick={async () => {
@@ -185,7 +148,7 @@ const ImagePage = ({
                 const info = await getImageInfo(res)
                 setTargetInfo(info)
               }} aria-label="transform image">
-                {curCopies.trans}
+                {copies.trans}
               </button>
             </div>}
             {origin && <div className='grid grid-cols-2 gap-3'>
@@ -195,14 +158,14 @@ const ImagePage = ({
                 link.download = targetInfo.name
                 link.click()
               }} aria-label="download image">
-                {curCopies.download}
+                {copies.download}
               </button>
               <button className='surface-sm p-1 rounded-md' onClick={() => {
                 URL.revokeObjectURL(originInfo.src)
                 URL.revokeObjectURL(targetInfo?.src)
                 setOrigin(null)
               }} aria-label="clear image">
-                {curCopies.clear}
+                {copies.clear}
               </button>
             </div>}
           </div>
@@ -226,10 +189,13 @@ const ImagePage = ({
 
 export default ImagePage
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const dictionary = await getDictionary(locale as LocaleType)
+
   return {
     props: {
-      a: 1,
+      locale,
+      dictionary,
     },
   }
 }

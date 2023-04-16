@@ -1,24 +1,16 @@
+import type { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import type { LocaleType } from './_app'
+import type { Dictionary, LocaleType } from '@/dictionaries'
+import { getDictionary } from '@/dictionaries'
 
-const copies = {
-  en: {
-    title: '2nonnon\'s blog site',
-    introduce: 'This guy is mysterious and writes nothing.',
-  },
-  zh: {
-    title: '2nonnon 的博客',
-    introduce: '这个人很神秘，他什么都没有写。',
-  },
-}
-
-export default function Home({ locale }: { locale: LocaleType }) {
+export default function Page({ dictionary }: { dictionary: Dictionary }) {
   const name = '2nonnon'
+  const copies = dictionary.home
   return (
     <>
       <Head>
-        <title>{copies[locale].title}</title>
+        <title>{copies.title}</title>
       </Head>
       <section className='max-w-screen-md mx-auto'>
         <div className='flex flex-col items-center gap-4 mt-10'>
@@ -31,9 +23,20 @@ export default function Home({ locale }: { locale: LocaleType }) {
             alt={name}
           />
           <h1 className='text-4xl font-extrabold my-0'>{name}</h1>
-          <p className='text-center my-0'>{copies[locale].introduce}</p>
+          <p className='text-center my-0'>{copies.introduce}</p>
         </div>
       </section>
     </>
   )
+}
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const dictionary = await getDictionary(locale as LocaleType)
+
+  return {
+    props: {
+      locale,
+      dictionary,
+    },
+  }
 }

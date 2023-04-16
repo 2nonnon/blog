@@ -6,7 +6,8 @@ import type { Coordinate, IBlock } from '@/components/minesweeper/type'
 import { BlockType, GameState, Level } from '@/components/minesweeper/type'
 
 import useMineSweeper from '@/components/minesweeper/useMineSweeper'
-import type { LocaleType } from '@/pages/_app'
+import type { Dictionary, LocaleType } from '@/dictionaries'
+import { getDictionary } from '@/dictionaries'
 
 const MineSweeperContext = createContext<ReturnType<typeof useMineSweeper> | null>(null)
 
@@ -72,64 +73,40 @@ const Block = ({ block, coordinate }: BlockParam) => {
   )
 }
 
-const copies = {
-  en: {
-    title: 'MineSweeper',
-    refresh: 'Refresh',
-    beginner: 'Beginner',
-    intermediate: 'Intermediate',
-    expert: 'Expert',
-    win: 'You win!',
-    fail: 'You lost!',
-  },
-  zh: {
-    title: '扫雷',
-    refresh: '刷新',
-    beginner: '初级',
-    intermediate: '中级',
-    expert: '高级',
-    win: '你赢了!',
-    fail: '你输了!',
-  },
-}
-
-const MineSweeper = ({
-  locale,
-}: {
-  locale: LocaleType
-}) => {
+const MineSweeper = ({ dictionary }: { locale: LocaleType
+  dictionary: Dictionary }) => {
   const mineSweeperInfo = useMineSweeper({ level: Level.easy, state: GameState.PRE })
-  const curCopies = copies[locale]
+  const copies = dictionary.minesweeper
 
   return (
     <>
       <Head>
-        <title>{curCopies.title}</title>
+        <title>{copies.title}</title>
       </Head>
       <MineSweeperContext.Provider value={mineSweeperInfo}>
-        <h1 className='hidden'>{curCopies.title}</h1>
+        <h1 className='hidden'>{copies.title}</h1>
         <section className='grid place-content-center select-none w-full'>
           <div>
             <div className='flex gap-4 mt-10 mb-4 flex-wrap'>
               <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.easy ? 'surface-sm__active' : 'cursor-pointer'}`} onClick={() => {
                 mineSweeperInfo.setGameState(GameState.PRE)
                 mineSweeperInfo.setGameLevel(Level.easy)
-              }}>{curCopies.beginner}</span>
+              }}>{copies.beginner}</span>
               <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.medieum ? 'surface-sm__active' : 'cursor-pointer'}`} onClick={() => {
                 mineSweeperInfo.setGameState(GameState.PRE)
                 mineSweeperInfo.setGameLevel(Level.medieum)
-              }}>{curCopies.intermediate}</span>
+              }}>{copies.intermediate}</span>
               <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.hard ? 'surface-sm__active' : 'cursor-pointer'}`} onClick={() => {
                 mineSweeperInfo.setGameState(GameState.PRE)
                 mineSweeperInfo.setGameLevel(Level.hard)
-              }}>{curCopies.expert}</span>
+              }}>{copies.expert}</span>
               <span className='surface-sm py-1 px-3 rounded cursor-pointer' onClick={() => {
                 mineSweeperInfo.setGameState(GameState.PRE)
-              }}>{curCopies.refresh}</span>
+              }}>{copies.refresh}</span>
             </div>
             <div className='flex gap-4'>
               <span className='surface-sm surface-sm__active py-1 px-3 rounded'>🚩 {mineSweeperInfo.gameLevel.num - mineSweeperInfo.flagCount}</span>
-              {mineSweeperInfo.gameState === GameState.WIN || mineSweeperInfo.gameState === GameState.FAIL ? <span className='surface-sm surface-sm__active py-1 px-3 rounded'>{mineSweeperInfo.gameState === GameState.WIN ? curCopies.win : mineSweeperInfo.gameState === GameState.FAIL ? curCopies.fail : ''}</span> : null}
+              {mineSweeperInfo.gameState === GameState.WIN || mineSweeperInfo.gameState === GameState.FAIL ? <span className='surface-sm surface-sm__active py-1 px-3 rounded'>{mineSweeperInfo.gameState === GameState.WIN ? copies.win : mineSweeperInfo.gameState === GameState.FAIL ? copies.fail : ''}</span> : null}
             </div>
           </div>
           <div className='overflow-auto -mx-6'>
@@ -147,10 +124,13 @@ const MineSweeper = ({
 
 export default MineSweeper
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const dictionary = await getDictionary(locale as LocaleType)
+
   return {
     props: {
-      a: 1,
+      locale,
+      dictionary,
     },
   }
 }

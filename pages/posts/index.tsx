@@ -1,39 +1,31 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import type { GetStaticProps } from 'next'
-import type { LocaleType } from '../_app'
 import type { PostBaseData } from '@/lib/posts'
 import { getSortedPostsData } from '@/lib/posts'
 import Date from '@/components/date'
-
-const copies = {
-  en: {
-    title: 'Blog List',
-    pageTitle: 'Blog',
-  },
-  zh: {
-    title: '文章列表',
-    pageTitle: '文章',
-  },
-}
+import type { Dictionary, LocaleType } from '@/dictionaries'
+import { getDictionary } from '@/dictionaries'
 
 export default function Posts({
   allPostsData,
   locale,
+  dictionary,
 }: {
   allPostsData: PostBaseData[]
   locale: LocaleType
+  dictionary: Dictionary
 }) {
-  const curCopies = copies[locale]
+  const copies = dictionary.posts
 
   return (
     <>
       <Head>
-        <title>{curCopies.title}</title>
+        <title>{copies.title}</title>
       </Head>
-      <h1 className='hidden'>{curCopies.title}</h1>
+      <h1 className='hidden'>{copies.title}</h1>
       <section className='max-w-screen-md mx-auto w-full'>
-        <h1 className='text-4xl font-extrabold my-8'>{curCopies.pageTitle}</h1>
+        <h1 className='text-4xl font-extrabold my-8'>{copies.pageTitle}</h1>
         <ul className='flex flex-col gap-4'>
           {allPostsData.map(({ id, date, title }) => (
             <li key={id} className="surface-md rounded-xl">
@@ -52,10 +44,14 @@ export default function Posts({
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const allPostsData = getSortedPostsData()
+  const dictionary = await getDictionary(locale as LocaleType)
+
   return {
     props: {
+      locale,
+      dictionary,
       allPostsData,
     },
   }

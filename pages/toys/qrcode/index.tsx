@@ -4,7 +4,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
 import type { GetStaticProps } from 'next'
 import Modal from '@/components/Modal'
-import type { LocaleType } from '@/pages/_app'
+import type { Dictionary, LocaleType } from '@/dictionaries'
+import { getDictionary } from '@/dictionaries'
 
 const ErrorCorrectionLevel = {
   L: 'L(7%)',
@@ -143,20 +144,8 @@ const Panel = ({ formData, setFormData, generateQRCode, setModal }: PanelParams)
   )
 }
 
-const copies = {
-  en: {
-    title: 'Qrcode Generator',
-  },
-  zh: {
-    title: '二维码生成',
-  },
-}
-
-const QrcodeGenerator = ({
-  locale,
-}: {
-  locale: LocaleType
-}) => {
+const QrcodeGenerator = ({ dictionary }: { locale: LocaleType
+  dictionary: Dictionary }) => {
   const target = useRef<HTMLCanvasElement>(null)
   const [formData, setFormData] = useState<Fields>({
     typeNumber: 0,
@@ -167,7 +156,7 @@ const QrcodeGenerator = ({
     multibyte: 'UTF-8',
   })
 
-  const curCopies = copies[locale]
+  const copies = dictionary.qrcode
 
   const generateQRCode = () => {
     if (target.current) {
@@ -194,9 +183,9 @@ const QrcodeGenerator = ({
   return (
     <>
       <Head>
-        <title>{curCopies.title}</title>
+        <title>{copies.title}</title>
       </Head>
-      <h1 className='hidden'>{curCopies.title}</h1>
+      <h1 className='hidden'>{copies.title}</h1>
       {modal ? <Modal><Confirm setModal={setModal} /></Modal> : null}
       <div className='flex flex-col gap-4 items-center text-sm w-full'>
         <Panel formData={formData} setFormData={setFormData} generateQRCode={generateQRCode} setModal={setModal}></Panel>
@@ -208,10 +197,13 @@ const QrcodeGenerator = ({
 
 export default QrcodeGenerator
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const dictionary = await getDictionary(locale as LocaleType)
+
   return {
     props: {
-      a: 1,
+      locale,
+      dictionary,
     },
   }
 }
