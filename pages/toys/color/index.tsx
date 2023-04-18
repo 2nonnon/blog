@@ -1,8 +1,9 @@
 import Head from 'next/head'
 import type { GetStaticProps } from 'next'
 import type { ChangeEventHandler } from 'react'
-import { useState } from 'react'
-import { HSLToRGB, HSVToRGB, HexToRGB, RGBToHSL, RGBToHSV, RGBToHex } from '@/utils/color'
+import { useEffect, useState } from 'react'
+
+import { HSLToRGB, HSVToRGB, HexToRGB, RGBToHSL, RGBToHSV, RGBToHex, getContrast, splitHexString } from '@/utils/color'
 import type { Dictionary, LocaleType } from '@/dictionaries'
 import { getDictionary } from '@/dictionaries'
 
@@ -82,6 +83,44 @@ const hsvRange = {
   },
 }
 
+const Contrast = () => {
+  const [hex1, setHex1] = useState({ R: '00', G: '00', B: '00' })
+  const [hex2, setHex2] = useState({ R: '00', G: '00', B: '00' })
+  const [contrast, setContrast] = useState('1')
+
+  const handleChangeHEX1: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const value = e.target.value
+
+    if (!value.startsWith('#'))
+      return
+
+    const _hex = splitHexString(value)
+
+    setHex1(_hex)
+  }
+
+  const handleChangeHEX2: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const value = e.target.value
+
+    if (!value.startsWith('#'))
+      return
+
+    const _hex = splitHexString(value)
+
+    setHex2(_hex)
+  }
+
+  useEffect(() => {
+    setContrast(getContrast(`#${hex1.R}${hex1.G}${hex1.B}`, `#${hex2.R}${hex2.G}${hex2.B}`))
+  }, [hex1, hex2])
+
+  return (<div className='my-6 flex gap-3 flex-wrap'>
+    <input type="text" key={`#${hex1.R}${hex1.G}${hex1.B}1`} defaultValue={`#${hex1.R}${hex1.G}${hex1.B}`} onBlur={handleChangeHEX1} />
+    <input type="text" key={`#${hex2.R}${hex2.G}${hex2.B}2`} defaultValue={`#${hex2.R}${hex2.G}${hex2.B}`} onBlur={handleChangeHEX2} />
+    <span>{contrast}</span>
+  </div>)
+}
+
 const Color = ({ dictionary }: { locale: LocaleType
   dictionary: Dictionary }) => {
   const [rgb, setRGB] = useState({ R: 0, G: 0, B: 0 })
@@ -124,21 +163,9 @@ const Color = ({ dictionary }: { locale: LocaleType
     if (!value.startsWith('#'))
       return
 
-    const length = value.length
+    const _hex = splitHexString(value)
 
-    let step: number
-    if (length === 4)
-      step = 1
-    else if (length === 7)
-      step = 2
-
-    let start = 1
-
-    const R = value.slice(start, (start += step))
-    const G = value.slice(start, (start += step))
-    const B = value.slice(start, (start += step))
-
-    const _rgb = HexToRGB(R, G, B)
+    const _rgb = HexToRGB(_hex.R, _hex.G, _hex.B)
     setRGB(_rgb)
   }
 
@@ -160,6 +187,7 @@ const Color = ({ dictionary }: { locale: LocaleType
         <div>
           <input type="text" key={`#${hex.R}${hex.G}${hex.B}`} defaultValue={`#${hex.R}${hex.G}${hex.B}`} onBlur={handleChangeHEX} />
         </div>
+        <Contrast></Contrast>
       </section>
     </>
   )
