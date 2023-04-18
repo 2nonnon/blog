@@ -6,6 +6,82 @@ import { HSLToRGB, HSVToRGB, HexToRGB, RGBToHSL, RGBToHSV, RGBToHex } from '@/ut
 import type { Dictionary, LocaleType } from '@/dictionaries'
 import { getDictionary } from '@/dictionaries'
 
+interface ColorInputProps {
+  value: {
+    [x: string]: number
+  }
+  range: {
+    [k in keyof ColorInputProps['value']]: {
+      min: number
+      max: number
+    }
+  }
+  handleChange: (key: keyof ColorInputProps['value']) => ChangeEventHandler<HTMLInputElement>
+}
+
+const ColorInput = ({ range, value, handleChange }: ColorInputProps) => {
+  return (<>
+    <ul className='flex flex-col gap-2'>
+      {Object.keys(range).map((key) => {
+        return (
+          <li key={key} className='flex gap-2'>
+            <label>
+              <span>{`${key}:`}</span>
+              <input type="number" min={range[key].min} max={range[key].max} value={value[key]} onChange={handleChange(key)}/>
+            </label>
+            <input type="range" min={range[key].min} max={range[key].max} value={value[key]} onChange={handleChange(key)}/>
+          </li>
+        )
+      })}
+    </ul>
+  </>)
+}
+
+const rgbRange = {
+  R: {
+    min: 0,
+    max: 255,
+  },
+  G: {
+    min: 0,
+    max: 255,
+  },
+  B: {
+    min: 0,
+    max: 255,
+  },
+}
+
+const hslRange = {
+  H: {
+    min: 0,
+    max: 359,
+  },
+  S: {
+    min: 0,
+    max: 100,
+  },
+  L: {
+    min: 0,
+    max: 100,
+  },
+}
+
+const hsvRange = {
+  H: {
+    min: 0,
+    max: 359,
+  },
+  S: {
+    min: 0,
+    max: 100,
+  },
+  V: {
+    min: 0,
+    max: 100,
+  },
+}
+
 const Color = ({ dictionary }: { locale: LocaleType
   dictionary: Dictionary }) => {
   const [rgb, setRGB] = useState({ R: 0, G: 0, B: 0 })
@@ -16,40 +92,30 @@ const Color = ({ dictionary }: { locale: LocaleType
   const hsv = RGBToHSV(rgb.R, rgb.G, rgb.B)
   const hex = RGBToHex(rgb.R, rgb.G, rgb.B)
 
-  const handleChangeR: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setRGB(Object.assign({}, rgb, { R: +e.target.value }))
-  }
-  const handleChangeG: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setRGB(Object.assign({}, rgb, { G: +e.target.value }))
-  }
-  const handleChangeB: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setRGB(Object.assign({}, rgb, { B: +e.target.value }))
+  const handleChangeRGB = (key: keyof typeof rgb) => {
+    return ((e) => {
+      setRGB(Object.assign({}, rgb, { [key]: +e.target.value }))
+    }) as ChangeEventHandler<HTMLInputElement>
   }
 
-  const handleChangeH: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const _rgb = HSLToRGB(+e.target.value, hsl.S / 100, hsl.L / 100)
-    setRGB(_rgb)
-  }
-  const handleChangeS: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const _rgb = HSLToRGB(hsl.H, +e.target.value / 100, hsl.L / 100)
-    setRGB(_rgb)
-  }
-  const handleChangeL: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const _rgb = HSLToRGB(hsl.H, hsl.S / 100, +e.target.value / 100)
-    setRGB(_rgb)
+  const handleChangeHSL = (key: keyof typeof hsl) => {
+    return ((e) => {
+      const _hsl = Object.assign({}, hsl, { [key]: +e.target.value })
+      _hsl.S /= 100
+      _hsl.L /= 100
+      const _rgb = HSLToRGB(_hsl.H, _hsl.S, _hsl.L)
+      setRGB(_rgb)
+    }) as ChangeEventHandler<HTMLInputElement>
   }
 
-  const handleChangeHSVH: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const _rgb = HSVToRGB(+e.target.value, hsv.S / 100, hsv.V / 100)
-    setRGB(_rgb)
-  }
-  const handleChangeHSVS: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const _rgb = HSVToRGB(hsv.H, +e.target.value / 100, hsv.V / 100)
-    setRGB(_rgb)
-  }
-  const handleChangeHSVV: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const _rgb = HSVToRGB(hsv.H, hsv.S / 100, +e.target.value / 100)
-    setRGB(_rgb)
+  const handleChangeHSV = (key: keyof typeof hsv) => {
+    return ((e) => {
+      const _hsv = Object.assign({}, hsv, { [key]: +e.target.value })
+      _hsv.S /= 100
+      _hsv.V /= 100
+      const _rgb = HSVToRGB(_hsv.H, _hsv.S, _hsv.V)
+      setRGB(_rgb)
+    }) as ChangeEventHandler<HTMLInputElement>
   }
 
   const handleChangeHEX: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -84,57 +150,9 @@ const Color = ({ dictionary }: { locale: LocaleType
       <h1 className='hidden'>{copies.title}</h1>
       <section className='max-w-screen-lg mx-auto py-6 w-full'>
         <div className='flex flex-wrap gap-4 mb-6'>
-          <div className='flex flex-col gap-2'>
-            <div className='flex gap-2'>
-              <span>R: </span>
-              <input type="number" min={0} max={255} value={rgb.R} onChange={handleChangeR}/>
-              <input type="range" min={0} max={255} value={rgb.R} onChange={handleChangeR}/>
-            </div>
-            <div className='flex gap-2'>
-              <span>G: </span>
-              <input type="number" min={0} max={255} value={rgb.G} onChange={handleChangeG}/>
-              <input type="range" min={0} max={255} value={rgb.G} onChange={handleChangeG}/>
-            </div>
-            <div className='flex gap-2'>
-              <span>B: </span>
-              <input type="number" min={0} max={255} value={rgb.B} onChange={handleChangeB}/>
-              <input type="range" min={0} max={255} value={rgb.B} onChange={handleChangeB}/>
-            </div>
-          </div>
-          <div className='flex flex-col gap-2'>
-            <div className='flex gap-2'>
-              <span>H: </span>
-              <input type="number" min={0} max={359} value={hsl.H} onChange={handleChangeH}/>
-              <input type="range" min={0} max={359} value={hsl.H} onChange={handleChangeH}/>
-            </div>
-            <div className='flex gap-2'>
-              <span>S: </span>
-              <input type="number" min={0} max={100} value={hsl.S} onChange={handleChangeS}/>
-              <input type="range" min={0} max={100} value={hsl.S} onChange={handleChangeS}/>
-            </div>
-            <div className='flex gap-2'>
-              <span>L: </span>
-              <input type="number" min={0} max={100} value={hsl.L} onChange={handleChangeL}/>
-              <input type="range" min={0} max={100} value={hsl.L} onChange={handleChangeL}/>
-            </div>
-          </div>
-          <div className='flex flex-col gap-2'>
-            <div className='flex gap-2'>
-              <span>H: </span>
-              <input type="number" min={0} max={359} value={hsv.H} onChange={handleChangeHSVH}/>
-              <input type="range" min={0} max={359} value={hsv.H} onChange={handleChangeHSVH}/>
-            </div>
-            <div className='flex gap-2'>
-              <span>S: </span>
-              <input type="number" min={0} max={100} value={hsv.S} onChange={handleChangeHSVS}/>
-              <input type="range" min={0} max={100} value={hsv.S} onChange={handleChangeHSVS}/>
-            </div>
-            <div className='flex gap-2'>
-              <span>V: </span>
-              <input type="number" min={0} max={100} value={hsv.V} onChange={handleChangeHSVV}/>
-              <input type="range" min={0} max={100} value={hsv.V} onChange={handleChangeHSVV}/>
-            </div>
-          </div>
+          <ColorInput value={rgb} range={rgbRange} handleChange={handleChangeRGB}></ColorInput>
+          <ColorInput value={hsl} range={hslRange} handleChange={handleChangeHSL}></ColorInput>
+          <ColorInput value={hsv} range={hsvRange} handleChange={handleChangeHSV}></ColorInput>
         </div>
         <div className='mb-6'>
           <div className='h-8' style={{ backgroundColor: `rgb(${rgb.R},${rgb.G},${rgb.B})` }}></div>
