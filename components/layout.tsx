@@ -63,7 +63,7 @@ export default function Layout({ children, dictionary }: {
     {
       title: copies.lang,
       name: copies.lang,
-      href: '',
+      href: router.asPath,
       locale: nextLocale,
       icon: currentLocale === 'en' ? 'icon-park-outline:eagle' : 'icon-park-outline:rabbit',
     },
