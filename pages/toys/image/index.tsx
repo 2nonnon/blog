@@ -59,7 +59,7 @@ const NCompare = ({ topSrc, bottomSrc }: NCompareProps) => {
   return (<>
     <section ref={rangeRef} className='w-full relative'>
       <img className='w-full' src={bottomSrc} alt="" />
-      {topSrc && <img ref={imgRef} style={{ clipPath }} className='absolute inset-0' src={topSrc} alt="" />}
+      {topSrc && <div style={{ clipPath }} className='absolute inset-0'><img ref={imgRef} className='w-full h-full' src={topSrc} alt="" /></div>}
       {topSrc && <input className={style.slider} type='range' min={0} max={1000} value={range} onChange={handleChangeRange}></input>}
     </section>
   </>)
@@ -116,7 +116,7 @@ const ImagePage = ({ dictionary }: { locale: LocaleType
       <Head>
         <title>{copies.title}</title>
       </Head>
-      <section className='max-w-screen-lg mx-auto w-full'>
+      <section className='max-w-screen-xl mx-auto w-full'>
         <div className='flex flex-col-reverse py-8 gap-6 md:flex-row'>
           <div className='surface-sm__inert flex-1 rounded-md self-start overflow-hidden w-full'>
             {originInfo
@@ -163,6 +163,8 @@ const ImagePage = ({ dictionary }: { locale: LocaleType
               <button className='surface-sm p-1 rounded-md' onClick={() => {
                 URL.revokeObjectURL(originInfo.src)
                 URL.revokeObjectURL(targetInfo?.src)
+                setQuality(1)
+                setWidth(0)
                 setOrigin(null)
               }} aria-label="clear image">
                 {copies.clear}
@@ -171,18 +173,6 @@ const ImagePage = ({ dictionary }: { locale: LocaleType
           </div>
         </div>
       </section>
-      {/* <button className='bg-white' onClick={() => { setShow(true) }} aria-label="Add user">
-        点我点我点我~
-      </button>
-      {show
-        ? <NDialog onClose={() => {
-            setShow(false)
-          } }>
-            <NDialog.header></NDialog.header>
-            <NDialog.body></NDialog.body>
-            <NDialog.footer></NDialog.footer>
-          </NDialog>
-        : null} */}
     </>
   )
 }
