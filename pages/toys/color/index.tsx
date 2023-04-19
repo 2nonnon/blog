@@ -22,19 +22,17 @@ interface ColorInputProps {
 
 const ColorInput = ({ range, value, handleChange }: ColorInputProps) => {
   return (<>
-    <ul className='flex flex-col gap-2'>
+    <form className='flex flex-col gap-2'>
       {Object.keys(range).map((key) => {
         return (
-          <li key={key} className='flex gap-2'>
-            <label>
-              <span>{`${key}:`}</span>
-              <input type="number" min={range[key].min} max={range[key].max} value={value[key]} onChange={handleChange(key)}/>
-            </label>
+          <fieldset key={key} className='flex gap-2'>
+            <legend>{`${key}:`}</legend>
+            <input min={range[key].min} max={range[key].max} value={value[key]} onChange={handleChange(key)}/>
             <input type="range" min={range[key].min} max={range[key].max} value={value[key]} onChange={handleChange(key)}/>
-          </li>
+          </fieldset>
         )
       })}
-    </ul>
+    </form>
   </>)
 }
 
@@ -114,11 +112,26 @@ const Contrast = () => {
     setContrast(getContrast(`#${hex1.R}${hex1.G}${hex1.B}`, `#${hex2.R}${hex2.G}${hex2.B}`))
   }, [hex1, hex2])
 
-  return (<div className='my-6 flex gap-3 flex-wrap'>
-    <input type="text" key={`#${hex1.R}${hex1.G}${hex1.B}1`} defaultValue={`#${hex1.R}${hex1.G}${hex1.B}`} onBlur={handleChangeHEX1} />
-    <input type="text" key={`#${hex2.R}${hex2.G}${hex2.B}2`} defaultValue={`#${hex2.R}${hex2.G}${hex2.B}`} onBlur={handleChangeHEX2} />
-    <span>{contrast}</span>
-  </div>)
+  return (<>
+    <section>
+      <form className='my-6 flex gap-3 flex-wrap'>
+        <label>
+          <div>Lighter Color:</div>
+          <input type="text" key={`#${hex1.R}${hex1.G}${hex1.B}1`} defaultValue={`#${hex1.R}${hex1.G}${hex1.B}`} onBlur={handleChangeHEX1} />
+        </label>
+        <label>
+          <div>Darker Color:</div>
+          <input type="text" key={`#${hex2.R}${hex2.G}${hex2.B}2`} defaultValue={`#${hex2.R}${hex2.G}${hex2.B}`} onBlur={handleChangeHEX2} />
+        </label>
+      </form>
+      <dl>
+        <div className='flex gap-2'>
+          <dt>contrast:</dt>
+          <dl>{contrast}</dl>
+        </div>
+      </dl>
+    </section>
+  </>)
 }
 
 const Color = ({ dictionary }: { locale: LocaleType
@@ -174,21 +187,27 @@ const Color = ({ dictionary }: { locale: LocaleType
       <Head>
         <title>{copies.title}</title>
       </Head>
-      <h1 className='hidden'>{copies.title}</h1>
-      <section className='max-w-screen-lg mx-auto py-6 w-full'>
-        <div className='flex flex-wrap gap-4 mb-6'>
-          <ColorInput value={rgb} range={rgbRange} handleChange={handleChangeRGB}></ColorInput>
-          <ColorInput value={hsl} range={hslRange} handleChange={handleChangeHSL}></ColorInput>
-          <ColorInput value={hsv} range={hsvRange} handleChange={handleChangeHSV}></ColorInput>
-        </div>
-        <div className='mb-6'>
-          <div className='h-8' style={{ backgroundColor: `rgb(${rgb.R},${rgb.G},${rgb.B})` }}></div>
-        </div>
-        <div>
-          <input type="text" key={`#${hex.R}${hex.G}${hex.B}`} defaultValue={`#${hex.R}${hex.G}${hex.B}`} onBlur={handleChangeHEX} />
-        </div>
+      <div className='max-w-screen-lg mx-auto py-6 w-full'>
+        <section>
+          <ul className='flex flex-wrap gap-4 mb-6' role='list'>
+            <li><ColorInput value={rgb} range={rgbRange} handleChange={handleChangeRGB}></ColorInput></li>
+            <li><ColorInput value={hsl} range={hslRange} handleChange={handleChangeHSL}></ColorInput></li>
+            <li><ColorInput value={hsv} range={hsvRange} handleChange={handleChangeHSV}></ColorInput></li>
+            <li>
+              <form>
+                <fieldset>
+                  <legend>Hex:</legend>
+                  <input type="text" key={`#${hex.R}${hex.G}${hex.B}`} defaultValue={`#${hex.R}${hex.G}${hex.B}`} onBlur={handleChangeHEX} />
+                </fieldset>
+              </form>
+            </li>
+          </ul>
+          <div className='mb-6'>
+            <div className='h-8' style={{ backgroundColor: `rgb(${rgb.R},${rgb.G},${rgb.B})` }}></div>
+          </div>
+        </section>
         <Contrast></Contrast>
-      </section>
+      </div>
     </>
   )
 }

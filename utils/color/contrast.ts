@@ -43,8 +43,6 @@ export const getContrast = (color1: string, color2: string) => {
 
   const L2 = getRelativeLuminance(rgb2.R / 255, rgb2.G / 255, rgb2.B / 255)
 
-  console.log(rgb1, rgb2)
-
   return ((L1 + 0.05) / (L2 + 0.05)).toFixed(2)
 }
 
