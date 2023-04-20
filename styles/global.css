@@ -212,11 +212,11 @@
         scroll-margin-top: calc(4rem);
     }
 
-    article a {
+    .article a {
         transition: all .2s;
     }
 
-    article a:hover {
+    .article a:hover {
         color: var(--text1);
         text-decoration: underline;
     }
@@ -229,7 +229,7 @@
         color: var(--text1);
     }
 
-    article ul {
+    .article ul {
         list-style-type: ' - ';
         margin-left: 1em;
     }

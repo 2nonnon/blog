@@ -24,8 +24,7 @@ export default function Posts({
         <title>{copies.title}</title>
         <meta name="description" content={copies.description} />
       </Head>
-      <h1 className='hidden'>{copies.title}</h1>
-      <section className='max-w-screen-md mx-auto w-full'>
+      <div className='max-w-screen-md mx-auto w-full'>
         <h1 className='text-4xl font-extrabold my-8'>{copies.pageTitle}</h1>
         <ul className='flex flex-col gap-4'>
           {allPostsData.map(({ id, date, title }) => (
@@ -40,7 +39,7 @@ export default function Posts({
             </li>
           ))}
         </ul>
-      </section>
+      </div>
     </>
   )
 }

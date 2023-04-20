@@ -14,7 +14,7 @@ interface tagProps {
 const Tag: React.FC<tagProps> = ({ tag }) => {
   return (
     <>
-      <span className='inline-block px-3 border rounded-full surface-sm'>{`#${tag}`}</span>
+      <span className='inline-block px-3 border rounded-full surface-sm__inert'>{`#${tag}`}</span>
     </>
   )
 }
@@ -37,28 +37,29 @@ export default function Post({
         <title>{postData.title}</title>
         <meta name="description" content={postData.title} />
       </Head>
-      <section className='max-w-screen-lg mx-auto w-full'>
-        <article>
-          <h1 className='text-4xl font-extrabold my-8'>{postData.title}</h1>
-          <div className='flex gap-2'>
-            {tags.map(tag => <Tag key={tag} tag={tag}></Tag>)}
-          </div>
-          <div className='opacity-80 flex gap-x-4 gap-y-1 flex-wrap my-3'>
-            <span><span>{copies.date}</span><Date dateString={postData.date} locale={locale} /></span>
-            <span><span>{copies.update}</span><Date dateString={postData.update} locale={locale} /></span>
-            <span><span>{copies.author}</span><span>{postData.author}</span></span>
-            {postData.translator ? <span><span>{copies.translator}</span><span>{postData.translator}</span></span> : null}
-          </div>
-          <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
-        </article>
+      <div className='max-w-screen-lg mx-auto w-full'>
+        <h1 className='text-4xl font-extrabold my-8'>{postData.title}</h1>
+        <ul className='flex gap-2 list-none m-0' role='list'>
+          {tags.map(tag => <li key={tag}><Tag tag={tag}></Tag></li>)}
+        </ul>
+        <dl className='opacity-80 flex gap-x-4 gap-y-1 flex-wrap my-3'>
+          <div className='flex gap-1'><dt>{copies.date}</dt><dd><Date dateString={postData.date} locale={locale} /></dd></div>
+          <div className='flex gap-1'><dt>{copies.update}</dt><dd><Date dateString={postData.update} locale={locale} /></dd></div>
+          <div className='flex gap-1'><dt>{copies.author}</dt><dd>{postData.author}</dd></div>
+          {postData.translator ? <div className='flex gap-1'><dt>{copies.translator}</dt><dd>{postData.translator}</dd></div> : null}
+        </dl>
+        <div className='article' dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
         <nav className='my-8 opacity-80'>
-          <div className='flex items-center justify-between mb-4 gap-2'>
-            {postData.last ? <Link href={postData.last.id}>{`Last: ${postData.last.title}`}</Link> : <span></span>}
-            {postData.next ? <Link href={postData.next.id}>{`Next: ${postData.next.title}`}</Link> : <span></span>}
-          </div>
+          {
+            (postData.last || postData.next)
+            && <ul className='flex items-center justify-between mb-4 gap-2' role='list'>
+              {postData.last ? <li><Link href={postData.last.id}>{`Last: ${postData.last.title}`}</Link></li> : <span></span>}
+              {postData.next ? <li><Link href={postData.next.id}>{`Next: ${postData.next.title}`}</Link></li> : <span></span>}
+            </ul>
+          }
           <Link href="/posts">cd ..</Link>
         </nav>
-      </section>
+      </div>
     </>
   )
 }
