@@ -11,7 +11,8 @@
         "toTop": "回到顶部"
     },
     "home": {
-        "title": "2nonnon 的博客",
+        "title": "2nonnon 的个人站",
+        "description": "2nonnon 的个人站，分享一些技术博客和一些小工具、小游戏。",
         "introduce": "这个人很神秘，他什么都没有写。"
     },
     "500": {
@@ -24,6 +25,7 @@
     },
     "posts": {
         "title": "文章列表",
+        "description": "与前端、react相关的技术博客。",
         "pageTitle": "文章"
     },
     "post": {
@@ -34,17 +36,20 @@
     },
     "toy": {
         "title": "玩具列表",
+        "description": "一些小工具、小游戏，二维码生成、扫雷、色值转换、图片压缩。",
         "pageTitle": "玩具",
         "qrcode": "二维码生成",
         "mine": "扫雷",
-        "color": "色彩",
+        "color": "色值转换",
         "image": "图片处理"
     },
     "qrcode": {
-        "title": "二维码生成"
+        "title": "二维码生成",
+        "description": "二维码生成工具，提供多种配置参数和纠错等级。"
     },
     "minesweeper": {
         "title": "扫雷",
+        "description": "扫雷小游戏，有初级、中级、高级三个等级。",
         "refresh": "刷新",
         "beginner": "初级",
         "intermediate": "中级",
@@ -53,7 +58,8 @@
         "fail": "你输了!"
     },
     "image": {
-        "title": "图片",
+        "title": "图片压缩",
+        "description": "图片压缩工具，通过修改图片质量或尺寸来压缩图片，并提供压缩前后图片的对比功能。",
         "upload": "点击上传图片",
         "imgName": "图片名称: ",
         "originSize": "原始大小: ",
@@ -69,6 +75,7 @@
         "clear": "清除"
     },
     "color": {
-        "title": "色彩"
+        "title": "色值转换",
+        "description": "色值转换工具，提供 RGB、HSL、HSV 互相转换及RGB 十六进制和十进制互相转换功能，还有颜色对比度计算功能。"
     }
 }

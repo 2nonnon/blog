@@ -115,6 +115,7 @@ const ImagePage = ({ dictionary }: { locale: LocaleType
     <>
       <Head>
         <title>{copies.title}</title>
+        <meta name="description" content={copies.description} />
       </Head>
       <section className='max-w-screen-xl mx-auto w-full'>
         <div className='flex flex-col-reverse py-8 gap-6 md:flex-row'>

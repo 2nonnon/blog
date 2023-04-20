@@ -22,6 +22,7 @@ export default function Posts({
     <>
       <Head>
         <title>{copies.title}</title>
+        <meta name="description" content={copies.description} />
       </Head>
       <h1 className='hidden'>{copies.title}</h1>
       <section className='max-w-screen-md mx-auto w-full'>

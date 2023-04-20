@@ -11,6 +11,7 @@ export default function Page({ dictionary }: { dictionary: Dictionary }) {
     <>
       <Head>
         <title>{copies.title}</title>
+        <meta name="description" content={copies.description} />
       </Head>
       <section className='max-w-screen-md mx-auto'>
         <div className='flex flex-col items-center gap-4 mt-10'>

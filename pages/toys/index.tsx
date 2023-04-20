@@ -36,6 +36,7 @@ export default function Page({ dictionary }: { locale: LocaleType
     <>
       <Head>
         <title>{copies.title}</title>
+        <meta name="description" content={copies.description} />
       </Head>
       <section className='max-w-screen-lg mx-auto w-full'>
         <ul className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 place-items-stretch gap-8 my-10'>

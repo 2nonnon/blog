@@ -82,6 +82,7 @@ const MineSweeper = ({ dictionary }: { locale: LocaleType
     <>
       <Head>
         <title>{copies.title}</title>
+        <meta name="description" content={copies.description} />
       </Head>
       <MineSweeperContext.Provider value={mineSweeperInfo}>
         <h1 className='hidden'>{copies.title}</h1>

@@ -35,6 +35,7 @@ export default function Post({
     <>
       <Head>
         <title>{postData.title}</title>
+        <meta name="description" content={postData.title} />
       </Head>
       <section className='max-w-screen-lg mx-auto w-full'>
         <article>

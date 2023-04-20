@@ -127,7 +127,7 @@ const Contrast = () => {
       <dl>
         <div className='flex gap-2'>
           <dt>contrast:</dt>
-          <dl>{contrast}</dl>
+          <dd>{contrast}</dd>
         </div>
       </dl>
     </section>
@@ -186,6 +186,7 @@ const Color = ({ dictionary }: { locale: LocaleType
     <>
       <Head>
         <title>{copies.title}</title>
+        <meta name="description" content={copies.description} />
       </Head>
       <div className='max-w-screen-lg mx-auto py-6 w-full'>
         <section>

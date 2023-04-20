@@ -184,6 +184,7 @@ const QrcodeGenerator = ({ dictionary }: { locale: LocaleType
     <>
       <Head>
         <title>{copies.title}</title>
+        <meta name="description" content={copies.description} />
       </Head>
       <h1 className='hidden'>{copies.title}</h1>
       {modal ? <Modal><Confirm setModal={setModal} /></Modal> : null}
