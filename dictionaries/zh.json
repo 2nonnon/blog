@@ -41,7 +41,7 @@
         "qrcode": "二维码生成",
         "mine": "扫雷",
         "color": "色值转换",
-        "image": "图片处理"
+        "image": "图片压缩"
     },
     "qrcode": {
         "title": "二维码生成",

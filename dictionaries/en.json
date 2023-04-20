@@ -40,8 +40,8 @@
         "pageTitle": "Toy",
         "qrcode": "QRCode Generate",
         "mine": "MineSweeper",
-        "color": "Color",
-        "image": "Image"
+        "color": "Color Converter",
+        "image": "Image Compressor"
     },
     "qrcode": {
         "title": "Qrcode Generator",
@@ -75,7 +75,7 @@
         "clear": "Clear"
     },
     "color": {
-        "title": "Color",
+        "title": "Color Converter",
         "description": "Color value conversion tool, providing RGB, HSL, HSV conversion as well as RGB hexadecimal and decimal conversion functions, and color contrast calculation function."
     }
 }
