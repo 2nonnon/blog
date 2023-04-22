@@ -7,7 +7,6 @@ import React, { memo, useCallback } from 'react'
 import { Inter } from 'next/font/google'
 import { useRouter } from 'next/router'
 
-import Snow from './backgrounds/Snow'
 import PageLoading from './PageLoading'
 import ScrollTop from './ScrollTop'
 import { Theme, useTheme } from '@/hooks/useTheme'
@@ -26,7 +25,7 @@ type NavItemProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & LinkProps & 
 const NavItem = memo(({ name, title, href, icon, locale, target = '_self', onClick }: NavItemProps) => {
   return (
     <Link href={href} title={title} className="flex surface-sm hover:no-underline p-1 rounded md:px-3" locale={locale} target={target} onClick={onClick}>
-      <span className='hidden md:inline-block'>{name}</span>
+      <p className='hidden md:inline-block m-0'>{name}</p>
       <Icon className='md:hidden' width={30} height={30} icon={icon} alt={name} name={name} />
     </Link>
   )
@@ -53,13 +52,14 @@ export default function Layout({ children, dictionary }: {
 
   const copies = dictionary.layout
 
+  const home = {
+    title: copies.logo,
+    name: copies.logo,
+    href: '/',
+    icon: 'material-symbols:home-outline-rounded',
+  }
+
   const navList: NavItemProps[] = [
-    {
-      title: copies.logo,
-      name: copies.logo,
-      href: '/',
-      icon: 'material-symbols:home-outline-rounded',
-    },
     {
       title: copies.lang,
       name: copies.lang,
@@ -101,17 +101,15 @@ export default function Layout({ children, dictionary }: {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={`min-h-screen text-[var(--text2)] -z-20 flex flex-col ${inter.variable} font-sans`}>
-        <header>
-          <nav className='flex items-center h-20 px-6 box-border max-w-screen-xl mx-auto' aria-label={copies.globalNav}>
-            <ul role="list" className='w-full flex items-center gap-4 justify-end'>
-              {navList.map(item => (<li key={item.name} className='first:mr-auto'><NavItem {...item}></NavItem></li>))}
-            </ul>
+        <header className='flex items-center justify-between h-20 px-6 box-border max-w-screen-xl mx-auto w-full'>
+          <NavItem {...home}></NavItem>
+          <nav className='flex items-center gap-4' aria-label={copies.globalNav}>
+            {navList.map(item => (<NavItem key={item.name} {...item}></NavItem>))}
           </nav>
         </header>
         <main className='px-6 max-w-screen-xl box-border w-full mx-auto overflow-hidden flex-1 flex flex-col'>
           {children}
         </main>
-        <Snow theme={theme}></Snow>
         <ScrollTop content={copies.toTop}></ScrollTop>
         <PageLoading content={copies.loading}></PageLoading>
       </div>

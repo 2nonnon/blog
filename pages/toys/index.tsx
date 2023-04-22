@@ -38,18 +38,16 @@ export default function Page({ dictionary }: { locale: LocaleType
         <title>{copies.title}</title>
         <meta name="description" content={copies.description} />
       </Head>
-      <section className='max-w-screen-lg mx-auto w-full'>
-        <ul className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 place-items-stretch gap-8 my-10'>
+      <div className='max-w-screen-lg mx-auto w-full'>
+        <div className='grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] place-items-stretch gap-6 my-10'>
           {toys.map(item => (
-            <li key={item.link} className='surface-md bg-[var(--surface1)] rounded-lg'>
-              <Link className='text-lg font-medium flex flex-col items-center gap-2 rounded-lg py-4 px-6 h-full text-center' href={item.link}>
-                <Icon className='text-[7rem]' icon={item.icon} />
-                <span>{item.name}</span>
-              </Link>
-            </li>
+            <Link key={item.link} className='surface-md bg-[var(--surface1)] rounded-lg text-lg font-medium flex flex-col items-center gap-2 py-4 px-6 h-full text-center' href={item.link}>
+              <Icon className='text-[7rem]' icon={item.icon} />
+              <p className='m-0'>{item.name}</p>
+            </Link>
           ))}
-        </ul>
-      </section>
+        </div>
+      </div>
     </>
   )
 }

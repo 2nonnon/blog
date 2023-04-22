@@ -29,9 +29,8 @@ export default function Posts({
         <ul className='flex flex-col gap-4'>
           {allPostsData.map(({ id, date, title }) => (
             <li key={id} className="surface-md rounded-xl">
-              <Link className='text-lg font-medium border-b-0 p-4 block' href={`/posts/${id}`}>
-                <span>{title}</span>
-                <br />
+              <Link className='text-lg font-medium border-b-0 py-4 px-6 block' href={`/posts/${id}`}>
+                <p className='mt-0 mb-2'>{title}</p>
                 <small className='opacity-80'>
                   <Date dateString={date} locale={locale} />
                 </small>

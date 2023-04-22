@@ -49,15 +49,14 @@ export default function Post({
           {postData.translator ? <div className='flex gap-1'><dt>{copies.translator}</dt><dd>{postData.translator}</dd></div> : null}
         </dl>
         <div className='article' dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
-        <nav className='my-8 opacity-80'>
+        <nav className='my-8 opacity-80' aria-label='pagination'>
           {
             (postData.last || postData.next)
-            && <ul className='flex items-center justify-between mb-4 gap-2' role='list'>
-              {postData.last ? <li><Link href={postData.last.id}>{`Last: ${postData.last.title}`}</Link></li> : <span></span>}
-              {postData.next ? <li><Link href={postData.next.id}>{`Next: ${postData.next.title}`}</Link></li> : <span></span>}
-            </ul>
+            && <div className='flex items-center justify-between mb-4 gap-2'>
+              {postData.last ? <Link href={postData.last.id}>{`Last: ${postData.last.title}`}</Link> : <span></span>}
+              {postData.next ? <Link href={postData.next.id}>{`Next: ${postData.next.title}`}</Link> : <span></span>}
+            </div>
           }
-          <Link href="/posts">cd ..</Link>
         </nav>
       </div>
     </>
