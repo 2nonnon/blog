@@ -4,7 +4,7 @@ import type { GetStaticProps } from 'next'
 import { checkWin, generateMine, handleClickBlock, handleClickMine, handleToggleFlag, initMineSweeper } from '@/components/minesweeper/helper'
 import type { Coordinate, IBlock } from '@/components/minesweeper/type'
 import { BlockType, GameState, Level } from '@/components/minesweeper/type'
-
+import { useTimer } from '@/hooks/useTimer'
 import useMineSweeper from '@/components/minesweeper/useMineSweeper'
 import type { Dictionary, LocaleType } from '@/dictionaries'
 import { getDictionary } from '@/dictionaries'
@@ -77,6 +77,7 @@ const MineSweeper = ({ dictionary }: { locale: LocaleType
   dictionary: Dictionary }) => {
   const mineSweeperInfo = useMineSweeper({ level: Level.easy, state: GameState.PRE })
   const copies = dictionary.minesweeper
+  const { current } = useTimer({ time: 60000 })
 
   return (
     <>
@@ -85,8 +86,8 @@ const MineSweeper = ({ dictionary }: { locale: LocaleType
         <meta name="description" content={copies.description} />
       </Head>
       <MineSweeperContext.Provider value={mineSweeperInfo}>
-        <h1 className='hidden'>{copies.title}</h1>
         <section className='grid place-content-center select-none w-full'>
+          <h1>{current.seconds}</h1>
           <div>
             <div className='flex gap-4 mt-10 mb-4 flex-wrap'>
               <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.easy ? 'surface-sm__active' : 'cursor-pointer'}`} onClick={() => {

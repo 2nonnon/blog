@@ -59,11 +59,10 @@ export interface UseTimerOptions {
 }
 
 export function useTimer(options: UseTimerOptions) {
-  let endTime: number
   const [rafId, setRafId] = useState(-1)
   const [counting, setCounting] = useState(true)
   const [remain, setRemain] = useState(options.time)
-
+  let endTime = Date.now() + remain
   const current = parseTime(remain)
 
   const getCurrentRemain = () => Math.max(endTime - Date.now(), 0)
