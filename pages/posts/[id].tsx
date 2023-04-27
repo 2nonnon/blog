@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
+import style from './.module.css'
 import type { PostData } from '@/lib/posts'
 import { getAllPostIds, getPostData } from '@/lib/posts'
 import Date from '@/components/date'
@@ -39,7 +40,7 @@ export default function Post({
       </Head>
       <div className='max-w-screen-lg mx-auto w-full'>
         <h1 className='text-4xl font-extrabold my-8'>{postData.title}</h1>
-        <ul className='flex gap-2 list-none m-0' role='list'>
+        <ul className='flex gap-3 list-none mb-4' role='list'>
           {tags.map(tag => <li key={tag}><Tag tag={tag}></Tag></li>)}
         </ul>
         <dl className='opacity-80 flex gap-x-4 gap-y-1 flex-wrap my-3'>
@@ -48,7 +49,7 @@ export default function Post({
           <div className='flex gap-1'><dt>{copies.author}</dt><dd>{postData.author}</dd></div>
           {postData.translator ? <div className='flex gap-1'><dt>{copies.translator}</dt><dd>{postData.translator}</dd></div> : null}
         </dl>
-        <div className='article' dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+        <div className={style.article} dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
         <nav className='my-8 opacity-80' aria-label='pagination'>
           {
             (postData.last || postData.next)

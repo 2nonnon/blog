@@ -111,7 +111,7 @@ export default function Layout({ children, dictionary }: {
           {children}
         </main>
         <footer>
-          <p className='text-center text-xs'><a href="https://beian.miit.gov.cn/" target="_blank">辽ICP备2021011288号-1</a></p>
+          <p className='text-center text-xs my-4'><a href="https://beian.miit.gov.cn/" target="_blank">辽ICP备2021011288号-1</a></p>
         </footer>
         <ScrollTop content={copies.toTop}></ScrollTop>
         <PageLoading content={copies.loading}></PageLoading>
