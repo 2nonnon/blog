@@ -9,6 +9,20 @@
     margin: 1.25rem 0;
 }
 
+.article :is(h1, h2, h3, h4, h5, h6) a {
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.article :is(h1, h2, h3, h4, h5, h6):hover a {
+    opacity: 1;
+}
+
+.article :is(h1, h2, h3, h4, h5, h6) a:focus {
+    opacity: 1;
+}
+
 .article h2 {
     font-size: 2rem;
 }
@@ -38,7 +52,7 @@
 }
 
 .article a {
-    transition: all .2s;
+    transition: color .2s;
     text-decoration: underline;
 }
 

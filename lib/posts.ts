@@ -83,9 +83,9 @@ export async function getPostData(id: string) {
 
   let contentHtml = processedContent.toString()
 
-  contentHtml = imgReg.test(contentHtml) ? contentHtml.replaceAll(imgReg, ' lazy') : contentHtml
+  contentHtml = imgReg.test(contentHtml) ? contentHtml.replaceAll(imgReg, ' loading="lazy"') : contentHtml
 
-  contentHtml = hReg.test(contentHtml) ? contentHtml.replaceAll(hReg, '$1 id="$3" $2$4') : contentHtml
+  contentHtml = hReg.test(contentHtml) ? contentHtml.replaceAll(hReg, '$1 id="$3" $2 <a href="#$3">#</a>$4') : contentHtml
 
   const posts = getSortedPostsData()
 
