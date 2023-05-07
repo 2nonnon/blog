@@ -51,40 +51,32 @@ function isSameSecond(time1: number, time2: number): boolean {
   return Math.floor(time1 / 1000) === Math.floor(time2 / 1000)
 }
 
-export interface UseTimerOptions {
-  time: number
+export interface UseStopWatchOptions {
   millisecond?: boolean
   onChange?: (current: CurrentTime) => void
-  onFinish?: () => void
 }
 
-export function useTimer(options: UseTimerOptions) {
+export function useStopWatch(options: UseStopWatchOptions = {}) {
   const [rafId, setRafId] = useState(-1)
   const [counting, setCounting] = useState(true)
-  const [remain, setRemain] = useState(options.time)
-  const endTime = Date.now() + remain
-  const current = parseTime(remain)
+  const [elapsed, setElapsed] = useState(0)
+  const startTime = Date.now() - elapsed
+  const current = parseTime(elapsed)
 
-  const getCurrentRemain = () => Math.max(endTime - Date.now(), 0)
+  const getCurrentElapsed = () => Date.now() - startTime
 
-  const changeRemain = (value: number) => {
-    setRemain(value)
+  const changeElapsed = (value: number) => {
+    setElapsed(value)
     options.onChange?.(current)
-
-    if (value === 0) {
-      setCounting(false)
-      options.onFinish?.()
-    }
   }
 
   const microTick = () => {
     setRafId(raf(() => {
       // in case of call reset immediately after finish
       if (counting) {
-        changeRemain(getCurrentRemain())
+        changeElapsed(getCurrentElapsed())
 
-        if (remain > 0)
-          microTick()
+        microTick()
       }
     }))
   }
@@ -93,13 +85,12 @@ export function useTimer(options: UseTimerOptions) {
     setRafId(raf(() => {
       // in case of call reset immediately after finish
       if (counting) {
-        const remainRemain = getCurrentRemain()
+        const currentElapsed = getCurrentElapsed()
 
-        if (!isSameSecond(remainRemain, remain) || remainRemain === 0)
-          changeRemain(remainRemain)
+        if (!isSameSecond(currentElapsed, elapsed) || currentElapsed === 0)
+          changeElapsed(currentElapsed)
 
-        if (remain > 0)
-          macroTick()
+        macroTick()
       }
     }))
   }
@@ -132,9 +123,9 @@ export function useTimer(options: UseTimerOptions) {
       setCounting(true)
   }
 
-  const reset = (totalTime: number = options.time) => {
+  const reset = () => {
     setCounting(false)
-    setRemain(totalTime)
+    setElapsed(0)
   }
 
   return {

@@ -1,10 +1,11 @@
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useEffect } from 'react'
 import Head from 'next/head'
 import type { GetStaticProps } from 'next'
 import { checkWin, generateMine, handleClickBlock, handleClickMine, handleToggleFlag, initMineSweeper } from '@/components/minesweeper/helper'
 import type { Coordinate, IBlock } from '@/components/minesweeper/type'
 import { BlockType, GameState, Level } from '@/components/minesweeper/type'
 import { useTimer } from '@/hooks/useTimer'
+import { useStopWatch } from '@/hooks/useStopWatch'
 import useMineSweeper from '@/components/minesweeper/useMineSweeper'
 import type { Dictionary, LocaleType } from '@/dictionaries'
 import { getDictionary } from '@/dictionaries'
@@ -77,7 +78,12 @@ const MineSweeper = ({ dictionary }: { locale: LocaleType
   dictionary: Dictionary }) => {
   const mineSweeperInfo = useMineSweeper({ level: Level.easy, state: GameState.PRE })
   const copies = dictionary.minesweeper
-  const { current } = useTimer({ time: 60000 })
+  const { current } = useTimer({ time: 100000 })
+  const { current: current2, start } = useStopWatch()
+
+  useEffect(() => {
+    start()
+  }, [])
 
   return (
     <>
@@ -87,7 +93,7 @@ const MineSweeper = ({ dictionary }: { locale: LocaleType
       </Head>
       <MineSweeperContext.Provider value={mineSweeperInfo}>
         <section className='grid place-content-center select-none w-full'>
-          <h1>{current.seconds}</h1>
+          <h1>{current.seconds} ---- {current2.seconds}</h1>
           <div>
             <div className='flex gap-4 mt-10 mb-4 flex-wrap'>
               <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.easy ? 'surface-sm__active' : 'cursor-pointer'}`} onClick={() => {
