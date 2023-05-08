@@ -1,0 +1,31 @@
+.nixie {
+    position: relative;
+    background-color: hsl(359, 50%, 50%);
+    height: .5em;
+    width: 2em;
+    padding: 0 .25em;
+    box-sizing: content-box;
+    background-clip: content-box;
+}
+
+.nixie::before,
+.nixie::after {
+    content: '';
+    display: block;
+    width: .25em;
+    height: .5em;
+    border-top: .25em solid transparent;
+    border-bottom: .25em solid transparent;
+    position: absolute;
+    top: 0;
+}
+
+.nixie::before {
+    border-right: .25em solid hsl(359, 50%, 50%);
+    left: 0;
+}
+
+.nixie::after {
+    border-left: .25em solid hsl(359, 50%, 50%);
+    right: 0;
+}

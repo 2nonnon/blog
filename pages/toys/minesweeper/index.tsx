@@ -9,6 +9,7 @@ import { useStopWatch } from '@/hooks/useStopWatch'
 import useMineSweeper from '@/components/minesweeper/useMineSweeper'
 import type { Dictionary, LocaleType } from '@/dictionaries'
 import { getDictionary } from '@/dictionaries'
+import NixieTubeClock from '@/components/NixieTubeClock'
 
 const MineSweeperContext = createContext<ReturnType<typeof useMineSweeper> | null>(null)
 
@@ -94,6 +95,7 @@ const MineSweeper = ({ dictionary }: { locale: LocaleType
       <MineSweeperContext.Provider value={mineSweeperInfo}>
         <section className='grid place-content-center select-none w-full'>
           <h1>{current.seconds} ---- {current2.seconds}</h1>
+          <div><NixieTubeClock current={current}></NixieTubeClock></div>
           <div>
             <div className='flex gap-4 mt-10 mb-4 flex-wrap'>
               <span className={`surface-sm py-1 px-3 rounded ${mineSweeperInfo.gameLevel === Level.easy ? 'surface-sm__active' : 'cursor-pointer'}`} onClick={() => {
