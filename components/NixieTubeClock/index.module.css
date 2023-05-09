@@ -1,5 +1,5 @@
 .nixie {
-    --nixie-bg: hsl(359, 50%, 10%);
+    --nixie-bg: hsl(359, 50%, 90%);
 
     position: relative;
     background-color: var(--nixie-bg);
@@ -10,7 +10,11 @@
     background-clip: content-box;
 }
 
-.nixie--active {
+:root[theme='dark'] .nixie {
+    --nixie-bg: hsl(359, 50%, 10%);
+}
+
+.nixie--active.nixie--active.nixie--active {
     --nixie-bg: hsl(359, 100%, 50%);
 }
 
