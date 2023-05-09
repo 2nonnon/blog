@@ -4,7 +4,6 @@ import type { GetStaticProps } from 'next'
 import { checkWin, generateMine, handleClickBlock, handleClickMine, handleToggleFlag, initMineSweeper } from '@/components/minesweeper/helper'
 import type { Coordinate, IBlock } from '@/components/minesweeper/type'
 import { BlockType, GameState, Level } from '@/components/minesweeper/type'
-import { useTimer } from '@/hooks/useTimer'
 import { useStopWatch } from '@/hooks/useStopWatch'
 import useMineSweeper from '@/components/minesweeper/useMineSweeper'
 import type { Dictionary, LocaleType } from '@/dictionaries'
@@ -79,8 +78,7 @@ const MineSweeper = ({ dictionary }: { locale: LocaleType
   dictionary: Dictionary }) => {
   const mineSweeperInfo = useMineSweeper({ level: Level.easy, state: GameState.PRE })
   const copies = dictionary.minesweeper
-  const { current } = useTimer({ time: 100000 })
-  const { current: current2, start } = useStopWatch()
+  const { current, start } = useStopWatch()
 
   useEffect(() => {
     start()
@@ -94,7 +92,6 @@ const MineSweeper = ({ dictionary }: { locale: LocaleType
       </Head>
       <MineSweeperContext.Provider value={mineSweeperInfo}>
         <section className='grid place-content-center select-none w-full'>
-          <h1>{current.seconds} ---- {current2.seconds}</h1>
           <div><NixieTubeClock current={current}></NixieTubeClock></div>
           <div>
             <div className='flex gap-4 mt-10 mb-4 flex-wrap'>
