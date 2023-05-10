@@ -16,6 +16,7 @@
 
 .nixie--active.nixie--active.nixie--active {
     --nixie-bg: hsl(359, 100%, 50%);
+    filter: drop-shadow(0 0 .5em hsl(359 100% 50% / 50%));
 }
 
 .nixie::before,
@@ -112,4 +113,5 @@
     width: .5em;
     height: .5em;
     background-color: hsl(359, 100%, 50%);
+    filter: drop-shadow(0 0 .5em hsl(359 100% 50% / 50%));
 }

@@ -10,7 +10,7 @@ export interface UseStopWatchOptions {
 
 export function useStopWatch(options: UseStopWatchOptions = {}) {
   const [rafId, setRafId] = useState(-1)
-  const [counting, setCounting] = useState(true)
+  const [counting, setCounting] = useState(false)
   const [elapsed, setElapsed] = useState(0)
   const startTime = Date.now() - elapsed
   const current = parseTime(elapsed)

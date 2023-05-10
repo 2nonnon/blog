@@ -47,7 +47,7 @@ interface NixieTubeClockProps {
 
 export default function NixieTubeClock({ current }: NixieTubeClockProps) {
   return (<>
-    <div className='flex gap-[1.5em] -skew-x-3 text-[4px]'>
+    <div className='flex gap-[1.5em] -skew-x-3'>
       <NixieTubeNum num={Math.floor(current.hours / 10) as keyof typeof numMap}></NixieTubeNum>
       <NixieTubeNum num={current.hours % 10 as keyof typeof numMap}></NixieTubeNum>
       <Colon></Colon>
