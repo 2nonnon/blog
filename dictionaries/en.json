@@ -41,7 +41,12 @@
         "qrcode": "QRCode Generate",
         "mine": "MineSweeper",
         "color": "Color Converter",
-        "image": "Image Compressor"
+        "image": "Image Compressor",
+        "todo": "Todo"
+    },
+    "todo": {
+        "title": "Todo List",
+        "description": "A simple list of things to do."
     },
     "qrcode": {
         "title": "Qrcode Generator",
