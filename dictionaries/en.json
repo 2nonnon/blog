@@ -42,7 +42,12 @@
         "mine": "MineSweeper",
         "color": "Color Converter",
         "image": "Image Compressor",
-        "todo": "Todo"
+        "todo": "Todo",
+        "audio": "Audio Player"
+    },
+    "audio": {
+        "title": "Audio Player",
+        "description": "A simple audio player."
     },
     "todo": {
         "title": "Todo List",

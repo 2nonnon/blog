@@ -42,7 +42,12 @@
         "mine": "扫雷",
         "color": "色值转换",
         "image": "图片压缩",
-        "todo": "待办"
+        "todo": "待办",
+        "audio": "音频播放器"
+    },
+    "audio": {
+        "title": "音频播放器",
+        "description": "一个简单的音频播放器。"
     },
     "todo": {
         "title": "待办列表",

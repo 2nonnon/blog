@@ -35,6 +35,11 @@ export default function Page({ dictionary }: { locale: LocaleType
       icon: 'ri:calendar-todo-line',
       link: '/toys/todo',
     },
+    {
+      name: copies.audio,
+      icon: 'carbon:audio-console',
+      link: '/toys/audio',
+    },
   ]
 
   return (
