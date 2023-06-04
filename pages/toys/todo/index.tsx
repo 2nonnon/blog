@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import type { GetStaticProps } from 'next'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Dictionary, LocaleType } from '@/dictionaries'
 import { getDictionary } from '@/dictionaries'
 import type { ITask } from '@/components/todo/TasksContext'
@@ -62,10 +62,17 @@ const TodoPanel = () => {
 }
 
 const TodoModal = () => {
-  const [content, setContent] = useState<string>()
   const taskDispatch = useTasksDispatch()
   const modalDispatch = useModalDispatch()
   const { show, task } = useModal()
+  const [content, setContent] = useState<string>()
+
+  useEffect(() => {
+    if (show)
+      setContent(task?.content)
+    else
+      setContent(undefined)
+  }, [show])
 
   return (<>
     {show && <Modal>
