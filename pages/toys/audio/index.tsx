@@ -11,6 +11,7 @@ const Audio = ({ dictionary }: { locale: LocaleType
   dictionary: Dictionary }) => {
   const copies = dictionary.audio
 
+  const [src, setSrc] = useState('https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3')
   const [playing, setPlaying] = useState(false)
 
   const audioEl = useRef<HTMLAudioElement>()
@@ -43,6 +44,12 @@ const Audio = ({ dictionary }: { locale: LocaleType
         <meta name="description" content={copies.description} />
       </Head>
       <div className='max-w-screen-md mx-auto py-6 w-full'>
+        <section>
+          <input type="file" accept='audio/*' onChange={(e) => {
+            const file = (e.nativeEvent.target as HTMLInputElement).files[0]
+            setSrc(URL.createObjectURL(file))
+          }} />
+        </section>
         <section>
           <input type="range" id="volume" min="0" max="2" defaultValue="1" list="gain-vals" step="0.01" data-action="volume" onChange={(e) => {
             gainNode.gain.value = +e.target.value
@@ -78,7 +85,7 @@ const Audio = ({ dictionary }: { locale: LocaleType
 
         <section >
 
-          <audio ref={audioEl} src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3" crossOrigin="anonymous" onEnded={() => {
+          <audio ref={audioEl} src={src} crossOrigin="anonymous" onEnded={() => {
             setPlaying(false)
           }}></audio>
 
