@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import type { GetStaticProps } from 'next'
 
+import { useState } from 'react'
 import type { Dictionary, LocaleType } from '@/dictionaries'
 import { getDictionary } from '@/dictionaries'
 import type { ITask } from '@/components/todo/TasksContext'
@@ -9,14 +10,32 @@ import {
   useTasks,
   useTasksDispatch,
 } from '@/components/todo/TasksContext'
+import Modal from '@/components/Modal'
+import { ModalProvider, useModal, useModalDispatch } from '@/components/todo/ModalContext'
 
 interface TodoItemProps {
   task: ITask
 }
 
 const TodoItem = ({ task }: TodoItemProps) => {
+  const taskDispatch = useTasksDispatch()
+  const modalDispatch = useModalDispatch()
+
   return (<>
-    <li>{task.content}</li>
+    <li className='flex'>
+      <p>{task.content}</p>
+      <div>
+        <button onClick={() => {
+          modalDispatch({ type: 'change', task })
+        }}>编辑</button>
+        <button onClick={() => {
+          taskDispatch({ type: 'deleted', id: task.id })
+        }}>删除</button>
+        <button onClick={() => {
+          taskDispatch({ type: 'changed', task: { ...task, done: true } })
+        }}>完成</button>
+      </div>
+    </li>
   </>)
 }
 
@@ -33,12 +52,40 @@ const TodoList = () => {
 }
 
 const TodoPanel = () => {
-  const taskDispatch = useTasksDispatch()
+  const modalDispatch = useModalDispatch()
 
   return (<>
     <button onClick={() => {
-      taskDispatch({ type: 'added', content: 'New task' })
+      modalDispatch({ type: 'add' })
     }}>新建</button>
+  </>)
+}
+
+const TodoModal = () => {
+  const [content, setContent] = useState<string>()
+  const taskDispatch = useTasksDispatch()
+  const modalDispatch = useModalDispatch()
+  const { show, task } = useModal()
+
+  return (<>
+    {show && <Modal>
+      <textarea value={content} onChange={(e) => {
+        setContent(e.target.value)
+      }}></textarea>
+      <div>
+        <button onClick={() => {
+          modalDispatch({ type: 'close' })
+        }}>取消</button>
+        <button onClick={() => {
+          if (task)
+            taskDispatch({ type: 'changed', task: { ...task, content } })
+
+          else taskDispatch({ type: 'added', content })
+
+          modalDispatch({ type: 'close' })
+        }}>确定</button>
+      </div>
+    </Modal>}
   </>)
 }
 
@@ -53,10 +100,13 @@ const Todo = ({ dictionary }: { locale: LocaleType
         <meta name="description" content={copies.description} />
       </Head>
       <TasksProvider>
-        <div className='max-w-screen-md mx-auto py-6 w-full'>
-          <TodoPanel></TodoPanel>
-          <TodoList></TodoList>
-        </div>
+        <ModalProvider>
+          <div className='max-w-screen-md mx-auto py-6 w-full'>
+            <TodoPanel></TodoPanel>
+            <TodoList></TodoList>
+            <TodoModal></TodoModal>
+          </div>
+        </ModalProvider>
       </TasksProvider>
     </>
   )
