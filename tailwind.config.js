@@ -8,6 +8,13 @@ module.exports = {
   ],
   safelist: ['grid-cols-[repeat(9,1fr)]', 'grid-cols-[repeat(16,1fr)]', 'grid-cols-[repeat(32,1fr)]', 'text-[hsl(40,50%,50%)]', 'text-[hsl(80,50%,50%)]', 'text-[hsl(120,50%,50%)]', 'text-[hsl(160,50%,50%)]', 'text-[hsl(200,50%,50%)]', 'text-[hsl(240,50%,50%)]', 'text-[hsl(280,50%,50%)]', 'text-[hsl(320,50%,50%)]'],
   theme: {
+    screens: {
+      xs: '375px',
+      sm: '640px',
+      md: '768px',
+      lg: '900px',
+      xl: '1200px',
+    },
     extend: {
       animation: {
         bounce: 'bounce 1s var(--i) infinite',
