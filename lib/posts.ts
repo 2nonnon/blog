@@ -21,7 +21,7 @@ interface PostMetaData {
 
 export type PostBaseData = { id: string } & PostMetaData
 
-export function getSortedPostsData() {
+export function getSortedPostsData(): PostBaseData[] {
   // Get file names under /posts
   const fileNames = fs.readdirSync(postsDirectory)
   const allPostsData = fileNames.map((fileName) => {
@@ -38,7 +38,7 @@ export function getSortedPostsData() {
     // Combine the data with the id
     return {
       id,
-      ...(matterResult.data as { date: string; title: string }),
+      ...(matterResult.data as PostMetaData),
     }
   })
   // Sort posts by date

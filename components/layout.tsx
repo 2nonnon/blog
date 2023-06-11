@@ -39,7 +39,7 @@ export default function Layout({ children, dictionary }: {
 
   const isLight = theme === Theme.LIGTH
 
-  const handleToggleTheme = useCallback<NavItemProps['onClick']>((e) => {
+  const handleToggleTheme = useCallback<Required<NavItemProps>['onClick']>((e) => {
     e.preventDefault()
     const next = isLight ? Theme.DARK : Theme.LIGTH
     setTheme(next)

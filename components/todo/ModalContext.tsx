@@ -7,9 +7,9 @@ export interface ModalData {
   task?: ITask
 }
 
-const ModalContext = createContext<ModalData>(null)
+const ModalContext = createContext<ModalData | null>(null)
 
-const ModalDispatchContext = createContext<Dispatch<ModalReducerAction>>(null)
+const ModalDispatchContext = createContext<Dispatch<ModalReducerAction> | null>(null)
 
 interface ModalProviderProps {
   children: React.ReactNode

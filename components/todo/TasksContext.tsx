@@ -9,9 +9,9 @@ export interface ITask {
   deleted: boolean
 }
 
-const TasksContext = createContext<ITask[]>(null)
+const TasksContext = createContext<ITask[] | null>(null)
 
-const TasksDispatchContext = createContext<Dispatch<TasksReducerAction>>(null)
+const TasksDispatchContext = createContext<Dispatch<TasksReducerAction> | null>(null)
 
 interface TasksProviderProps {
   children: React.ReactNode
