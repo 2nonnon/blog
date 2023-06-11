@@ -1,6 +1,12 @@
-module.exports = {
-  i18n: {
-    locales: ['en', 'zh'],
-    defaultLocale: 'en',
+// @ts-check
+
+/**
+ * @type {import('next').NextConfig}
+ **/
+const nextConfig = {
+  experimental: {
+    appDir: true,
   },
 }
+
+module.exports = nextConfig

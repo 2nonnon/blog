@@ -13,7 +13,7 @@ export function usePageLoading() {
     }
 
     const handleRouteChangeComplete = () => {
-      clearTimeout(timer)
+      clearTimeout(timer!)
       setPageLoading(false)
     }
 

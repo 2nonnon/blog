@@ -1,3 +1,5 @@
+'use client'
+
 import { Icon } from '@iconify-icon/react'
 import { useScrollTop } from '@/hooks/useScrollTop'
 

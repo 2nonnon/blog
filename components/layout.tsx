@@ -1,3 +1,5 @@
+'use client'
+
 import Head from 'next/head'
 import type { LinkProps } from 'next/link'
 import Link from 'next/link'
@@ -5,9 +7,9 @@ import { Icon } from '@iconify-icon/react'
 import React, { memo, useCallback } from 'react'
 
 import { Inter } from 'next/font/google'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 
-import PageLoading from './PageLoading'
+// import PageLoading from './PageLoading'
 import ScrollTop from './ScrollTop'
 import { Theme, useTheme } from '@/hooks/useTheme'
 import type { Dictionary, LocaleType } from '@/dictionaries'
@@ -31,9 +33,10 @@ const NavItem = memo(({ name, title, href, icon, locale, target = '_self', onCli
   )
 })
 
-export default function Layout({ children, dictionary }: {
+export default function Layout({ children, dictionary, locale }: {
   children: React.ReactNode
   dictionary: Dictionary
+  locale: LocaleType
 }) {
   const [theme, setTheme] = useTheme(Theme.DARK)
 
@@ -45,9 +48,16 @@ export default function Layout({ children, dictionary }: {
     setTheme(next)
   }, [theme])
 
-  const router = useRouter()
+  const pathName = usePathname()
+  const redirectedPathName = (locale: string) => {
+    if (!pathName)
+      return '/'
+    const segments = pathName.split('/')
+    segments[1] = locale
+    return segments.join('/')
+  }
 
-  const currentLocale = router.locale as LocaleType
+  const currentLocale = locale
   const nextLocale = currentLocale === 'en' ? 'zh' : 'en'
 
   const copies = dictionary.layout
@@ -63,7 +73,7 @@ export default function Layout({ children, dictionary }: {
     {
       title: copies.lang,
       name: copies.lang,
-      href: router.asPath,
+      href: redirectedPathName(nextLocale),
       locale: nextLocale,
       icon: currentLocale === 'en' ? 'icon-park-outline:eagle' : 'icon-park-outline:rabbit',
     },
@@ -114,7 +124,7 @@ export default function Layout({ children, dictionary }: {
           <p className='text-center text-xs my-4'><a href="https://beian.miit.gov.cn/" target="_blank">辽ICP备2021011288号-1</a></p>
         </footer>
         <ScrollTop content={copies.toTop}></ScrollTop>
-        <PageLoading content={copies.loading}></PageLoading>
+        {/* <PageLoading content={copies.loading}></PageLoading> */}
       </div>
     </>
   )
