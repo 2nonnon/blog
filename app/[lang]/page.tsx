@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { getDictionary } from '@/dictionaries'
+import type { PageProps } from '@/types/global'
+import profileSrc from '@/public/images/profile.jpg'
 
 export default async function Page({ params: { lang } }: PageProps) {
   const name = '2nonnon'
@@ -17,7 +19,7 @@ export default async function Page({ params: { lang } }: PageProps) {
           <Image
             priority
             className='rounded-full border-2 w-[7rem] h-[7rem]'
-            src="/images/profile.jpg"
+            src={profileSrc}
             height={144}
             width={144}
             alt={name}

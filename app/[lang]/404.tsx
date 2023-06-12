@@ -1,3 +1,5 @@
+'use client'
+
 import type { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'

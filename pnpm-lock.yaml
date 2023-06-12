@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@formatjs/intl-localematcher':
+    specifier: ^0.4.0
+    version: registry.npmmirror.com/@formatjs/intl-localematcher@0.4.0
   '@types/offscreencanvas':
     specifier: ^2019.7.0
     version: registry.npmmirror.com/@types/offscreencanvas@2019.7.0
@@ -14,6 +17,9 @@ dependencies:
   gray-matter:
     specifier: ^4.0.3
     version: registry.npmmirror.com/gray-matter@4.0.3
+  negotiator:
+    specifier: ^0.6.3
+    version: registry.npmmirror.com/negotiator@0.6.3
   next:
     specifier: ^13.4.5
     version: registry.npmmirror.com/next@13.4.5(react-dom@18.2.0)(react@18.2.0)
@@ -52,6 +58,9 @@ devDependencies:
   '@iconify-icon/react':
     specifier: ^1.0.1
     version: registry.npmmirror.com/@iconify-icon/react@1.0.1(react@18.2.0)
+  '@types/negotiator':
+    specifier: ^0.6.1
+    version: registry.npmmirror.com/@types/negotiator@0.6.1
   '@types/node':
     specifier: ^18.11.9
     version: registry.npmmirror.com/@types/node@18.11.9
@@ -252,6 +261,14 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  registry.npmmirror.com/@formatjs/intl-localematcher@0.4.0:
+    resolution: {integrity: sha512-bRTd+rKomvfdS4QDlVJ6TA/Jx1F2h/TBVO5LjvhQ7QPPHp19oPNMIum7W2CMEReq/zPxpmCeB31F9+5gl/qtvw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@formatjs/intl-localematcher/-/intl-localematcher-0.4.0.tgz}
+    name: '@formatjs/intl-localematcher'
+    version: 0.4.0
+    dependencies:
+      tslib: registry.npmmirror.com/tslib@2.5.0
+    dev: false
 
   registry.npmmirror.com/@humanwhocodes/config-array@0.11.7:
     resolution: {integrity: sha512-kBbPWzN8oVMLb0hOUYXhmxggL/1cJE6ydvjDIGi9EnAGUyA7cLVKQg+d/Dsm+KZwx2czGHrCmMVLiyg8s5JPKw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@humanwhocodes/config-array/-/config-array-0.11.7.tgz}
@@ -509,6 +526,12 @@ packages:
     name: '@types/ms'
     version: 0.7.31
     dev: false
+
+  registry.npmmirror.com/@types/negotiator@0.6.1:
+    resolution: {integrity: sha512-c4mvXFByghezQ/eVGN5HvH/jI63vm3B7FiE81BUzDAWmuiohRecCO6ddU60dfq29oKUMiQujsoB2h0JQC7JHKA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/negotiator/-/negotiator-0.6.1.tgz}
+    name: '@types/negotiator'
+    version: 0.6.1
+    dev: true
 
   registry.npmmirror.com/@types/node@18.11.9:
     resolution: {integrity: sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-18.11.9.tgz}
@@ -3887,6 +3910,13 @@ packages:
     name: natural-compare
     version: 1.4.0
     dev: true
+
+  registry.npmmirror.com/negotiator@0.6.3:
+    resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/negotiator/-/negotiator-0.6.3.tgz}
+    name: negotiator
+    version: 0.6.3
+    engines: {node: '>= 0.6'}
+    dev: false
 
   registry.npmmirror.com/next@13.4.5(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-pfNsRLVM9e5Y1/z02VakJRfD6hMQkr24FaN2xc9GbcZDBxoOgiNAViSg5cXwlWCoMhtm4U315D7XYhgOr96Q3Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/next/-/next-13.4.5.tgz}
