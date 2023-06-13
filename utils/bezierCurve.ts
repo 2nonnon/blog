@@ -67,7 +67,7 @@ export default class BezierCurve {
     const index = this.index
     const points = this.points
     const length = points.length
-    let p1: Point, p2: Point
+    let p1: Point | undefined, p2: Point | undefined
     for (let i = index; i < length; i++) {
       if (points[i].x === x) {
         this.index = i + 1

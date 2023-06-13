@@ -1,10 +1,10 @@
 import { LocaleType } from "@/i18n-config"
 
-declare interface IParams {
+export interface IParams {
     lang: LocaleType
     id?: string
 }
 
-declare interface PageProps {
+export interface PageProps {
     params: IParams
 }
