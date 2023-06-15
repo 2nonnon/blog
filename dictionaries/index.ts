@@ -15,4 +15,4 @@ export type Dictionary = Dictionaries['en']
 
 export type LocaleType = keyof typeof dictionaries
 
-export const getDictionary = async (locale: LocaleType) => dictionaries[locale || 'en']()
+export const getDictionary = async (locale: LocaleType) => dictionaries[locale]()
