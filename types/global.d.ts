@@ -5,6 +5,11 @@ export interface IParams {
     id?: string
 }
 
+export interface ISearchParams {
+    [key: string]: string | string[] | undefined
+}
+
 export interface PageProps {
-    params: IParams
+    params: IParams,
+    searchParams?: ISearchParams,
 }
