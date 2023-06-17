@@ -1,9 +1,6 @@
 'use client'
 
-import Head from 'next/head'
-
 import { useEffect, useState } from 'react'
-import type { Dictionary } from '@/dictionaries'
 import type { ITask } from '@/components/todo/TasksContext'
 import {
   TasksProvider,
@@ -96,16 +93,9 @@ const TodoModal = () => {
   </>)
 }
 
-const Todo = ({ dictionary }: {
-  dictionary: Dictionary }) => {
-  const copies = dictionary.todo
-
+const Todo = () => {
   return (
     <>
-      <Head>
-        <title>{copies.title}</title>
-        <meta name="description" content={copies.description} />
-      </Head>
       <TasksProvider>
         <ModalProvider>
           <div className='max-w-screen-md mx-auto py-6 w-full'>

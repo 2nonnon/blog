@@ -1,7 +1,6 @@
 'use client'
 
 import { createContext, useContext } from 'react'
-import Head from 'next/head'
 import { checkWin, generateMine, handleClickBlock, handleClickMine, handleToggleFlag, initMineSweeper } from '@/components/minesweeper/helper'
 import type { Coordinate, IBlock } from '@/components/minesweeper/type'
 import { BlockType, GameState, Level } from '@/components/minesweeper/type'
@@ -89,10 +88,6 @@ const MineSweeper = ({ dictionary }: {
 
   return (
     <>
-      <Head>
-        <title>{copies.title}</title>
-        <meta name="description" content={copies.description} />
-      </Head>
       <MineSweeperContext.Provider value={mineSweeperInfo}>
         <section className='grid place-content-center select-none w-full'>
           <div>

@@ -3,7 +3,6 @@
 import qrcode from 'qrcode-generator'
 import type { FunctionComponent } from 'react'
 import React, { useEffect, useRef, useState } from 'react'
-import Head from 'next/head'
 import Modal from '@/components/Modal'
 import type { Dictionary } from '@/dictionaries'
 
@@ -182,10 +181,6 @@ const QrcodeGenerator = ({ dictionary }: {
 
   return (
     <>
-      <Head>
-        <title>{copies.title}</title>
-        <meta name="description" content={copies.description} />
-      </Head>
       <h1 className='hidden'>{copies.title}</h1>
       {modal ? <Modal><Confirm setModal={setModal} /></Modal> : null}
       <div className='flex flex-col gap-4 items-center text-sm w-full'>

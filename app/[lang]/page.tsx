@@ -1,19 +1,21 @@
-import Head from 'next/head'
 import Image from 'next/image'
-import { getDictionary } from '@/dictionaries'
+import type { Metadata } from 'next'
+import { getCopies } from '@/dictionaries'
 import type { PageProps } from '@/types/global'
 import profileSrc from '@/public/images/profile.jpg'
+import { getI18nMetaData } from '@/helper/getI18nMetaData'
+
+export async function generateMetadata({ params: { lang } }: PageProps): Promise<Metadata> {
+  const i18nMeteData = await getI18nMetaData(lang, 'home')
+
+  return i18nMeteData
+}
 
 export default async function Page({ params: { lang } }: PageProps) {
   const name = '2nonnon'
-  const dictionary = await getDictionary(lang)
-  const copies = dictionary.home
+  const copies = await getCopies(lang, 'home')
   return (
     <>
-      <Head>
-        <title>{copies.title}</title>
-        <meta name="description" content={copies.description} />
-      </Head>
       <section className='max-w-screen-md mx-auto'>
         <div className='flex flex-col items-center gap-4 mt-10'>
           <Image

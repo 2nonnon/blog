@@ -1,16 +1,10 @@
 'use client'
 
-import Head from 'next/head'
-
 import { useEffect, useMemo, useRef, useState } from 'react'
-import type { Dictionary } from '@/dictionaries'
 
 const pannerOptions = { pan: 0 }
 
-const Audio = ({ dictionary }: {
-  dictionary: Dictionary }) => {
-  const copies = dictionary.audio
-
+const Audio = () => {
   const [src, setSrc] = useState('https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3')
   const [playing, setPlaying] = useState(false)
 
@@ -39,10 +33,6 @@ const Audio = ({ dictionary }: {
 
   return (
     <>
-      <Head>
-        <title>{copies.title}</title>
-        <meta name="description" content={copies.description} />
-      </Head>
       <div className='max-w-screen-md mx-auto py-6 w-full'>
         <section>
           <input type="file" accept='audio/*' onChange={(e) => {

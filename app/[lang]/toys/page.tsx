@@ -1,11 +1,18 @@
 import Link from 'next/link'
 import { Icon } from '@iconify-icon/react'
-import { getDictionary } from '@/dictionaries'
+import type { Metadata } from 'next'
+import { getCopies } from '@/dictionaries'
 import type { PageProps } from '@/types/global'
+import { getI18nMetaData } from '@/helper/getI18nMetaData'
+
+export async function generateMetadata({ params: { lang } }: PageProps): Promise<Metadata> {
+  const i18nMeteData = await getI18nMetaData(lang, 'toy')
+
+  return i18nMeteData
+}
 
 export default async function Page({ params: { lang } }: PageProps) {
-  const dictionary = await getDictionary(lang)
-  const copies = dictionary.toy
+  const copies = await getCopies(lang, 'toy')
   const curPath = `/${lang}/toys`
 
   const toys = [

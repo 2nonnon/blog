@@ -1,11 +1,9 @@
 'use client'
 
-import Head from 'next/head'
 import type { ChangeEventHandler } from 'react'
 import { useEffect, useState } from 'react'
 
 import { HSLToRGB, HSVToRGB, HexToRGB, RGBToHSL, RGBToHSV, RGBToHex, getContrast, splitHexString } from '@/utils/color'
-import type { Dictionary } from '@/dictionaries'
 
 interface ColorInputProps {
   value: {
@@ -134,11 +132,8 @@ const Contrast = () => {
   </>)
 }
 
-const Color = ({ dictionary }: {
-  dictionary: Dictionary }) => {
+const Color = () => {
   const [rgb, setRGB] = useState({ R: 0, G: 0, B: 0 })
-
-  const copies = dictionary.color
 
   const hsl = RGBToHSL(rgb.R, rgb.G, rgb.B)
   const hsv = RGBToHSV(rgb.R, rgb.G, rgb.B)
@@ -184,10 +179,6 @@ const Color = ({ dictionary }: {
 
   return (
     <>
-      <Head>
-        <title>{copies.title}</title>
-        <meta name="description" content={copies.description} />
-      </Head>
       <div className='max-w-screen-lg mx-auto py-6 w-full'>
         <section>
           <ul className='flex flex-wrap gap-4 mb-6' role='list'>
