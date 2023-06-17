@@ -3,7 +3,7 @@ import { HexToRGB } from './HexToRGB'
 export const splitHexString = (hex: string) => {
   const length = hex.length
 
-  let step: number
+  let step = 1
   if (length === 4)
     step = 1
   else if (length === 7)

@@ -37,7 +37,7 @@ class Snowflake {
       theta: props.theta,
     }
     this.offscreen = new OffscreenCanvas(props.length * 2, props.length * 2)
-    this.ctx = this.offscreen.getContext('2d')
+    this.ctx = this.offscreen.getContext('2d')!
     this.ctx.strokeStyle = props.color
     this.ctx.lineWidth = props.lineWidth
   }
@@ -179,19 +179,21 @@ interface SnowBGProps {
 }
 
 const SnowBG = ({ theme }: SnowBGProps) => {
-  const canvas = useRef<HTMLCanvasElement>()
+  const canvas = useRef<HTMLCanvasElement>(null)
   const { width, height } = useClientSize()
 
   useEffect(() => {
-    const canvasEl = canvas.current
-    const color = theme === Theme.LIGTH ? '#171a1c99' : '#dfe8ec99'
-    const ctx = canvasEl.getContext('2d')
-    canvasEl.style.width = `${width}px`
-    canvasEl.style.height = `${height}px`
-    canvasEl.width = width
-    canvasEl.height = height
+    if (canvas.current) {
+      const canvasEl = canvas.current
+      const color = theme === Theme.LIGTH ? '#171a1c99' : '#dfe8ec99'
+      const ctx = canvasEl.getContext('2d')!
+      canvasEl.style.width = `${width}px`
+      canvasEl.style.height = `${height}px`
+      canvasEl.width = width
+      canvasEl.height = height
 
-    grow(ctx, width, height, { length: 100, depth: 5, color, lineWidth: 2, theta: 0 })
+      grow(ctx, width, height, { length: 100, depth: 5, color, lineWidth: 2, theta: 0 })
+    }
   }, [canvas, theme, width, height])
 
   return (

@@ -88,21 +88,23 @@ const grow = (ctx: CanvasRenderingContext2D, option = {
 }
 
 const PlumBG = () => {
-  const canvas = useRef<HTMLCanvasElement>()
+  const canvas = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    const ctx = canvas.current.getContext('2d')
-    const width = document.documentElement.clientWidth
-    const height = document.documentElement.clientHeight
-    canvas.current.style.width = `${width}px`
-    canvas.current.style.height = `${height}px`
-    canvas.current.width = width
-    canvas.current.height = height
-    console.log({ width, height })
-    grow(ctx)
-    grow(ctx, { start: { x: width, y: 0 }, length: 10, theta: Math.PI / 4 * 3 })
-    grow(ctx, { start: { x: 0, y: height }, length: 10, theta: -Math.PI / 4 })
-    grow(ctx, { start: { x: width, y: height }, length: 10, theta: -Math.PI / 4 * 3 })
+    if (canvas.current) {
+      const ctx = canvas.current.getContext('2d')!
+      const width = document.documentElement.clientWidth
+      const height = document.documentElement.clientHeight
+      canvas.current.style.width = `${width}px`
+      canvas.current.style.height = `${height}px`
+      canvas.current.width = width
+      canvas.current.height = height
+      console.log({ width, height })
+      grow(ctx)
+      grow(ctx, { start: { x: width, y: 0 }, length: 10, theta: Math.PI / 4 * 3 })
+      grow(ctx, { start: { x: 0, y: height }, length: 10, theta: -Math.PI / 4 })
+      grow(ctx, { start: { x: width, y: height }, length: 10, theta: -Math.PI / 4 * 3 })
+    }
   }, [canvas])
 
   return (

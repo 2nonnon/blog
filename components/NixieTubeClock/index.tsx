@@ -30,7 +30,7 @@ interface NixieTubeNumProps { num?: keyof typeof numMap }
 const NixieTubeNum = ({ num }: NixieTubeNumProps) => {
   return <>
     <div className={style['nixie-num']}>
-      {numMap[num].map((v: 0 | 1, i: number) => {
+      {numMap[num!].map((v: 0 | 1, i: number) => {
         return <NixieTube key={i} active={!!v} position={positions[i]}></NixieTube>
       })}
     </div>

@@ -45,7 +45,7 @@ export default async function (dialog: HTMLDialogElement) {
         const focusTarget = dialog.querySelector('[autofocus]') as HTMLButtonElement
         focusTarget
           ? focusTarget.focus()
-          : dialog.querySelector('button').focus()
+          : dialog.querySelector('button')?.focus()
 
         dialog.dispatchEvent(dialogOpeningEvent)
         await animationsComplete(dialog)
