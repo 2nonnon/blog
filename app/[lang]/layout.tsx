@@ -1,6 +1,3 @@
-import { Suspense } from 'react'
-import Loading from './loading'
-import { NavigationEvents } from './components/navigation-events'
 import Layout from '@/components/layout'
 import { getDictionary } from '@/dictionaries'
 import { i18n } from '@/i18n-config'
@@ -23,9 +20,6 @@ export default async function RootLayout({
     <html lang={params.lang}>
       <body>
         <Layout dictionary={dictionary} locale={params.lang}>{children}</Layout>
-        <Suspense fallback={<Loading/>}>
-          <NavigationEvents />
-        </Suspense>
       </body>
     </html>
   )
