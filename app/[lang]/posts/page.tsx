@@ -24,7 +24,7 @@ export default async function Page({ params: { lang } }: PageProps) {
         <ul className='flex flex-col gap-4'>
           {allPostsData.map(({ id, date, title }) => (
             <li key={id} className="surface-md rounded-xl">
-              <Link className='text-lg font-medium border-b-0 py-4 px-6 block' href={`/posts/${id}`}>
+              <Link className='text-lg font-medium border-b-0 py-4 px-6 block' href={`/${lang}/posts/${id}`}>
                 <p className='mt-0 mb-2'>{title}</p>
                 <small className='opacity-80'>
                   <Date dateString={date} locale={lang} />

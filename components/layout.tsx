@@ -65,7 +65,7 @@ export default function Layout({ children, dictionary, locale }: {
   const home = {
     title: copies.logo,
     name: copies.logo,
-    href: '/',
+    href: `/${currentLocale}`,
     icon: 'material-symbols:home-outline-rounded',
   }
 
@@ -80,13 +80,13 @@ export default function Layout({ children, dictionary, locale }: {
     {
       title: copies.blog,
       name: copies.blog,
-      href: '/posts',
+      href: `/${currentLocale}/posts`,
       icon: 'ri:article-line',
     },
     {
       title: copies.toy,
       name: copies.toy,
-      href: '/toys',
+      href: `/${currentLocale}/toys`,
       icon: 'tabler:horse-toy',
     },
     {

@@ -48,8 +48,8 @@ export default async function Page({ params: { lang, id } }: PageProps) {
           {
             (postData.last || postData.next)
             && <div className='flex items-center justify-between mb-4 gap-2'>
-              {postData.last ? <Link href={postData.last.id}>{`Last: ${postData.last.title}`}</Link> : <span></span>}
-              {postData.next ? <Link href={postData.next.id}>{`Next: ${postData.next.title}`}</Link> : <span></span>}
+              {postData.last ? <Link href={`/${lang}/${postData.last.id}`}>{`Last: ${postData.last.title}`}</Link> : <span></span>}
+              {postData.next ? <Link href={`${lang}/${postData.next.id}`}>{`Next: ${postData.next.title}`}</Link> : <span></span>}
             </div>
           }
         </nav>
