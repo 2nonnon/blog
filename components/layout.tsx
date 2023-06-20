@@ -1,17 +1,16 @@
 'use client'
 
-import Head from 'next/head'
 import type { LinkProps } from 'next/link'
 import Link from 'next/link'
 import { Icon } from '@iconify-icon/react'
-import React, { memo, useCallback } from 'react'
+import React, { memo } from 'react'
 
 import { Inter } from 'next/font/google'
 import { usePathname } from 'next/navigation'
 
 // import PageLoading from './PageLoading'
 import ScrollTop from './ScrollTop'
-import { Theme, useTheme } from '@/hooks/useTheme'
+import DayAndNight from './DayAndNight'
 import type { Dictionary, LocaleType } from '@/dictionaries'
 
 const inter = Inter({
@@ -38,16 +37,6 @@ export default function Layout({ children, dictionary, locale }: {
   dictionary: Dictionary
   locale: LocaleType
 }) {
-  const [theme, setTheme] = useTheme(Theme.DARK)
-
-  const isLight = theme === Theme.LIGTH
-
-  const handleToggleTheme = useCallback<Required<NavItemProps>['onClick']>((e) => {
-    e.preventDefault()
-    const next = isLight ? Theme.DARK : Theme.LIGTH
-    setTheme(next)
-  }, [theme])
-
   const pathName = usePathname()
   const redirectedPathName = (locale: string) => {
     if (!pathName)
@@ -90,13 +79,6 @@ export default function Layout({ children, dictionary, locale }: {
       icon: 'tabler:horse-toy',
     },
     {
-      title: isLight ? copies.light : copies.dark,
-      name: isLight ? copies.light : copies.dark,
-      href: '',
-      icon: isLight ? 'ph:sun' : 'ph:moon',
-      onClick: handleToggleTheme,
-    },
-    {
       title: 'Github',
       name: 'Github',
       href: 'https://github.com/2nonnon',
@@ -107,14 +89,12 @@ export default function Layout({ children, dictionary, locale }: {
 
   return (
     <>
-      <Head>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <div className={`min-h-screen text-[var(--text2)] -z-20 flex flex-col ${inter.variable} font-sans`}>
         <header className='flex items-center justify-between h-20 px-6 box-border max-w-screen-xl mx-auto w-full'>
           <NavItem {...home}></NavItem>
           <nav className='flex items-center gap-4' aria-label={copies.globalNav}>
             {navList.map(item => (<NavItem key={item.name} {...item}></NavItem>))}
+            <DayAndNight></DayAndNight>
           </nav>
         </header>
         <main className='px-6 max-w-screen-xl box-border w-full mx-auto overflow-hidden flex-1 flex flex-col'>
