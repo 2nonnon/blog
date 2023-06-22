@@ -1,16 +1,13 @@
-'use client'
-
-import type { LinkProps } from 'next/link'
-import Link from 'next/link'
-import { Icon } from '@iconify-icon/react'
-import React, { memo } from 'react'
+import React from 'react'
 
 import { Inter } from 'next/font/google'
-import { usePathname } from 'next/navigation'
 
 // import PageLoading from './PageLoading'
 import ScrollTop from './ScrollTop'
 import DayAndNight from './DayAndNight'
+import ToggleLocale from './toggleLocale'
+import type { IconLinkProps } from './IconLink'
+import IconLink from './IconLink'
 import type { Dictionary, LocaleType } from '@/dictionaries'
 
 const inter = Inter({
@@ -18,64 +15,34 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-type NavItemProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & LinkProps & {
-  name: string
-  icon: string
-}
-
-const NavItem = memo(({ name, title, href, icon, locale, target = '_self', onClick }: NavItemProps) => {
-  return (
-    <Link href={href} title={title} className="flex surface-sm hover:no-underline p-1 rounded md:px-3" locale={locale} target={target} onClick={onClick}>
-      <p className='hidden md:inline-block m-0'>{name}</p>
-      <Icon className='md:hidden' width={30} height={30} icon={icon} alt={name} name={name} />
-    </Link>
-  )
-})
-
 export default function Layout({ children, dictionary, locale }: {
   children: React.ReactNode
   dictionary: Dictionary
   locale: LocaleType
 }) {
-  const pathName = usePathname()
-  const redirectedPathName = (locale: string) => {
-    if (!pathName)
-      return '/'
-    const segments = pathName.split('/')
-    segments[1] = locale
-    return segments.join('/')
-  }
-
   const currentLocale = locale
-  const nextLocale = currentLocale === 'en' ? 'zh' : 'en'
+  const preUrl = currentLocale === 'en' ? '/' : `/${currentLocale}/`
 
   const copies = dictionary.layout
 
   const home = {
     title: copies.logo,
     name: copies.logo,
-    href: `/${currentLocale}`,
+    href: preUrl,
     icon: 'material-symbols:home-outline-rounded',
   }
 
-  const navList: NavItemProps[] = [
-    {
-      title: copies.lang,
-      name: copies.lang,
-      href: redirectedPathName(nextLocale),
-      locale: nextLocale,
-      icon: currentLocale === 'en' ? 'icon-park-outline:eagle' : 'icon-park-outline:rabbit',
-    },
+  const links: IconLinkProps[] = [
     {
       title: copies.blog,
       name: copies.blog,
-      href: `/${currentLocale}/posts`,
+      href: `${preUrl}posts`,
       icon: 'ri:article-line',
     },
     {
       title: copies.toy,
       name: copies.toy,
-      href: `/${currentLocale}/toys`,
+      href: `${preUrl}toys`,
       icon: 'tabler:horse-toy',
     },
     {
@@ -91,9 +58,10 @@ export default function Layout({ children, dictionary, locale }: {
     <>
       <div className={`min-h-screen text-[var(--text2)] -z-20 flex flex-col ${inter.variable} font-sans`}>
         <header className='flex items-center justify-between h-20 px-6 box-border max-w-screen-xl mx-auto w-full'>
-          <NavItem {...home}></NavItem>
+          <IconLink {...home}></IconLink>
           <nav className='flex items-center gap-4' aria-label={copies.globalNav}>
-            {navList.map(item => (<NavItem key={item.name} {...item}></NavItem>))}
+            <ToggleLocale dictionary={dictionary} locale={locale}></ToggleLocale>
+            {links.map(item => (<IconLink key={item.name} {...item}></IconLink>))}
             <DayAndNight></DayAndNight>
           </nav>
         </header>
