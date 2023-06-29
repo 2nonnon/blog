@@ -20,9 +20,9 @@ export const MultibyteMap = {
   'UTF-8': 'UTF-8',
 }
 
-type MultibyteType = keyof typeof MultibyteMap
+export type MultibyteType = keyof typeof MultibyteMap
 
-interface QRCodeOptions {
+export interface QrcodeOptions {
   typeNumber: TypeNumber
   errorCorrectionLevel: ErrorCorrectionLevel
   mode: Mode
@@ -30,7 +30,7 @@ interface QRCodeOptions {
   multibyte: MultibyteType
 }
 
-export const useQRCode = (initOptions: QRCodeOptions) => {
+export const useQrcode = (initOptions: QrcodeOptions) => {
   const [options, setOptions] = useState(initOptions)
 
   qrcode.stringToBytes = qrcode.stringToBytesFuncs[options.multibyte]
@@ -38,5 +38,5 @@ export const useQRCode = (initOptions: QRCodeOptions) => {
   qr.addData(options.content)
   qr.make()
 
-  return [qr, setOptions]
+  return [qr, setOptions] as const
 }
