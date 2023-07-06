@@ -34,6 +34,7 @@ export const useQrcode = (initOptions: QrcodeOptions) => {
   const [options, setOptions] = useState(initOptions)
 
   qrcode.stringToBytes = qrcode.stringToBytesFuncs[options.multibyte]
+
   const qr = qrcode(options.typeNumber, options.errorCorrectionLevel)
   qr.addData(options.content)
   qr.make()
