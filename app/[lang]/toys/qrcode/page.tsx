@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import Content from './index'
+import { QrcodeProvider } from './QrcodeContext'
+import QrcodeArea from './QrcodeArea'
+import PanelArea from './PanelArea'
 import type { PageProps } from '@/types/global'
 import { getI18nMetaData } from '@/helper/getI18nMetaData'
 import { getDictionary } from '@/dictionaries'
@@ -12,5 +14,21 @@ export async function generateMetadata({ params: { lang } }: PageProps): Promise
 
 export default async function Page({ params: { lang } }: PageProps) {
   const dictionary = await getDictionary(lang)
-  return <Content dictionary={dictionary}></Content>
+  const copies = dictionary.qrcode
+
+  return (
+    <>
+      <QrcodeProvider>
+        <h1 className='hidden'>{copies.title}</h1>
+        <div className='flex gap-4 items-center text-sm w-full'>
+          <div className='flex-[3_3_0%]'>
+            <PanelArea></PanelArea>
+          </div>
+          <div className='flex-1'>
+            <QrcodeArea></QrcodeArea>
+          </div>
+        </div>
+      </QrcodeProvider>
+    </>
+  )
 }
