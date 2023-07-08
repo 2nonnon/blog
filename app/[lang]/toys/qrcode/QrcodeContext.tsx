@@ -2,7 +2,7 @@
 
 import type { Dispatch } from 'react'
 import { createContext, useContext, useReducer } from 'react'
-import type { QrcodeOptions } from '@/hooks/useQRCode'
+import type { QrcodeOptions } from '@/hooks/useQrcode'
 
 const QrcodeContext = createContext<QrcodeOptions | null>(null)
 
