@@ -8,12 +8,6 @@ dependencies:
   '@formatjs/intl-localematcher':
     specifier: ^0.4.0
     version: registry.npmmirror.com/@formatjs/intl-localematcher@0.4.0
-  '@types/offscreencanvas':
-    specifier: ^2019.7.0
-    version: registry.npmmirror.com/@types/offscreencanvas@2019.7.0
-  '@types/wicg-file-system-access':
-    specifier: ^2020.9.6
-    version: registry.npmmirror.com/@types/wicg-file-system-access@2020.9.6
   date-fns:
     specifier: ^2.29.3
     version: registry.npmmirror.com/date-fns@2.29.3
@@ -67,9 +61,15 @@ devDependencies:
   '@types/node':
     specifier: ^18.11.9
     version: registry.npmmirror.com/@types/node@18.11.9
+  '@types/offscreencanvas':
+    specifier: ^2019.7.0
+    version: registry.npmmirror.com/@types/offscreencanvas@2019.7.0
   '@types/react':
     specifier: ^18.0.25
     version: registry.npmmirror.com/@types/react@18.0.25
+  '@types/wicg-file-system-access':
+    specifier: ^2020.9.6
+    version: registry.npmmirror.com/@types/wicg-file-system-access@2020.9.6
   autoprefixer:
     specifier: ^10.4.13
     version: registry.npmmirror.com/autoprefixer@10.4.13(postcss@8.4.19)
@@ -681,7 +681,7 @@ packages:
     resolution: {integrity: sha512-PGcyveRIpL1XIqK8eBsmRBt76eFgtzuPiSTyKHZxnGemp2yzGzWpjYKAfK3wIMiU7eH+851yEpiuP8JZerTmWg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/offscreencanvas/-/offscreencanvas-2019.7.0.tgz}
     name: '@types/offscreencanvas'
     version: 2019.7.0
-    dev: false
+    dev: true
 
   registry.npmmirror.com/@types/prop-types@15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/prop-types/-/prop-types-15.7.5.tgz}
@@ -720,7 +720,7 @@ packages:
     resolution: {integrity: sha512-6hogE75Hl2Ov/jgp8ZhDaGmIF/q3J07GtXf8nCJCwKTHq7971po5+DId7grft09zG7plBwpF6ZU0yx9Du4/e1A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/wicg-file-system-access/-/wicg-file-system-access-2020.9.6.tgz}
     name: '@types/wicg-file-system-access'
     version: 2020.9.6
-    dev: false
+    dev: true
 
   registry.npmmirror.com/@typescript-eslint/eslint-plugin@5.43.0(@typescript-eslint/parser@5.43.0)(eslint@8.28.0)(typescript@4.9.3):
     resolution: {integrity: sha512-wNPzG+eDR6+hhW4yobEmpR36jrqqQv1vxBq5LJO3fBAktjkvekfr4BRl+3Fn1CM/A+s8/EiGUbOMDoYqWdbtXA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.43.0.tgz}
