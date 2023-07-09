@@ -13,3 +13,14 @@ export interface PageProps {
     params: IParams,
     searchParams?: ISearchParams,
 }
+
+declare global {
+    declare interface Window {
+        SpeechRecognition: any;
+        webkitSpeechRecognition: any;
+        SpeechGrammarList: any;
+        webkitSpeechGrammarList: any;
+        SpeechRecognitionEvent: any;
+        webkitSpeechRecognitionEvent: any;
+    }
+}

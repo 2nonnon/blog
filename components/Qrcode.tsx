@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { useQrcode } from '@/hooks/useQrcode'
 import type { QrcodeOptions } from '@/hooks/useQrcode'
+import { useQrcode } from '@/hooks/useQrcode'
 
 type QrcodeProps = Partial<QrcodeOptions & {
   cellSize: number

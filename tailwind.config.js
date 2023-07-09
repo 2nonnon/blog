@@ -11,10 +11,10 @@ module.exports = {
   theme: {
     screens: {
       xs: '375px',
-      sm: '640px',
+      sm: '480px',
       md: '768px',
       lg: '900px',
-      xl: '1200px',
+      xl: '1280px',
     },
     extend: {
       animation: {

@@ -31,6 +31,8 @@
     --surface3-dark: hsl(var(--brand-hue) 5% 20%);
     --surface4-dark: hsl(var(--brand-hue) 5% 25%);
 
+    --border-color: hsl(var(--brand-hue) 10% 50% / 15%);
+
     --surface-shadow-sm: var(--sm) var(--sm) var(--md) var(--surface0),
         var(--sm-n) var(--sm-n) var(--md) var(--surface2);
     --surface-shadow-inset-sm: inset var(--sm) var(--sm) var(--md) var(--surface0),

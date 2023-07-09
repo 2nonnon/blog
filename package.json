@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.4.0",
-    "@types/offscreencanvas": "^2019.7.0",
     "date-fns": "^2.29.3",
     "gray-matter": "^4.0.3",
     "negotiator": "^0.6.3",
@@ -27,7 +26,9 @@
     "@iconify-icon/react": "^1.0.1",
     "@types/negotiator": "^0.6.1",
     "@types/node": "^18.11.9",
+    "@types/offscreencanvas": "^2019.7.0",
     "@types/react": "^18.0.25",
+    "@types/wicg-file-system-access": "^2020.9.6",
     "autoprefixer": "^10.4.13",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.28.0",
