@@ -20,7 +20,7 @@ export default async function Page({ params: { lang } }: PageProps) {
     <>
       <QrcodeProvider>
         <h1 className='hidden'>{copies.title}</h1>
-        <div className='flex gap-4 items-center text-sm w-full'>
+        <div className='flex gap-4 items-start text-sm w-full max-md:flex-col max-md:items-stretch'>
           <div className='flex-[3_3_0%]'>
             <PanelArea></PanelArea>
           </div>

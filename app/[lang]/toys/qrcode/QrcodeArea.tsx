@@ -1,8 +1,10 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import qrcode from 'qrcode-generator'
+import { Icon } from '@iconify-icon/react'
 import { useQrcodeOptions } from './QrcodeContext'
+import { getFileHandle, saveDataToFile } from '@/utils/file'
 
 export default function () {
   const target = useRef<HTMLCanvasElement>(null)
@@ -31,10 +33,46 @@ export default function () {
     generateQRCode()
   }, [options])
 
+  const handleDownloadQrcode = useCallback(async () => {
+    if (target.current) {
+      const fileHandle = await getFileHandle({
+        create: true,
+        opts: {
+          suggestedName: 'qrcode.png',
+          types: [{
+            description: 'Images',
+            accept: {
+              'image/png': ['.png'],
+              'image/jpeg': ['.jpeg', '.jpg'],
+              'image/webp': ['.webp'],
+            },
+          }],
+          excludeAcceptAllOption: true,
+        },
+      }) as FileSystemFileHandle
+
+      const file = await fileHandle.getFile()
+
+      target.current.toBlob(async (blob) => {
+        if (blob)
+          saveDataToFile({ handle: fileHandle, opts: { type: 'write', data: blob } })
+      },
+      file.type,
+      )
+    }
+  }, [])
+
   return (
     <>
-      <div className='relative before:block before:pb-[100%] min-w-[200px]'>
-        <canvas ref={target} className="absolute inset-0 w-full h-full"></canvas>
+      <div className='flex flex-col items-center gap-4'>
+        <div className='relative before:block before:pb-[100%] min-w-[200px] max-w-xs w-full rounded flex border border-[var(--border-color)]'>
+          <canvas ref={target} className="absolute inset-0 w-full h-full rounded"></canvas>
+        </div>
+
+        <button className='flex surface-sm w-full items-center justify-center rounded-lg h-10 gap-2 text-base' onClick={handleDownloadQrcode}>
+          <Icon icon="charm:download" />
+          Download
+        </button>
       </div>
     </>
   )
