@@ -15,17 +15,45 @@ export default function () {
     if (target.current && options) {
       qrcode.stringToBytes = qrcode.stringToBytesFuncs[options.multibyte]
       const qr = qrcode(options.typeNumber, options.errorCorrectionLevel)
-      qr.addData(options.content)
+      qr.addData(options.content, options.mode)
       qr.make()
       const moduleCount = qr.getModuleCount()
-      //   const width = moduleCount * (options.cellSize || 2)
-      const width = moduleCount * (10)
+
+      const cellSize = 20
+      const margin = cellSize * 2
+      const width = moduleCount * (cellSize) + 2 * margin
       const ctx = target.current.getContext('2d')!
       ctx.clearRect(0, 0, target.current.width, target.current.height)
+
       target.current.height = width < 16384 ? width : 16384
       target.current.width = width < 16384 ? width : 16384
-      //   qr.renderTo2dContext(ctx, options.cellSize)
-      qr.renderTo2dContext(ctx, 10)
+
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, target.current.width, target.current.height)
+      ctx.fillStyle = '#000'
+      ctx.strokeStyle = '#000'
+      ctx.beginPath()
+
+      for (let x = 0; x < moduleCount; x++) {
+        for (let y = 0; y < moduleCount; y++) {
+          if (qr.isDark(x, y)) {
+            // const leftIsNotDark = x - 1 >= 0 ? !qr.isDark(x - 1, y) : true
+            // const topIsNotDark = y - 1 >= 0 ? !qr.isDark(x, y - 1) : true
+            // const rightIsNotDark = x + 1 < moduleCount ? !qr.isDark(x + 1, y) : true
+            // const bottomIsNotDark = y + 1 < moduleCount ? !qr.isDark(x, y + 1) : true
+
+            // const LT = leftIsNotDark && topIsNotDark ? cellSize : 0
+            // const RT = rightIsNotDark && topIsNotDark ? cellSize : 0
+            // const RB = rightIsNotDark && bottomIsNotDark ? cellSize : 0
+            // const LB = leftIsNotDark && bottomIsNotDark ? cellSize : 0
+
+            // ctx.roundRect(x * cellSize + margin, y * cellSize + margin, cellSize, cellSize, [LT, RT, RB, LB])
+            ctx.roundRect(x * cellSize + margin, y * cellSize + margin, cellSize, cellSize, [0, 0, 0, 0])
+          }
+        }
+      }
+      ctx.stroke()
+      ctx.fill()
     }
   }
 
