@@ -19,62 +19,72 @@ export default function () {
       qr.make()
       const moduleCount = qr.getModuleCount()
 
+      const maxSize = 16384
+
+      const lightColor = '#fff'
+      const darkColor = '#000'
+
       const cellSize = 20
       const margin = cellSize * 2
-      const width = moduleCount * (cellSize) + 2 * margin
+      const roundSize = cellSize / 2 + 1
+
       const ctx = target.current.getContext('2d')!
       ctx.clearRect(0, 0, target.current.width, target.current.height)
 
-      target.current.height = width < 16384 ? width : 16384
-      target.current.width = width < 16384 ? width : 16384
+      const width = moduleCount * (cellSize) + 2 * margin
+      target.current.height = width < maxSize ? width : maxSize
+      target.current.width = width < maxSize ? width : maxSize
 
-      ctx.fillStyle = '#fff'
+      const lineWidth = 2
+      const offset = lineWidth / 2
+
+      ctx.lineWidth = lineWidth
+
+      ctx.fillStyle = lightColor
       ctx.fillRect(0, 0, target.current.width, target.current.height)
 
       for (let x = 0; x < moduleCount; x++) {
         for (let y = 0; y < moduleCount; y++) {
+          const leftIsDark = x - 1 >= 0 ? qr.isDark(x - 1, y) : false
+          const topIsDark = y - 1 >= 0 ? qr.isDark(x, y - 1) : false
+          const rightIsDark = x + 1 < moduleCount ? qr.isDark(x + 1, y) : false
+          const bottomIsDark = y + 1 < moduleCount ? qr.isDark(x, y + 1) : false
+
+          const leftTopIsDark = leftIsDark && topIsDark && qr.isDark(x - 1, y - 1)
+          const rightTopIsDark = rightIsDark && topIsDark && qr.isDark(x + 1, y - 1)
+          const rightBottomIsDark = rightIsDark && bottomIsDark && qr.isDark(x + 1, y + 1)
+          const leftBottomIsDark = leftIsDark && bottomIsDark && qr.isDark(x - 1, y + 1)
+
           if (qr.isDark(x, y)) {
+            const LT = !leftIsDark && !topIsDark ? roundSize : 0
+            const RT = !rightIsDark && !topIsDark ? roundSize : 0
+            const RB = !rightIsDark && !bottomIsDark ? roundSize : 0
+            const LB = !leftIsDark && !bottomIsDark ? roundSize : 0
+
+            ctx.fillStyle = darkColor
+            ctx.strokeStyle = darkColor
+
             ctx.beginPath()
-            ctx.fillStyle = '#000'
-            ctx.strokeStyle = '#000'
-            const leftIsNotDark = x - 1 >= 0 ? !qr.isDark(x - 1, y) : true
-            const topIsNotDark = y - 1 >= 0 ? !qr.isDark(x, y - 1) : true
-            const rightIsNotDark = x + 1 < moduleCount ? !qr.isDark(x + 1, y) : true
-            const bottomIsNotDark = y + 1 < moduleCount ? !qr.isDark(x, y + 1) : true
-
-            const LT = leftIsNotDark && topIsNotDark ? cellSize / 2 : 0
-            const RT = rightIsNotDark && topIsNotDark ? cellSize / 2 : 0
-            const RB = rightIsNotDark && bottomIsNotDark ? cellSize / 2 : 0
-            const LB = leftIsNotDark && bottomIsNotDark ? cellSize / 2 : 0
-
-            ctx.roundRect(x * cellSize + margin, y * cellSize + margin, cellSize, cellSize, [LT, RT, RB, LB])
+            ctx.roundRect(x * cellSize + margin + offset, y * cellSize + margin + offset, cellSize - lineWidth, cellSize - lineWidth, [LT, RT, RB, LB])
+            ctx.stroke()
             ctx.fill()
           }
           else {
-            ctx.fillStyle = '#000'
+            const LT = leftTopIsDark ? roundSize : 0
+            const RT = rightTopIsDark ? roundSize : 0
+            const RB = rightBottomIsDark ? roundSize : 0
+            const LB = leftBottomIsDark ? roundSize : 0
+
+            ctx.fillStyle = darkColor
             ctx.fillRect(x * cellSize + margin, y * cellSize + margin, cellSize, cellSize)
 
+            ctx.fillStyle = lightColor
+            ctx.strokeStyle = lightColor
+
             ctx.beginPath()
-            ctx.fillStyle = '#fff'
-            ctx.strokeStyle = '#fff'
-            const leftIsDark = x - 1 >= 0 ? qr.isDark(x - 1, y) : false
-            const topIsDark = y - 1 >= 0 ? qr.isDark(x, y - 1) : false
-            const rightIsDark = x + 1 < moduleCount ? qr.isDark(x + 1, y) : false
-            const bottomIsDark = y + 1 < moduleCount ? qr.isDark(x, y + 1) : false
-
-            const leftTopIsNotDark = leftIsDark && topIsDark && qr.isDark(x - 1, y - 1)
-            const rightTopIsNotDark = rightIsDark && topIsDark && qr.isDark(x + 1, y - 1)
-            const rightBottomIsNotDark = rightIsDark && bottomIsDark && qr.isDark(x + 1, y + 1)
-            const leftBottomIsNotDark = leftIsDark && bottomIsDark && qr.isDark(x - 1, y + 1)
-
-            const LT = leftTopIsNotDark ? cellSize / 2 : 0
-            const RT = rightTopIsNotDark ? cellSize / 2 : 0
-            const RB = rightBottomIsNotDark ? cellSize / 2 : 0
-            const LB = leftBottomIsNotDark ? cellSize / 2 : 0
-
-            ctx.roundRect(x * cellSize + margin, y * cellSize + margin, cellSize, cellSize, [LT, RT, RB, LB])
-            ctx.fill()
+            ctx.roundRect(x * cellSize + margin + offset, y * cellSize + margin + offset, cellSize - lineWidth, cellSize - lineWidth, [LT, RT, RB, LB])
             ctx.stroke()
+            ctx.fill()
           }
         }
       }
