@@ -30,30 +30,54 @@ export default function () {
 
       ctx.fillStyle = '#fff'
       ctx.fillRect(0, 0, target.current.width, target.current.height)
-      ctx.fillStyle = '#000'
-      ctx.strokeStyle = '#000'
-      ctx.beginPath()
 
       for (let x = 0; x < moduleCount; x++) {
         for (let y = 0; y < moduleCount; y++) {
           if (qr.isDark(x, y)) {
-            // const leftIsNotDark = x - 1 >= 0 ? !qr.isDark(x - 1, y) : true
-            // const topIsNotDark = y - 1 >= 0 ? !qr.isDark(x, y - 1) : true
-            // const rightIsNotDark = x + 1 < moduleCount ? !qr.isDark(x + 1, y) : true
-            // const bottomIsNotDark = y + 1 < moduleCount ? !qr.isDark(x, y + 1) : true
+            ctx.beginPath()
+            ctx.fillStyle = '#000'
+            ctx.strokeStyle = '#000'
+            const leftIsNotDark = x - 1 >= 0 ? !qr.isDark(x - 1, y) : true
+            const topIsNotDark = y - 1 >= 0 ? !qr.isDark(x, y - 1) : true
+            const rightIsNotDark = x + 1 < moduleCount ? !qr.isDark(x + 1, y) : true
+            const bottomIsNotDark = y + 1 < moduleCount ? !qr.isDark(x, y + 1) : true
 
-            // const LT = leftIsNotDark && topIsNotDark ? cellSize : 0
-            // const RT = rightIsNotDark && topIsNotDark ? cellSize : 0
-            // const RB = rightIsNotDark && bottomIsNotDark ? cellSize : 0
-            // const LB = leftIsNotDark && bottomIsNotDark ? cellSize : 0
+            const LT = leftIsNotDark && topIsNotDark ? cellSize / 2 : 0
+            const RT = rightIsNotDark && topIsNotDark ? cellSize / 2 : 0
+            const RB = rightIsNotDark && bottomIsNotDark ? cellSize / 2 : 0
+            const LB = leftIsNotDark && bottomIsNotDark ? cellSize / 2 : 0
 
-            // ctx.roundRect(x * cellSize + margin, y * cellSize + margin, cellSize, cellSize, [LT, RT, RB, LB])
-            ctx.roundRect(x * cellSize + margin, y * cellSize + margin, cellSize, cellSize, [0, 0, 0, 0])
+            ctx.roundRect(x * cellSize + margin, y * cellSize + margin, cellSize, cellSize, [LT, RT, RB, LB])
+            ctx.fill()
+          }
+          else {
+            ctx.fillStyle = '#000'
+            ctx.fillRect(x * cellSize + margin, y * cellSize + margin, cellSize, cellSize)
+
+            ctx.beginPath()
+            ctx.fillStyle = '#fff'
+            ctx.strokeStyle = '#fff'
+            const leftIsDark = x - 1 >= 0 ? qr.isDark(x - 1, y) : false
+            const topIsDark = y - 1 >= 0 ? qr.isDark(x, y - 1) : false
+            const rightIsDark = x + 1 < moduleCount ? qr.isDark(x + 1, y) : false
+            const bottomIsDark = y + 1 < moduleCount ? qr.isDark(x, y + 1) : false
+
+            const leftTopIsNotDark = leftIsDark && topIsDark && qr.isDark(x - 1, y - 1)
+            const rightTopIsNotDark = rightIsDark && topIsDark && qr.isDark(x + 1, y - 1)
+            const rightBottomIsNotDark = rightIsDark && bottomIsDark && qr.isDark(x + 1, y + 1)
+            const leftBottomIsNotDark = leftIsDark && bottomIsDark && qr.isDark(x - 1, y + 1)
+
+            const LT = leftTopIsNotDark ? cellSize / 2 : 0
+            const RT = rightTopIsNotDark ? cellSize / 2 : 0
+            const RB = rightBottomIsNotDark ? cellSize / 2 : 0
+            const LB = leftBottomIsNotDark ? cellSize / 2 : 0
+
+            ctx.roundRect(x * cellSize + margin, y * cellSize + margin, cellSize, cellSize, [LT, RT, RB, LB])
+            ctx.fill()
+            ctx.stroke()
           }
         }
       }
-      ctx.stroke()
-      ctx.fill()
     }
   }
 
