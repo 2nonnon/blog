@@ -4,7 +4,14 @@ import type { Dispatch } from 'react'
 import { createContext, useContext, useReducer } from 'react'
 import type { QrcodeOptions } from '@/hooks/useQrcode'
 
-const QrcodeContext = createContext<QrcodeOptions | null>(null)
+interface DrawOptions {
+  margin: number
+  pixelSize: number
+}
+
+type QrcodeDrawOptions = QrcodeOptions & DrawOptions
+
+const QrcodeContext = createContext<QrcodeDrawOptions | null>(null)
 
 const QrcodeDispatchContext = createContext<Dispatch<QrcodeReducerAction> | null>(null)
 
@@ -20,9 +27,10 @@ export function QrcodeProvider({ children }: QrcodeProviderProps) {
       errorCorrectionLevel: 'L',
       mode: 'Byte',
       content: 'Hi!',
-      cellSize: 10,
       multibyte: 'UTF-8',
-    } as QrcodeOptions,
+      margin: 10,
+      pixelSize: 20,
+    } as QrcodeDrawOptions,
   )
 
   return (
@@ -44,10 +52,10 @@ export function useQrcodeDispatch() {
 
 export interface QrcodeReducerAction {
   type: 'changed'
-  options: Partial<QrcodeOptions>
+  options: Partial<QrcodeDrawOptions>
 }
 
-function qrcodeReducer(options: QrcodeOptions, action: QrcodeReducerAction): QrcodeOptions {
+function qrcodeReducer(options: QrcodeDrawOptions, action: QrcodeReducerAction): QrcodeDrawOptions {
   switch (action.type) {
     case 'changed': {
       return Object.assign({}, options, action.options)

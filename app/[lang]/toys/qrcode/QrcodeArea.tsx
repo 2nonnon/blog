@@ -24,14 +24,17 @@ export default function () {
       const lightColor = '#fff'
       const darkColor = '#000'
 
-      const cellSize = 20
-      const margin = cellSize * 2
-      const roundSize = cellSize / 2 + 1
+      const pixelSize = options.pixelSize
+      const roundSize = pixelSize / 2
 
       const ctx = target.current.getContext('2d')!
       ctx.clearRect(0, 0, target.current.width, target.current.height)
 
-      const width = moduleCount * (cellSize) + 2 * margin
+      const qrcodeSize = moduleCount * (pixelSize)
+
+      const margin = qrcodeSize * options.margin / 100
+
+      const width = qrcodeSize + 2 * margin
       target.current.height = width < maxSize ? width : maxSize
       target.current.width = width < maxSize ? width : maxSize
 
@@ -65,7 +68,7 @@ export default function () {
             ctx.strokeStyle = darkColor
 
             ctx.beginPath()
-            ctx.roundRect(x * cellSize + margin + offset, y * cellSize + margin + offset, cellSize - lineWidth, cellSize - lineWidth, [LT, RT, RB, LB])
+            ctx.roundRect(x * pixelSize + margin + offset, y * pixelSize + margin + offset, pixelSize - lineWidth, pixelSize - lineWidth, [LT, RT, RB, LB])
             ctx.stroke()
             ctx.fill()
           }
@@ -76,13 +79,13 @@ export default function () {
             const LB = leftBottomIsDark ? roundSize : 0
 
             ctx.fillStyle = darkColor
-            ctx.fillRect(x * cellSize + margin, y * cellSize + margin, cellSize, cellSize)
+            ctx.fillRect(x * pixelSize + margin, y * pixelSize + margin, pixelSize, pixelSize)
 
             ctx.fillStyle = lightColor
             ctx.strokeStyle = lightColor
 
             ctx.beginPath()
-            ctx.roundRect(x * cellSize + margin + offset, y * cellSize + margin + offset, cellSize - lineWidth, cellSize - lineWidth, [LT, RT, RB, LB])
+            ctx.roundRect(x * pixelSize + margin + offset, y * pixelSize + margin + offset, pixelSize - lineWidth, pixelSize - lineWidth, [LT, RT, RB, LB])
             ctx.stroke()
             ctx.fill()
           }
