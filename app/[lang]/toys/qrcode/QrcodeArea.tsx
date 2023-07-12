@@ -25,21 +25,20 @@ export default function () {
       const darkColor = '#000'
 
       const pixelSize = options.pixelSize
-      const roundSize = pixelSize / 2
+      const halfSize = pixelSize / 2
 
       const ctx = target.current.getContext('2d')!
       ctx.clearRect(0, 0, target.current.width, target.current.height)
 
       const qrcodeSize = moduleCount * (pixelSize)
 
-      const margin = qrcodeSize * options.margin / 100
+      const margin = Math.round(qrcodeSize * options.margin / 100)
 
       const width = qrcodeSize + 2 * margin
       target.current.height = width < maxSize ? width : maxSize
       target.current.width = width < maxSize ? width : maxSize
 
-      const lineWidth = 2
-      const offset = lineWidth / 2
+      const lineWidth = 1
 
       ctx.lineWidth = lineWidth
 
@@ -59,35 +58,58 @@ export default function () {
           const leftBottomIsDark = leftIsDark && bottomIsDark && qr.isDark(x - 1, y + 1)
 
           if (qr.isDark(x, y)) {
-            const LT = !leftIsDark && !topIsDark ? roundSize : 0
-            const RT = !rightIsDark && !topIsDark ? roundSize : 0
-            const RB = !rightIsDark && !bottomIsDark ? roundSize : 0
-            const LB = !leftIsDark && !bottomIsDark ? roundSize : 0
+            if (halfSize - lineWidth > 0) {
+              leftIsDark || topIsDark ? ctx.fillStyle = darkColor : ctx.fillStyle = lightColor
+              ctx.fillRect(x * pixelSize + margin, y * pixelSize + margin, halfSize, halfSize)
 
-            ctx.fillStyle = darkColor
-            ctx.strokeStyle = darkColor
+              rightIsDark || topIsDark ? ctx.fillStyle = darkColor : ctx.fillStyle = lightColor
+              ctx.fillRect(x * pixelSize + margin + halfSize, y * pixelSize + margin, halfSize, halfSize)
 
-            ctx.beginPath()
-            ctx.roundRect(x * pixelSize + margin + offset, y * pixelSize + margin + offset, pixelSize - lineWidth, pixelSize - lineWidth, [LT, RT, RB, LB])
-            ctx.stroke()
-            ctx.fill()
+              leftIsDark || bottomIsDark ? ctx.fillStyle = darkColor : ctx.fillStyle = lightColor
+              ctx.fillRect(x * pixelSize + margin, y * pixelSize + margin + halfSize, halfSize, halfSize)
+
+              rightIsDark || bottomIsDark ? ctx.fillStyle = darkColor : ctx.fillStyle = lightColor
+              ctx.fillRect(x * pixelSize + margin + halfSize, y * pixelSize + margin + halfSize, halfSize, halfSize)
+
+              ctx.fillStyle = darkColor
+              ctx.strokeStyle = darkColor
+
+              ctx.beginPath()
+              ctx.arc(x * pixelSize + margin + halfSize, y * pixelSize + margin + halfSize, halfSize - lineWidth, 0, 2 * Math.PI)
+              ctx.stroke()
+              ctx.fill()
+            }
+            else {
+              ctx.fillStyle = darkColor
+              ctx.fillRect(x * pixelSize + margin, y * pixelSize + margin, pixelSize, pixelSize)
+            }
           }
           else {
-            const LT = leftTopIsDark ? roundSize : 0
-            const RT = rightTopIsDark ? roundSize : 0
-            const RB = rightBottomIsDark ? roundSize : 0
-            const LB = leftBottomIsDark ? roundSize : 0
+            if (halfSize - lineWidth > 0) {
+              leftTopIsDark ? ctx.fillStyle = darkColor : ctx.fillStyle = lightColor
+              ctx.fillRect(x * pixelSize + margin, y * pixelSize + margin, halfSize, halfSize)
 
-            ctx.fillStyle = darkColor
-            ctx.fillRect(x * pixelSize + margin, y * pixelSize + margin, pixelSize, pixelSize)
+              rightTopIsDark ? ctx.fillStyle = darkColor : ctx.fillStyle = lightColor
+              ctx.fillRect(x * pixelSize + margin + halfSize, y * pixelSize + margin, halfSize, halfSize)
 
-            ctx.fillStyle = lightColor
-            ctx.strokeStyle = lightColor
+              leftBottomIsDark ? ctx.fillStyle = darkColor : ctx.fillStyle = lightColor
+              ctx.fillRect(x * pixelSize + margin, y * pixelSize + margin + halfSize, halfSize, halfSize)
 
-            ctx.beginPath()
-            ctx.roundRect(x * pixelSize + margin + offset, y * pixelSize + margin + offset, pixelSize - lineWidth, pixelSize - lineWidth, [LT, RT, RB, LB])
-            ctx.stroke()
-            ctx.fill()
+              rightBottomIsDark ? ctx.fillStyle = darkColor : ctx.fillStyle = lightColor
+              ctx.fillRect(x * pixelSize + margin + halfSize, y * pixelSize + margin + halfSize, halfSize, halfSize)
+
+              ctx.fillStyle = lightColor
+              ctx.strokeStyle = lightColor
+
+              ctx.beginPath()
+              ctx.arc(x * pixelSize + margin + halfSize, y * pixelSize + margin + halfSize, halfSize - lineWidth, 0, 2 * Math.PI)
+              ctx.stroke()
+              ctx.fill()
+            }
+            else {
+              ctx.fillStyle = lightColor
+              ctx.fillRect(x * pixelSize + margin, y * pixelSize + margin, pixelSize, pixelSize)
+            }
           }
         }
       }
