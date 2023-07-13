@@ -1,5 +1,4 @@
 import qrcode from 'qrcode-generator'
-import { useState } from 'react'
 
 export const ErrorCorrectionLevelMap = {
   L: 'L(7%)',
@@ -30,14 +29,12 @@ export interface QrcodeOptions {
   multibyte: MultibyteType
 }
 
-export const useQrcode = (initOptions: QrcodeOptions) => {
-  const [options, setOptions] = useState(initOptions)
-
+export const useQrcode = (options: QrcodeOptions) => {
   qrcode.stringToBytes = qrcode.stringToBytesFuncs[options.multibyte]
 
   const qr = qrcode(options.typeNumber, options.errorCorrectionLevel)
   qr.addData(options.content)
   qr.make()
 
-  return [qr, setOptions] as const
+  return qr
 }

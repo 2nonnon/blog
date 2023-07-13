@@ -3,7 +3,7 @@
 import type { FunctionComponent } from 'react'
 import { useCallback } from 'react'
 import { useQrcodeDispatch, useQrcodeOptions } from './QrcodeContext'
-import { ErrorCorrectionLevelMap } from '@/hooks/useQrcode'
+import { ErrorCorrectionLevelMap } from '@/components/Qrcode/useQrcode'
 
 const FormItem: FunctionComponent<{ name: string; children: any }> = ({ name, children }) => {
   return (
