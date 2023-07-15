@@ -33,46 +33,25 @@ const drawRoundedCell = ({ x, y, size, isDark, lightColor, darkColor, ctx, corne
   const radius = halfSize - lineWidth
 
   const color = isDark ? darkColor : lightColor
+  const bgColor = isDark ? lightColor : darkColor
 
-  if (isDark) {
-    if (radius > 0) {
-      LT ? ctx.fillStyle = lightColor : ctx.fillStyle = darkColor
-      ctx.fillRect(x, y, halfSize, halfSize)
+  if (radius > 0) {
+    LT ? ctx.fillStyle = bgColor : ctx.fillStyle = color
+    ctx.fillRect(x, y, halfSize, halfSize)
 
-      RT ? ctx.fillStyle = lightColor : ctx.fillStyle = darkColor
-      ctx.fillRect(x + halfSize, y, halfSize, halfSize)
+    RT ? ctx.fillStyle = bgColor : ctx.fillStyle = color
+    ctx.fillRect(x + halfSize, y, halfSize, halfSize)
 
-      LB ? ctx.fillStyle = lightColor : ctx.fillStyle = darkColor
-      ctx.fillRect(x, y + halfSize, halfSize, halfSize)
+    LB ? ctx.fillStyle = bgColor : ctx.fillStyle = color
+    ctx.fillRect(x, y + halfSize, halfSize, halfSize)
 
-      RB ? ctx.fillStyle = lightColor : ctx.fillStyle = darkColor
-      ctx.fillRect(x + halfSize, y + halfSize, halfSize, halfSize)
+    RB ? ctx.fillStyle = bgColor : ctx.fillStyle = color
+    ctx.fillRect(x + halfSize, y + halfSize, halfSize, halfSize)
 
-      drawDotCell({ x: x + halfSize, y: y + halfSize, color, radius, ctx })
-    }
-    else {
-      drawRectCell({ x, y, color, size, ctx })
-    }
+    drawDotCell({ x: x + halfSize, y: y + halfSize, color, radius, ctx })
   }
   else {
-    if (radius > 0) {
-      LT ? ctx.fillStyle = darkColor : ctx.fillStyle = lightColor
-      ctx.fillRect(x, y, halfSize, halfSize)
-
-      RT ? ctx.fillStyle = darkColor : ctx.fillStyle = lightColor
-      ctx.fillRect(x + halfSize, y, halfSize, halfSize)
-
-      LB ? ctx.fillStyle = darkColor : ctx.fillStyle = lightColor
-      ctx.fillRect(x, y + halfSize, halfSize, halfSize)
-
-      RB ? ctx.fillStyle = darkColor : ctx.fillStyle = lightColor
-      ctx.fillRect(x + halfSize, y + halfSize, halfSize, halfSize)
-
-      drawDotCell({ x: x + halfSize, y: y + halfSize, color, radius, ctx })
-    }
-    else {
-      drawRectCell({ x, y, color, size, ctx })
-    }
+    drawRectCell({ x, y, color, size, ctx })
   }
 }
 
@@ -107,6 +86,11 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
 
       for (let x = 0; x < moduleCount; x++) {
         for (let y = 0; y < moduleCount; y++) {
+          const xPos = x * pixelSize + margin
+          const yPos = y * pixelSize + margin
+
+          const isDark = qr.isDark(x, y)
+
           const leftIsDark = x - 1 >= 0 ? qr.isDark(x - 1, y) : false
           const topIsDark = y - 1 >= 0 ? qr.isDark(x, y - 1) : false
           const rightIsDark = x + 1 < moduleCount ? qr.isDark(x + 1, y) : false
@@ -116,11 +100,6 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
           const rightTopIsDark = rightIsDark && topIsDark && qr.isDark(x + 1, y - 1)
           const rightBottomIsDark = rightIsDark && bottomIsDark && qr.isDark(x + 1, y + 1)
           const leftBottomIsDark = leftIsDark && bottomIsDark && qr.isDark(x - 1, y + 1)
-
-          const xPos = x * pixelSize + margin
-          const yPos = y * pixelSize + margin
-
-          const isDark = qr.isDark(x, y)
 
           const LT = isDark ? !leftIsDark && !topIsDark : leftTopIsDark
           const RT = isDark ? !rightIsDark && !topIsDark : rightTopIsDark
