@@ -29,12 +29,12 @@ export type MarkerStyleType = keyof typeof MarkerStyleMap
 
 export type QrcodeProps = QrcodeOptions & DrawOptions
 
-const drawRectCell = ({ x, y, color, size, ctx }: { x: number; y: number; color: string; size: number; ctx: CanvasRenderingContext2D }) => {
+const drawRectCell = ({ x, y, color, size, ctx }: { x: number; y: number; color: string; size: number; ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D }) => {
   ctx.fillStyle = color
   ctx.fillRect(x, y, size, size)
 }
 
-const drawDotCell = ({ x, y, color, radius, ctx }: { x: number; y: number; color: string; radius: number; ctx: CanvasRenderingContext2D }) => {
+const drawDotCell = ({ x, y, color, radius, ctx }: { x: number; y: number; color: string; radius: number; ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D }) => {
   ctx.fillStyle = color
   ctx.strokeStyle = color
 
@@ -44,7 +44,7 @@ const drawDotCell = ({ x, y, color, radius, ctx }: { x: number; y: number; color
   ctx.fill()
 }
 
-const drawRoundedCell = ({ x, y, size, isDark, lightColor, darkColor, ctx, cornerIsRounded: { LT, RT, LB, RB } }: { x: number; y: number; size: number; isDark: boolean; lightColor: string; darkColor: string; ctx: CanvasRenderingContext2D; cornerIsRounded: { LT: Boolean; RT: Boolean; LB: Boolean; RB: Boolean } }) => {
+const drawRoundedCell = ({ x, y, size, isDark, lightColor, darkColor, ctx, cornerIsRounded: { LT, RT, LB, RB } }: { x: number; y: number; size: number; isDark: boolean; lightColor: string; darkColor: string; ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D; cornerIsRounded: { LT: Boolean; RT: Boolean; LB: Boolean; RB: Boolean } }) => {
   const halfSize = size / 2
 
   const lineWidth = 1
@@ -78,7 +78,7 @@ const drawRoundedCell = ({ x, y, size, isDark, lightColor, darkColor, ctx, corne
 const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) => {
   const target = useRef<HTMLCanvasElement>(null)
 
-  const generateQrcode = () => {
+  const generateQrcode = async () => {
     console.log(options)
 
     if (target.current) {
@@ -92,8 +92,8 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
 
       const pixelSize = options.pixelSize
 
-      const ctx = target.current.getContext('2d')!
-      ctx.clearRect(0, 0, target.current.width, target.current.height)
+      const targetCtx = target.current.getContext('2d')!
+      targetCtx.clearRect(0, 0, target.current.width, target.current.height)
 
       const qrcodeSize = moduleCount * (pixelSize)
 
@@ -102,6 +102,15 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
       const width = qrcodeSize + 2 * margin
       target.current.height = width < maxSize ? width : maxSize
       target.current.width = width < maxSize ? width : maxSize
+
+      const offscreenCanvas = document.createElement('canvas')
+
+      const ctx = offscreenCanvas.getContext('2d')!
+
+      offscreenCanvas.height = width < maxSize ? width : maxSize
+      offscreenCanvas.width = width < maxSize ? width : maxSize
+
+      ctx.clearRect(0, 0, width, width)
 
       ctx.fillStyle = lightColor
       ctx.fillRect(0, 0, target.current.width, target.current.height)
@@ -267,13 +276,19 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
         const image = new Image()
         const url = URL.createObjectURL(background)
 
-        image.onload = () => {
-          const { x, y, w, h } = parseImageSizeDate(image.width, image.height)
-          ctx.drawImage(image, x, y, w, h, 0, 0, width, width)
-          URL.revokeObjectURL(url)
-        }
-        image.src = url
+        await new Promise<void>((resolve) => {
+          image.onload = () => {
+            resolve()
+          }
+          image.src = url
+        })
+
+        const { x, y, w, h } = parseImageSizeDate(image.width, image.height)
+        ctx.drawImage(image, x, y, w, h, 0, 0, width, width)
+        URL.revokeObjectURL(url)
       }
+
+      targetCtx.drawImage(offscreenCanvas, 0, 0, width, width)
 
       const logo = options.logo
       if (logo) {
@@ -284,14 +299,14 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
 
         const logoSize = Math.round(size / 5) * 4
 
-        ctx.strokeStyle = lightColor
-        ctx.fillStyle = lightColor
-        ctx.roundRect(width / 2 - size / 2, width / 2 - size / 2, size, size, size / 10)
-        ctx.fill()
+        targetCtx.strokeStyle = lightColor
+        targetCtx.fillStyle = lightColor
+        targetCtx.roundRect(width / 2 - size / 2, width / 2 - size / 2, size, size, size / 10)
+        targetCtx.fill()
 
         image.onload = () => {
           const { x, y, w, h } = parseImageSizeDate(image.width, image.height)
-          ctx.drawImage(image, x, y, w, h, width / 2 - logoSize / 2, width / 2 - logoSize / 2, logoSize, logoSize)
+          targetCtx.drawImage(image, x, y, w, h, width / 2 - logoSize / 2, width / 2 - logoSize / 2, logoSize, logoSize)
           URL.revokeObjectURL(url)
         }
         image.src = url
