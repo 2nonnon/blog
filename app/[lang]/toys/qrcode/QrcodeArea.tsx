@@ -5,6 +5,7 @@ import { Icon } from '@iconify-icon/react'
 import { useQrcodeOptions } from './QrcodeContext'
 import { getFileHandle, saveDataToFile } from '@/utils/file'
 import Qrcode from '@/components/Qrcode'
+import { downloadByUrl } from '@/utils/downloadFile'
 
 export default function () {
   const target = useRef<HTMLCanvasElement>(null)
@@ -13,30 +14,42 @@ export default function () {
 
   const handleDownloadQrcode = useCallback(async () => {
     if (target.current) {
-      const fileHandle = await getFileHandle({
-        create: true,
-        opts: {
-          suggestedName: 'qrcode.png',
-          types: [{
-            description: 'Images',
-            accept: {
-              'image/png': ['.png'],
-              'image/jpeg': ['.jpeg', '.jpg'],
-              'image/webp': ['.webp'],
-            },
-          }],
-          excludeAcceptAllOption: true,
+      try {
+        const fileHandle = await getFileHandle({
+          create: true,
+          opts: {
+            suggestedName: 'qrcode.png',
+            types: [{
+              description: 'Images',
+              accept: {
+                'image/png': ['.png'],
+                'image/jpeg': ['.jpeg', '.jpg'],
+                'image/webp': ['.webp'],
+              },
+            }],
+            excludeAcceptAllOption: true,
+          },
+        }) as FileSystemFileHandle
+
+        const file = await fileHandle.getFile()
+
+        target.current.toBlob(async (blob) => {
+          if (blob)
+            saveDataToFile({ handle: fileHandle, opts: { type: 'write', data: blob } })
         },
-      }) as FileSystemFileHandle
-
-      const file = await fileHandle.getFile()
-
-      target.current.toBlob(async (blob) => {
-        if (blob)
-          saveDataToFile({ handle: fileHandle, opts: { type: 'write', data: blob } })
-      },
-      file.type,
-      )
+        file.type,
+        )
+      }
+      catch (e) {
+        target.current.toBlob(async (blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob)
+            await downloadByUrl({ url })
+            URL.revokeObjectURL(url)
+          }
+        },
+        )
+      }
     }
   }, [])
 
