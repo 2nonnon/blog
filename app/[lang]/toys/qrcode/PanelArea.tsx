@@ -1,6 +1,6 @@
 'use client'
 
-import type { FunctionComponent } from 'react'
+import type { ChangeEventHandler, FC, MouseEventHandler } from 'react'
 import { useCallback } from 'react'
 import { Icon } from '@iconify-icon/react'
 import { useQrcodeDispatch, useQrcodeOptions } from './QrcodeContext'
@@ -8,21 +8,47 @@ import { ErrorCorrectionLevelMap } from '@/components/Qrcode/useQrcode'
 import type { MarkerStyleType, PixelStyleType } from '@/components/Qrcode'
 import { MarkerStyleMap, PixelStyleMap } from '@/components/Qrcode'
 
-const FormItem: FunctionComponent<{ name: string; children: any }> = ({ name, children }) => {
+const FormItem: FC<{ name: string; children: any }> = ({ name, children }) => {
   return (
-    <div className='flex gap-1 items-center max-sm:flex-col max-sm:items-start'>
+    <div className='flex gap-2 items-center max-sm:flex-col max-sm:items-start'>
       <div className='w-48'><label htmlFor={name}>{name}:</label></div>
-      <div className='flex-1'>
+      <div className='flex-1 flex min-w-0 w-full'>
         {children}
       </div>
     </div>
   )
 }
 
+const Upload: FC<{ value: File; onChange: ChangeEventHandler<HTMLInputElement>; onClear: MouseEventHandler<HTMLButtonElement> }> = ({ value, onChange, onClear }) => {
+  return (<>
+    <div className='flex items-center gap-2 min-w-0'>
+      <label className='surface-sm flex items-center justify-center w-fit rounded px-4 py-1 gap-2 cursor-pointer'>
+        <input id='Logo' className='hidden' type="file" accept='image/*' onChange={onChange}/>
+        <Icon icon="mingcute:upload-2-line" />
+        <span>Upload</span>
+      </label>
+      {
+        value && <div className='flex items-center gap-2 min-w-0'>
+          <p className='overflow-hidden text-ellipsis' title={value.name}>{value.name}</p>
+          <button type='button' className='flex text-xl' onClick={onClear}><Icon icon="jam:close-circle-f" /></button>
+        </div>
+      }
+    </div>
+  </>)
+}
+
 export default function Panel() {
   const options = useQrcodeOptions()
 
   const QrcodeDispatch = useQrcodeDispatch()
+
+  const clearBackground = useCallback((_event: React.MouseEvent<HTMLButtonElement>) => {
+    QrcodeDispatch({ type: 'changed', options: { background: undefined } })
+  }, [])
+
+  const clearLogo = useCallback((_event: React.MouseEvent<HTMLButtonElement>) => {
+    QrcodeDispatch({ type: 'changed', options: { logo: undefined } })
+  }, [])
 
   const handleChangeBackground = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     QrcodeDispatch({ type: 'changed', options: { background: event.target.files![0] } })
@@ -61,8 +87,8 @@ export default function Panel() {
   }, [])
 
   return (
-    <form className='max-w-full min-w-fit flex flex-col gap-3 text-base'>
-      <fieldset className='flex flex-col gap-3'>
+    <form className='flex flex-col gap-3 text-base pb-4'>
+      <fieldset className='flex flex-col gap-3 w-full min-w-[auto]'>
         <div className='border border-[var(--border-color)] flex rounded'>
           <textarea id="Content" className='w-full rounded px-4 py-2' rows={5} value={options.content} onChange={handleChangeContent}></textarea>
         </div>
@@ -87,16 +113,16 @@ export default function Panel() {
         </FormItem>
       </fieldset>
 
-      <fieldset className='flex flex-col gap-3'>
+      <fieldset className='flex flex-col gap-3 w-full min-w-0'>
         <FormItem name='PixelSize'>
-          <div className='flex gap-4'>
+          <div className='flex gap-4 w-full'>
             <input className='flex-1' type="range" min={1} max={100} value={options.pixelSize} onChange={handleChangePixelSize}/>
             <input className='border border-[var(--border-color)] rounded w-16 pl-1' type="number" min={1} max={100} value={options.pixelSize} onChange={handleChangePixelSize}/>
           </div>
         </FormItem>
 
         <FormItem name='Margin'>
-          <div className='flex gap-4'>
+          <div className='flex gap-4 w-full'>
             <input className='flex-1' type="range" min={0} max={25} value={options.margin} onChange={handleChangeMargin}/>
             <input className='border border-[var(--border-color)] rounded w-16 pl-1' type="number" min={1} max={100} value={options.margin} onChange={handleChangeMargin}/>
           </div>
@@ -127,19 +153,11 @@ export default function Panel() {
         </FormItem>
 
         <FormItem name='Logo'>
-          <label className='surface-sm flex items-center justify-center w-fit rounded px-4 py-1 gap-2 cursor-pointer'>
-            <input id='Logo' className='hidden' type="file" accept='image/*' onChange={handleChangeLogo}/>
-            <Icon icon="mingcute:upload-2-line" />
-            <span>Upload</span>
-          </label>
+          <Upload value={options.logo} onChange={handleChangeLogo} onClear={clearLogo}></Upload>
         </FormItem>
 
         <FormItem name='Background'>
-          <label className='surface-sm flex items-center justify-center w-fit rounded px-4 py-1 gap-2 cursor-pointer'>
-            <input id='Background' className='hidden' type="file" accept='image/*' onChange={handleChangeBackground}/>
-            <Icon icon="mingcute:upload-2-line" />
-            <span>Upload</span>
-          </label>
+          <Upload value={options.background} onChange={handleChangeBackground} onClear={clearBackground}></Upload>
         </FormItem>
       </fieldset>
     </form>
