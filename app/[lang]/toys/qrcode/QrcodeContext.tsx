@@ -23,6 +23,8 @@ export function QrcodeProvider({ children }: QrcodeProviderProps) {
       multibyte: 'UTF-8',
       margin: 10,
       pixelSize: 20,
+      pixelStyle: 'Rounded',
+      markerStyle: 'Auto',
     } as QrcodeProps,
   )
 

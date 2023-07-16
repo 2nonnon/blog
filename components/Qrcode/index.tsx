@@ -5,7 +5,26 @@ import { useQrcode } from './useQrcode'
 export interface DrawOptions {
   margin: number
   pixelSize: number
+  pixelStyle: PixelStyleType
+  markerStyle: MarkerStyleType
+  logo: File
+  background: File
 }
+
+export const PixelStyleMap = {
+  Rect: 'Rect',
+  Rounded: 'Rounded',
+  Circle: 'Circle',
+}
+
+export type PixelStyleType = keyof typeof PixelStyleMap
+
+export const MarkerStyleMap = {
+  ...PixelStyleMap,
+  Auto: 'Auto',
+}
+
+export type MarkerStyleType = keyof typeof MarkerStyleMap
 
 export type QrcodeProps = QrcodeOptions & DrawOptions
 
@@ -59,6 +78,8 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
   const target = useRef<HTMLCanvasElement>(null)
 
   const generateQrcode = () => {
+    console.log(options)
+
     if (target.current) {
       const qr = useQrcode(options)
       const moduleCount = qr.getModuleCount()
