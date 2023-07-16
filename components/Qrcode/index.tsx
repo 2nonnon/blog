@@ -14,13 +14,14 @@ export interface DrawOptions {
 export const PixelStyleMap = {
   Rect: 'Rect',
   Rounded: 'Rounded',
-  Circle: 'Circle',
+  Dot: 'Dot',
 }
 
 export type PixelStyleType = keyof typeof PixelStyleMap
 
 export const MarkerStyleMap = {
-  ...PixelStyleMap,
+  // ...PixelStyleMap,
+  Circle: 'Circle',
   Auto: 'Auto',
 }
 
@@ -105,44 +106,195 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
       ctx.fillStyle = lightColor
       ctx.fillRect(0, 0, target.current.width, target.current.height)
 
-      for (let x = 0; x < moduleCount; x++) {
-        for (let y = 0; y < moduleCount; y++) {
-          const xPos = x * pixelSize + margin
-          const yPos = y * pixelSize + margin
+      if (options.pixelStyle === 'Rounded') {
+        for (let x = 0; x < moduleCount; x++) {
+          for (let y = 0; y < moduleCount; y++) {
+            const xPos = x * pixelSize + margin
+            const yPos = y * pixelSize + margin
 
-          const isDark = qr.isDark(x, y)
+            const isDark = qr.isDark(x, y)
 
-          const leftIsDark = x - 1 >= 0 ? qr.isDark(x - 1, y) : false
-          const topIsDark = y - 1 >= 0 ? qr.isDark(x, y - 1) : false
-          const rightIsDark = x + 1 < moduleCount ? qr.isDark(x + 1, y) : false
-          const bottomIsDark = y + 1 < moduleCount ? qr.isDark(x, y + 1) : false
+            const leftIsDark = x - 1 >= 0 ? qr.isDark(x - 1, y) : false
+            const topIsDark = y - 1 >= 0 ? qr.isDark(x, y - 1) : false
+            const rightIsDark = x + 1 < moduleCount ? qr.isDark(x + 1, y) : false
+            const bottomIsDark = y + 1 < moduleCount ? qr.isDark(x, y + 1) : false
 
-          const leftTopIsDark = leftIsDark && topIsDark && qr.isDark(x - 1, y - 1)
-          const rightTopIsDark = rightIsDark && topIsDark && qr.isDark(x + 1, y - 1)
-          const rightBottomIsDark = rightIsDark && bottomIsDark && qr.isDark(x + 1, y + 1)
-          const leftBottomIsDark = leftIsDark && bottomIsDark && qr.isDark(x - 1, y + 1)
+            const leftTopIsDark = leftIsDark && topIsDark && qr.isDark(x - 1, y - 1)
+            const rightTopIsDark = rightIsDark && topIsDark && qr.isDark(x + 1, y - 1)
+            const rightBottomIsDark = rightIsDark && bottomIsDark && qr.isDark(x + 1, y + 1)
+            const leftBottomIsDark = leftIsDark && bottomIsDark && qr.isDark(x - 1, y + 1)
 
-          const LT = isDark ? !leftIsDark && !topIsDark : leftTopIsDark
-          const RT = isDark ? !rightIsDark && !topIsDark : rightTopIsDark
-          const LB = isDark ? !leftIsDark && !bottomIsDark : leftBottomIsDark
-          const RB = isDark ? !rightIsDark && !bottomIsDark : rightBottomIsDark
+            const LT = isDark ? !leftIsDark && !topIsDark : leftTopIsDark
+            const RT = isDark ? !rightIsDark && !topIsDark : rightTopIsDark
+            const LB = isDark ? !leftIsDark && !bottomIsDark : leftBottomIsDark
+            const RB = isDark ? !rightIsDark && !bottomIsDark : rightBottomIsDark
 
-          drawRoundedCell({
-            x: xPos,
-            y: yPos,
-            size: pixelSize,
-            isDark,
-            lightColor,
-            darkColor,
-            ctx,
-            cornerIsRounded: {
-              LT,
-              RT,
-              LB,
-              RB,
-            },
-          })
+            drawRoundedCell({
+              x: xPos,
+              y: yPos,
+              size: pixelSize,
+              isDark,
+              lightColor,
+              darkColor,
+              ctx,
+              cornerIsRounded: {
+                LT,
+                RT,
+                LB,
+                RB,
+              },
+            })
+          }
         }
+      }
+      else if (options.pixelStyle === 'Dot') {
+        for (let x = 0; x < moduleCount; x++) {
+          for (let y = 0; y < moduleCount; y++) {
+            const xPos = x * pixelSize + margin
+            const yPos = y * pixelSize + margin
+
+            const isDark = qr.isDark(x, y)
+
+            const radius = pixelSize / 2
+
+            if (isDark) {
+              drawDotCell({
+                x: xPos + radius,
+                y: yPos + radius,
+                color: darkColor,
+                radius,
+                ctx,
+              })
+            }
+          }
+        }
+      }
+      else {
+        for (let x = 0; x < moduleCount; x++) {
+          for (let y = 0; y < moduleCount; y++) {
+            const xPos = x * pixelSize + margin
+            const yPos = y * pixelSize + margin
+
+            const isDark = qr.isDark(x, y)
+
+            if (isDark) {
+              drawRectCell({
+                x: xPos,
+                y: yPos,
+                color: darkColor,
+                size: pixelSize,
+                ctx,
+              })
+            }
+          }
+        }
+      }
+
+      const markerOuterSize = 7
+      const markerDividerSize = 5
+      const markerInnerSize = 3
+      const pos = margin + (moduleCount - markerOuterSize) * pixelSize
+      const p1 = [margin, margin]
+      const p2 = [pos, margin]
+      const p3 = [margin, pos]
+
+      if (options.markerStyle === 'Circle') {
+        [p1, p2, p3].forEach((p) => {
+          drawRectCell({
+            x: p[0] - pixelSize / 2,
+            y: p[1] - pixelSize / 2,
+            color: lightColor,
+            size: markerOuterSize * pixelSize + pixelSize,
+            ctx,
+          })
+
+          const outerRadius = markerOuterSize * pixelSize / 2
+          const dividerRadius = markerDividerSize * pixelSize / 2
+          const innerRadius = markerInnerSize * pixelSize / 2
+
+          drawDotCell({
+            x: p[0] + outerRadius,
+            y: p[1] + outerRadius,
+            color: darkColor,
+            radius: outerRadius,
+            ctx,
+          })
+
+          drawDotCell({
+            x: p[0] + outerRadius,
+            y: p[1] + outerRadius,
+            color: lightColor,
+            radius: dividerRadius,
+            ctx,
+          })
+
+          drawDotCell({
+            x: p[0] + outerRadius,
+            y: p[1] + outerRadius,
+            color: darkColor,
+            radius: innerRadius,
+            ctx,
+          })
+        })
+      }
+
+      const parseImageSizeDate = (width: number, height: number) => {
+        let x = 0
+        let y = 0
+        let w = width
+        let h = height
+
+        if (width > height) {
+          x = (width - height) / 2
+          w = height
+        }
+        else if (width < height) {
+          y = (height - width) / 2
+          h = width
+        }
+
+        return {
+          x,
+          y,
+          w,
+          h,
+        }
+      }
+
+      const background = options.background
+      if (background) {
+        ctx.globalCompositeOperation = 'lighten'
+        const image = new Image()
+        const url = URL.createObjectURL(background)
+
+        image.onload = () => {
+          const { x, y, w, h } = parseImageSizeDate(image.width, image.height)
+          ctx.drawImage(image, x, y, w, h, 0, 0, width, width)
+          URL.revokeObjectURL(url)
+        }
+        image.src = url
+      }
+
+      const logo = options.logo
+      if (logo) {
+        const image = new Image()
+        const url = URL.createObjectURL(logo)
+
+        const size = Math.round(width / 5)
+
+        const logoSize = Math.round(size / 5) * 4
+
+        ctx.strokeStyle = lightColor
+        ctx.fillStyle = lightColor
+        ctx.roundRect(width / 2 - size / 2, width / 2 - size / 2, size, size, size / 10)
+        ctx.fill()
+
+        image.onload = () => {
+          const { x, y, w, h } = parseImageSizeDate(image.width, image.height)
+          ctx.drawImage(image, x, y, w, h, width / 2 - logoSize / 2, width / 2 - logoSize / 2, logoSize, logoSize)
+          URL.revokeObjectURL(url)
+        }
+        image.src = url
       }
     }
   }
