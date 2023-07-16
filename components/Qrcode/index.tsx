@@ -79,7 +79,7 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
   const target = useRef<HTMLCanvasElement>(null)
 
   const generateQrcode = async () => {
-    console.log(options)
+    // console.log(options)
 
     if (target.current) {
       const qr = useQrcode(options)
