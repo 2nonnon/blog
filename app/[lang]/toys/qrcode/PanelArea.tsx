@@ -5,8 +5,8 @@ import { useCallback } from 'react'
 import { Icon } from '@iconify-icon/react'
 import { useQrcodeDispatch, useQrcodeOptions } from './QrcodeContext'
 import { ErrorCorrectionLevelMap } from '@/components/Qrcode/useQrcode'
-import type { MarkerStyleType, PixelStyleType } from '@/components/Qrcode'
-import { MarkerStyleMap, PixelStyleMap } from '@/components/Qrcode'
+import type { MarkerStyleType, PixelStyleType } from '@/components/Qrcode/generateQrcode'
+import { MarkerStyleMap, PixelStyleMap } from '@/components/Qrcode/generateQrcode'
 
 const FormItem: FC<{ name: string; children: any }> = ({ name, children }) => {
   return (
