@@ -13,7 +13,7 @@ export async function generateMetadata({ params: { lang } }: PageProps): Promise
 
 export default async function Page({ params: { lang } }: PageProps) {
   const copies = await getCopies(lang, 'toy')
-  const curPath = `/${lang}/toys`
+  const curPath = lang === 'en' ? '/toys' : `/${lang}/toys`
 
   const toys = [
     {
