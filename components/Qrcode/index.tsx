@@ -1,3 +1,5 @@
+'use client'
+
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef } from 'react'
 import type { QrcodeOptions } from './useQrcode'
 import { useQrcode } from './useQrcode'
@@ -83,6 +85,8 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
 
     if (target.current) {
       const qr = useQrcode(options)
+
+      // base data
       const moduleCount = qr.getModuleCount()
 
       const maxSize = 16384
@@ -92,6 +96,7 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
 
       const pixelSize = options.pixelSize
 
+      // init target canvas
       const targetCtx = target.current.getContext('2d')!
       targetCtx.clearRect(0, 0, target.current.width, target.current.height)
 
@@ -103,26 +108,28 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
       target.current.height = width < maxSize ? width : maxSize
       target.current.width = width < maxSize ? width : maxSize
 
+      // init offscreenCanvas
       const offscreenCanvas = document.createElement('canvas')
 
       const ctx = offscreenCanvas.getContext('2d')!
 
-      offscreenCanvas.height = width < maxSize ? width : maxSize
-      offscreenCanvas.width = width < maxSize ? width : maxSize
+      offscreenCanvas.height = target.current.height
+      offscreenCanvas.width = target.current.width
 
       ctx.clearRect(0, 0, width, width)
 
       ctx.fillStyle = lightColor
       ctx.fillRect(0, 0, target.current.width, target.current.height)
 
-      if (options.pixelStyle === 'Rounded') {
-        for (let x = 0; x < moduleCount; x++) {
-          for (let y = 0; y < moduleCount; y++) {
-            const xPos = x * pixelSize + margin
-            const yPos = y * pixelSize + margin
+      // draw pixel
+      for (let x = 0; x < moduleCount; x++) {
+        for (let y = 0; y < moduleCount; y++) {
+          const xPos = x * pixelSize + margin
+          const yPos = y * pixelSize + margin
 
-            const isDark = qr.isDark(x, y)
+          const isDark = qr.isDark(x, y)
 
+          if (options.pixelStyle === 'Rounded') {
             const leftIsDark = x - 1 >= 0 ? qr.isDark(x - 1, y) : false
             const topIsDark = y - 1 >= 0 ? qr.isDark(x, y - 1) : false
             const rightIsDark = x + 1 < moduleCount ? qr.isDark(x + 1, y) : false
@@ -154,16 +161,7 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
               },
             })
           }
-        }
-      }
-      else if (options.pixelStyle === 'Dot') {
-        for (let x = 0; x < moduleCount; x++) {
-          for (let y = 0; y < moduleCount; y++) {
-            const xPos = x * pixelSize + margin
-            const yPos = y * pixelSize + margin
-
-            const isDark = qr.isDark(x, y)
-
+          else if (options.pixelStyle === 'Dot') {
             const radius = pixelSize / 2
 
             if (isDark) {
@@ -176,16 +174,7 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
               })
             }
           }
-        }
-      }
-      else {
-        for (let x = 0; x < moduleCount; x++) {
-          for (let y = 0; y < moduleCount; y++) {
-            const xPos = x * pixelSize + margin
-            const yPos = y * pixelSize + margin
-
-            const isDark = qr.isDark(x, y)
-
+          else {
             if (isDark) {
               drawRectCell({
                 x: xPos,
@@ -199,6 +188,7 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
         }
       }
 
+      // draw marker
       const markerOuterSize = 7
       const markerDividerSize = 5
       const markerInnerSize = 3
@@ -221,25 +211,28 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
           const dividerRadius = markerDividerSize * pixelSize / 2
           const innerRadius = markerInnerSize * pixelSize / 2
 
+          const centerX = p[0] + outerRadius
+          const centerY = p[1] + outerRadius
+
           drawDotCell({
-            x: p[0] + outerRadius,
-            y: p[1] + outerRadius,
+            x: centerX,
+            y: centerY,
             color: darkColor,
             radius: outerRadius,
             ctx,
           })
 
           drawDotCell({
-            x: p[0] + outerRadius,
-            y: p[1] + outerRadius,
+            x: centerX,
+            y: centerY,
             color: lightColor,
             radius: dividerRadius,
             ctx,
           })
 
           drawDotCell({
-            x: p[0] + outerRadius,
-            y: p[1] + outerRadius,
+            x: centerX,
+            y: centerY,
             color: darkColor,
             radius: innerRadius,
             ctx,
@@ -247,6 +240,7 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
         })
       }
 
+      // draw background
       const parseImageSizeDate = (width: number, height: number) => {
         let x = 0
         let y = 0
@@ -290,6 +284,7 @@ const Qrcode = memo(forwardRef<HTMLCanvasElement>((options: QrcodeProps, ref) =>
 
       targetCtx.drawImage(offscreenCanvas, 0, 0, width, width)
 
+      // draw logo
       const logo = options.logo
       if (logo) {
         const image = new Image()
