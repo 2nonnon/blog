@@ -1,12 +1,19 @@
 'use client'
 
-import type { ChangeEventHandler, FC, MouseEventHandler } from 'react'
-import { useCallback } from 'react'
+import type { ChangeEventHandler, FC, MouseEventHandler, ReactNode } from 'react'
+import React, { useCallback } from 'react'
 import { Icon } from '@iconify-icon/react'
 import { useQrcodeDispatch, useQrcodeOptions } from './QrcodeContext'
 import { ErrorCorrectionLevelMap, MarkerStyleMap, PixelStyleMap } from '@/components/Qrcode'
 
-const FormItem: FC<{ name: string; children: any }> = ({ name, children }) => {
+interface FormItemProps { name: string; children: ReactNode }
+
+const FormItem: FC<FormItemProps> = ({ name, children }) => {
+  // React.Children.map(children, (child) => {
+  //   if (React.isValidElement(child))
+  //     return React.cloneElement(child, { })
+  // })
+
   return (
     <div className='flex gap-2 items-center max-sm:flex-col max-sm:items-start'>
       <div className='w-48'><label htmlFor={name}>{name}:</label></div>
@@ -17,7 +24,23 @@ const FormItem: FC<{ name: string; children: any }> = ({ name, children }) => {
   )
 }
 
-const Upload: FC<{ name: string; value: File; onChange: ChangeEventHandler<HTMLInputElement>; onClear: MouseEventHandler<HTMLButtonElement> }> = ({ name, value, onChange, onClear }) => {
+interface RadioGroupProps { name: string;value: string; map: object; onChange: ChangeEventHandler<HTMLInputElement> }
+
+const RadioGroup: FC<RadioGroupProps> = ({ name, onChange, value, map }) => {
+  return (<>
+    <div className='surface-sm__inert w-fit rounded flex overflow-hidden'>
+      {Object.entries(map).map(item =>
+        <div className='border-r last:border-none border-[var(--border-color)]' key={item[0]}>
+          <input data-key={name} id={item[1]} className='peer hidden' type="radio" name={name} value={item[0]} onChange={onChange} checked={value === item[0]}></input>
+          <label htmlFor={item[1]} className='peer-checked:surface-sm__active px-2 py-1 flex cursor-pointer'>{item[1]}</label>
+        </div>)}
+    </div>
+  </>)
+}
+
+interface UploadProps { name: string; value: File; onChange: ChangeEventHandler<HTMLInputElement>; onClear: MouseEventHandler<HTMLButtonElement> }
+
+const Upload: FC<UploadProps> = ({ name, value, onChange, onClear }) => {
   return (<>
     <div className='flex items-center gap-2 min-w-0'>
       <label className='surface-sm flex items-center justify-center w-fit rounded px-4 py-1 gap-2 cursor-pointer'>
@@ -59,27 +82,19 @@ export default function Panel() {
   return (
     <form className='flex flex-col gap-3 text-base pb-4'>
       <fieldset className='flex flex-col gap-3 w-full min-w-[auto]'>
-        <div className='border border-[var(--border-color)] flex rounded'>
+        <label className='border border-[var(--border-color)] flex rounded'>
           <textarea data-key='content' id="Content" className='w-full rounded px-4 py-2' rows={5} value={options.content} onChange={handleChange}></textarea>
-        </div>
+        </label>
 
         <FormItem name='ErrorCorrectionLevel'>
-          <div className='surface-sm__inert w-fit rounded flex overflow-hidden'>
-            {Object.entries(ErrorCorrectionLevelMap).map(item =>
-              <div className='border-r last:border-none border-[var(--border-color)]' key={item[0]}>
-                <input data-key='errorCorrectionLevel' id={item[1]} className='peer hidden' type="radio" name='ErrorCorrectionLevel' value={item[0]} onChange={handleChange} checked={options.errorCorrectionLevel === item[0]}></input>
-                <label htmlFor={item[1]} className='peer-checked:surface-sm__active px-2 py-1 flex cursor-pointer'>{item[1]}</label>
-              </div>)}
-          </div>
+          <RadioGroup name='errorCorrectionLevel' value={options.errorCorrectionLevel} onChange={handleChange} map={ErrorCorrectionLevelMap}></RadioGroup>
         </FormItem>
 
         <FormItem name='TypeNumber'>
-          <div className='border border-[var(--border-color)] flex rounded w-fit'>
-            <select data-key='typeNumber' className='rounded w-32' id='TypeNumber' name="TypeNumber" value={options.typeNumber} onChange={handleChange}>
-              <option value={0}>Auto Detect</option>
-              {Array.from({ length: 40 }).map((_, i) => <option value={i + 1} key={i + 1}>{i + 1}</option>)}
-            </select>
-          </div>
+          <select data-key='typeNumber' className='border border-[var(--border-color)] rounded w-32' id='TypeNumber' name="TypeNumber" value={options.typeNumber} onChange={handleChange}>
+            <option value={0}>Auto Detect</option>
+            {Array.from({ length: 40 }).map((_, i) => <option value={i + 1} key={i + 1}>{i + 1}</option>)}
+          </select>
         </FormItem>
       </fieldset>
 
@@ -99,27 +114,11 @@ export default function Panel() {
         </FormItem>
 
         <FormItem name='PixelStyle'>
-          <div className='surface-sm__inert w-fit rounded flex overflow-hidden'>
-            {Object.entries(PixelStyleMap).map(item =>
-              <div className='border-r last:border-none border-[var(--border-color)]' key={item[0]}>
-                <input data-key='pixelStyle' id={item[0]} className='peer hidden' type="radio" name='PixelStyle' value={item[0]} onChange={handleChange} checked={options.pixelStyle === item[0]}></input>
-                <label htmlFor={item[0]} className='peer-checked:surface-sm__active px-2 py-1 flex cursor-pointer'>
-                  {item[1]}
-                </label>
-              </div>)}
-          </div>
+          <RadioGroup name='pixelStyle' value={options.pixelStyle} onChange={handleChange} map={PixelStyleMap}></RadioGroup>
         </FormItem>
 
         <FormItem name='MarkerStyle'>
-          <div className='surface-sm__inert w-fit rounded flex overflow-hidden'>
-            {Object.entries(MarkerStyleMap).map(item =>
-              <div className='border-r last:border-none border-[var(--border-color)]' key={`${item[0]}M`}>
-                <input data-key='markerStyle' id={`${item[0]}M`} className='peer hidden' type="radio" name='MarkerStyle' value={item[0]} onChange={handleChange} checked={options.markerStyle === item[0]}></input>
-                <label htmlFor={`${item[0]}M`} className='peer-checked:surface-sm__active px-2 py-1 flex cursor-pointer' >
-                  {item[1]}
-                </label>
-              </div>)}
-          </div>
+          <RadioGroup name='markerStyle' value={options.markerStyle} onChange={handleChange} map={MarkerStyleMap}></RadioGroup>
         </FormItem>
 
         <FormItem name='Logo'>
