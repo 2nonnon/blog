@@ -1,110 +1,39 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import type { ITask } from '@/components/todo/TasksContext'
-import {
-  TasksProvider,
-  useTasks,
-  useTasksDispatch,
-} from '@/components/todo/TasksContext'
-import Modal from '@/components/Modal'
-import { ModalProvider, useModal, useModalDispatch } from '@/components/todo/ModalContext'
-
-interface TodoItemProps {
-  task: ITask
+const monthDaysMap = {
+  1: 31,
+  2: 28,
+  3: 31,
+  4: 30,
+  5: 31,
+  6: 30,
+  7: 31,
+  8: 31,
+  9: 30,
+  10: 31,
+  11: 30,
+  12: 31,
 }
 
-const TodoItem = ({ task }: TodoItemProps) => {
-  const taskDispatch = useTasksDispatch()!
-  const modalDispatch = useModalDispatch()!
+function isLeapYear(year: number) {
+  if ((year / 4 === Math.floor(year / 4) && year / 100 !== Math.floor(year / 100)) || (year / 400 === Math.floor(year / 400) && year / 3200 !== Math.floor(year / 3200)) || year / 172800 === Math.floor(year / 172800))
+    return true
 
-  return (<>
-    <li className='flex'>
-      <p>{task.content}</p>
-      <div>
-        <button onClick={() => {
-          modalDispatch({ type: 'change', task })
-        }}>编辑</button>
-        <button onClick={() => {
-          taskDispatch({ type: 'deleted', id: task.id })
-        }}>删除</button>
-        <button onClick={() => {
-          taskDispatch({ type: 'changed', task: { ...task, done: true } })
-        }}>完成</button>
-      </div>
-    </li>
-  </>)
+  return false
 }
 
-const TodoList = () => {
-  const tasks = useTasks()!
+function getMonthDays(year, month) {
+  if (month === 2 && isLeapYear(year))
+    return 29
 
-  return (<>
-    <ul role="list">
-      {tasks.map(task => (
-        <TodoItem key={task.id} task={task}></TodoItem>
-      ))}
-    </ul>
-  </>)
-}
-
-const TodoPanel = () => {
-  const modalDispatch = useModalDispatch()!
-
-  return (<>
-    <button onClick={() => {
-      modalDispatch({ type: 'add' })
-    }}>新建</button>
-  </>)
-}
-
-const TodoModal = () => {
-  const taskDispatch = useTasksDispatch()!
-  const modalDispatch = useModalDispatch()!
-  const { show, task } = useModal()!
-  const [content, setContent] = useState<string>()
-
-  useEffect(() => {
-    if (show)
-      setContent(task?.content)
-    else
-      setContent(undefined)
-  }, [show])
-
-  return (<>
-    {show && <Modal>
-      <textarea value={content} onChange={(e) => {
-        setContent(e.target.value)
-      }}></textarea>
-      <div>
-        <button onClick={() => {
-          modalDispatch({ type: 'close' })
-        }}>取消</button>
-        <button onClick={() => {
-          if (task)
-            taskDispatch({ type: 'changed', task: { ...task, content } })
-
-          else taskDispatch({ type: 'added', content: content ?? '' })
-
-          modalDispatch({ type: 'close' })
-        }}>确定</button>
-      </div>
-    </Modal>}
-  </>)
+  else
+    return monthDaysMap[month]
 }
 
 const Todo = () => {
   return (
     <>
-      <TasksProvider>
-        <ModalProvider>
-          <div className='max-w-screen-md mx-auto py-6 w-full'>
-            <TodoPanel></TodoPanel>
-            <TodoList></TodoList>
-            <TodoModal></TodoModal>
-          </div>
-        </ModalProvider>
-      </TasksProvider>
+      {getMonthDays(new Date().getFullYear(), new Date().getMonth() + 1)}
     </>
   )
 }
