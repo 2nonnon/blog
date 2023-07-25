@@ -15,6 +15,21 @@ const monthDaysMap = {
   12: 31,
 }
 
+const monthMap = {
+  1: 'January',
+  2: 'February',
+  3: 'March',
+  4: 'April',
+  5: 'May',
+  6: 'June',
+  7: 'July',
+  8: 'August',
+  9: 'September',
+  10: 'October',
+  11: 'November',
+  12: 'December',
+}
+
 function isLeapYear(year: number) {
   if ((year / 4 === Math.floor(year / 4) && year / 100 !== Math.floor(year / 100)) || (year / 400 === Math.floor(year / 400) && year / 3200 !== Math.floor(year / 3200)) || year / 172800 === Math.floor(year / 172800))
     return true
@@ -30,10 +45,49 @@ function getMonthDays(year, month) {
     return monthDaysMap[month]
 }
 
-const Todo = () => {
+const CellItem = () => {
+  return (<>
+    <div className="w-4 h-4 rounded bg-green-500"></div>
+  </>)
+}
+
+interface MonthItemProps {
+  year: number
+  month: number
+}
+
+const MonthItem = ({ year, month }: MonthItemProps) => {
+  const days = getMonthDays(year, month)
+  const arr = Array.from({ length: days })
+
   return (
     <>
-      {getMonthDays(new Date().getFullYear(), new Date().getMonth() + 1)}
+      <div>
+        <div>{monthMap[month]}</div>
+        <div className="grid grid-cols-7 gap-1">
+          {
+            arr.map((_, index) => (<CellItem key={index} />))
+          }
+        </div>
+      </div>
+    </>
+  )
+}
+
+const Todo = () => {
+  const year = new Date().getFullYear()
+  const months = Array.from({ length: 12 })
+
+  return (
+    <>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(7rem,1fr))] gap-4">
+        {
+          months.map((_, index) => (
+            <MonthItem key={index} year={year} month={index + 1}/>
+          ))
+        }
+      </div>
+
     </>
   )
 }
