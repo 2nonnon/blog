@@ -1,5 +1,7 @@
 'use client'
 
+import { Icon } from '@iconify-icon/react'
+
 const monthDaysMap = {
   1: 31,
   2: 28,
@@ -80,6 +82,29 @@ const Todo = () => {
 
   return (
     <>
+      <form>
+        <fieldset>
+          <legend>今天有感觉虚度了时间吗</legend>
+
+          <div className='flex gap-4'>
+            <label className='flex gap-1 items-center text-3xl text-emerald-600'>
+              <input className='hidden' type="radio" name="ii" />
+              <Icon icon="mdi:emoji-robot-happy-outline" />
+              <span className='text-base font-bold'>没有</span>
+            </label>
+            <label className='flex gap-1 items-center text-3xl text-rose-600'>
+              <input className='hidden' type="radio" name="ii" />
+              <Icon icon="mdi:emoji-robot-dead-outline" />
+              <span className='text-base font-bold'>是的</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div className='flex flex-col gap-2'>
+          <label>原因呢</label>
+          <textarea />
+        </div>
+      </form>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(7rem,1fr))] gap-4">
         {
           months.map((_, index) => (
