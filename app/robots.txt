@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.nnln.love/sitemap.xml
+Sitemap: https://www.non.fan/sitemap.xml
